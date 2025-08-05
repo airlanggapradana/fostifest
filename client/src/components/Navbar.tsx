@@ -1,12 +1,12 @@
 import {FloatingDock} from "@/components/ui/floating-dock";
 import {
+  IconBookmarks,
   IconBrandInstagram,
-  IconBrandX,
-  IconExchange,
   IconHome,
-  IconNewSection,
-  IconTerminal2,
 } from "@tabler/icons-react";
+import {FaTimeline, FaRegCircleQuestion} from "react-icons/fa6";
+import {RiLoginBoxLine} from "react-icons/ri";
+import fosti from '../assets/1630658187270-Photoroom.png'
 
 export function Navbar() {
   const links = [
@@ -21,14 +21,14 @@ export function Navbar() {
     {
       title: "Categories",
       icon: (
-        <IconTerminal2 className="h-full w-full  text-neutral-300"/>
+        <IconBookmarks className="h-full w-full  text-neutral-300"/>
       ),
       href: "#",
     },
     {
       title: "Timeline",
       icon: (
-        <IconNewSection className="h-full w-full  text-neutral-300"/>
+        <FaTimeline className="h-full w-full  text-neutral-300"/>
       ),
       href: "#",
     },
@@ -36,9 +36,9 @@ export function Navbar() {
       title: "FOSTI UMS",
       icon: (
         <img
-          src="https://assets.aceternity.com/logo-dark.png"
-          width={20}
-          height={20}
+          src={fosti}
+          width={64}
+          height={64}
           alt="Aceternity Logo"
         />
       ),
@@ -47,7 +47,7 @@ export function Navbar() {
     {
       title: "FAQ",
       icon: (
-        <IconExchange className="h-full w-full  text-neutral-300"/>
+        <FaRegCircleQuestion className="h-full w-full  text-neutral-300"/>
       ),
       href: "#",
     },
@@ -55,7 +55,7 @@ export function Navbar() {
     {
       title: "Pendaftaran",
       icon: (
-        <IconBrandX className="h-full w-full  text-neutral-300"/>
+        <RiLoginBoxLine className="h-full w-full  text-neutral-300"/>
       ),
       href: "#",
     },
