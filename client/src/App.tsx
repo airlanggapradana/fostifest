@@ -1,8 +1,10 @@
+import Hero from "@/components/Hero.tsx";
+
 function App() {
   return (
-    <main>
-      Hello, World!
-    </main>
+    <div className={"min-h-screen bg-white"}>
+      <Hero/>
+    </div>
   )
 }
 
