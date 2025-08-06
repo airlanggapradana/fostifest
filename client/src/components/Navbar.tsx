@@ -23,7 +23,7 @@ export function Navbar() {
       icon: (
         <IconBookmarks className="h-full w-full  text-neutral-300"/>
       ),
-      href: "#",
+      href: "#categories",
     },
     {
       title: "Timeline",
@@ -68,7 +68,7 @@ export function Navbar() {
     },
   ];
   return (
-    <div className="fixed bottom-10 left-0 z-50 flex items-center justify-center h-[5rem] w-full">
+    <div className="fixed bottom-5 left-0 z-50 flex items-center justify-center h-[5rem] w-full">
       <FloatingDock
         mobileClassName="translate-y-20" // only for demo, remove for production
         items={links}

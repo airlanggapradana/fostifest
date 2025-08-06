@@ -38,7 +38,7 @@ const Hero = () => {
             FOSTIFEST
           </h1>
 
-          <p className="text-lg text-white mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
+          <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
             Join the most prestigious academic competition of the year. Showcase your talents,
             compete with the best minds, and win amazing prizes.
           </p>
