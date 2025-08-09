@@ -13,3 +13,200 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+// =============================================
+// MODEL PENGGUNA (Hanya untuk Leader Tim)
+// =============================================
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      UserRole @default(PARTICIPANT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relasi: User ini sekarang hanya menjadi pemimpin tim, tidak lagi anggota biasa.
+  ledTeams Team[] @relation("TeamLeader")
+
+  // Relasi ke pendaftaran individu tetap ada, jika user mendaftar lomba individu
+  registrations Registration[]
+}
+
+enum UserRole {
+  ADMIN
+  PARTICIPANT
+}
+
+// =============================================
+// MODEL KOMPETISI DAN KATEGORI
+// =============================================
+
+/// Model untuk Kompetisi/Lomba yang diadakan.
+model Competition {
+  id                   String            @id @default(cuid())
+  name                 String
+  description          String            @db.Text
+  startDate            DateTime // Tanggal mulai lomba
+  endDate              DateTime // Tanggal selesai lomba
+  registrationDeadline DateTime // Batas akhir pendaftaran
+  type                 CompetitionType // Tipe lomba: perorangan atau tim
+  registrationFee      Int // Biaya pendaftaran
+  status               CompetitionStatus @default(UPCOMING)
+
+  // Relasi
+  categoryId    String
+  category      CompetitionCategory @relation(fields: [categoryId], references: [id])
+  registrations Registration[]
+  teams         Team[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+/// Model untuk Kategori Lomba, misal: "Debat", "Pemrograman", "Karya Tulis Ilmiah".
+model CompetitionCategory {
+  id           String        @id @default(cuid())
+  name         String        @unique
+  competitions Competition[]
+}
+
+enum CompetitionType {
+  INDIVIDUAL
+  TEAM
+}
+
+enum CompetitionStatus {
+  UPCOMING // Akan datang
+  ONGOING // Sedang berlangsung
+  FINISHED // Selesai
+  CANCELED // Dibatalkan
+}
+
+// =============================================
+// MODEL TIM DAN ANGGOTA (YANG DIUBAH)
+// =============================================
+
+/// Model untuk Tim Peserta. Dibuat dan dikelola oleh seorang User (Leader).
+model Team {
+  id   String @id @default(cuid())
+  name String
+
+  // Relasi ke Leader (User yang memiliki akun)
+  leaderId String
+  leader   User   @relation("TeamLeader", fields: [leaderId], references: [id])
+
+  // Relasi ke Kompetisi
+  competitionId String
+  competition   Competition @relation(fields: [competitionId], references: [id])
+
+  // RELASI BARU: Tim sekarang memiliki daftar anggota yang datanya diinput langsung.
+  // Tabel TeamMember dihapus.
+  participants Participant[]
+
+  // Relasi ke pendaftaran
+  registration Registration?
+
+  @@unique([name, competitionId])
+}
+
+/// MODEL BARU: Untuk menyimpan data anggota tim yang tidak memiliki akun.
+/// Data ini diinput oleh leader tim.
+model Participant {
+  id          String  @id @default(cuid())
+  name        String // Nama lengkap anggota
+  email       String? // Email anggota (opsional, untuk komunikasi)
+  phoneNumber String? // Nomor telepon anggota (opsional)
+
+  // Relasi ke Tim
+  teamId String
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  // Tidak ada relasi langsung ke model User
+}
+
+// =============================================
+// MODEL UTAMA: PENDAFTARAN & SUBMISSION
+// =============================================
+
+/// Model Pendaftaran. Ini adalah penghubung utama antara User/Team dengan Competition.
+model Registration {
+  id     String             @id @default(cuid())
+  status RegistrationStatus @default(PENDING)
+
+  // Relasi ke Kompetisi
+  competitionId String
+  competition   Competition @relation(fields: [competitionId], references: [id])
+
+  // Pendaftaran bisa untuk perorangan (userId) ATAU tim (teamId)
+  // Salah satunya harus ada, namun tidak keduanya. Logika ini diimplementasikan di level aplikasi.
+  userId String? // Opsional: diisi jika lomba perorangan
+  user   User?   @relation(fields: [userId], references: [id])
+
+  teamId String? @unique // Opsional & Unik: diisi jika lomba tim
+  team   Team?   @relation(fields: [teamId], references: [id])
+
+  // Relasi ke entitas lain
+  transaction Transaction? // Setiap pendaftaran memiliki satu transaksi
+  submission  Submission? // Setiap pendaftaran memiliki satu submission
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum RegistrationStatus {
+  PENDING // Menunggu pembayaran
+  CONFIRMED // Pembayaran berhasil, pendaftaran dikonfirmasi
+  REJECTED // Pendaftaran ditolak (misal: syarat tidak lengkap)
+}
+
+/// Model untuk Submission/Pengumpulan Karya Peserta.
+model Submission {
+  id          String   @id @default(cuid())
+  fileUrl     String // URL file yang diupload (misal ke S3, Google Cloud Storage, dll)
+  notes       String?  @db.Text
+  submittedAt DateTime @default(now())
+  grade       Float? // Nilai dari juri
+  feedback    String?  @db.Text // Feedback dari juri
+
+  // Relasi
+  registrationId String       @unique // Setiap pendaftaran hanya bisa memiliki satu submission
+  registration   Registration @relation(fields: [registrationId], references: [id])
+}
+
+// =============================================
+// MODEL TRANSAKSI (INTEGRASI MIDTRANS)
+// =============================================
+
+/// Model untuk mencatat semua transaksi pembayaran via Midtrans.
+model Transaction {
+  id String @id @default(cuid())
+
+  // ID Pesanan dari sisi Midtrans, sangat penting untuk sinkronisasi.
+  midtransOrderId String @unique @map("midtrans_order_id")
+
+  amount      Int
+  status      TransactionStatus @default(PENDING)
+  paymentType String?           @map("payment_type") // Misal: "gopay", "bank_transfer", "credit_card"
+  paymentCode String?           @map("payment_code") // Misal: VA Number atau kode bayar lainnya
+  pdfUrl      String?           @map("pdf_url") // URL instruksi pembayaran dari Midtrans
+
+  // Sangat disarankan untuk menyimpan raw response dari Midtrans untuk audit dan debugging
+  rawResponse Json? @map("raw_response")
+
+  // Relasi
+  registrationId String       @unique
+  registration   Registration @relation(fields: [registrationId], references: [id])
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  transactionTime DateTime? @map("transaction_time") // Waktu transaksi dari Midtrans
+}
+
+enum TransactionStatus {
+  PENDING // Menunggu pembayaran dari user
+  SUCCESS // Pembayaran berhasil (settlement)
+  EXPIRED // Waktu pembayaran habis
+  FAILED // Pembayaran gagal
+  CANCELED // Dibatalkan
+}
