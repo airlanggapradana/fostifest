@@ -47,9 +47,9 @@ model Competition {
   id                   String            @id @default(cuid())
   name                 String
   description          String            @db.Text
-  startDate            DateTime // Tanggal mulai lomba
-  endDate              DateTime // Tanggal selesai lomba
-  registrationDeadline DateTime // Batas akhir pendaftaran
+  startDate            DateTime          @db.Date // Tanggal mulai lomba
+  endDate              DateTime          @db.Date // Tanggal selesai lomba
+  registrationDeadline DateTime          @db.DateTime() // Batas akhir pendaftaran
   type                 CompetitionType // Tipe lomba: perorangan atau tim
   registrationFee      Int // Biaya pendaftaran
   status               CompetitionStatus @default(UPCOMING)
