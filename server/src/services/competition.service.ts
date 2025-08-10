@@ -87,7 +87,40 @@ export const getCompetitionById = async (req: Request, res: Response, next: Next
         id
       },
       include: {
-        registrations: true,
+        registrations: {
+          select: {
+            id: true,
+            status: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true,
+                role: true,
+              }
+            },
+            team: {
+              select: {
+                id: true,
+                name: true,
+                leader: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true
+                  }
+                },
+                participants: {
+                  select: {
+                    id: true,
+                    name: true,
+                    email: true
+                  }
+                }
+              }
+            }
+          }
+        },
         category: {
           select: {
             name: true

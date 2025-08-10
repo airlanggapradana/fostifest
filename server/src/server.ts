@@ -4,6 +4,7 @@ import {env} from "./env";
 import userRouter from "./controllers/user.controller";
 import {errorHandler} from "./middlewares/errorHandler";
 import competitionRouter from "./controllers/competition.controller";
+import registrationRouter from "./controllers/registration.controller";
 
 const app: Application = express();
 
@@ -17,6 +18,7 @@ app.get('/', (_req, res) => {
 
 app.use('/api/user', userRouter)
 app.use('/api/competition', competitionRouter)
+app.use('/api/registration', registrationRouter)
 
 app.use(errorHandler)
 app.listen(env.PORT, () => {
