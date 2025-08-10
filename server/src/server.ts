@@ -2,6 +2,7 @@ import express, {Application} from "express";
 import cors from "cors";
 import {env} from "./env";
 import userRouter from "./controllers/user.controller";
+import {errorHandler} from "./middlewares/errorHandler";
 
 const app: Application = express();
 
@@ -15,6 +16,7 @@ app.get('/', (_req, res) => {
 
 app.use('/api/user', userRouter)
 
+app.use(errorHandler)
 app.listen(env.PORT, () => {
   console.log(`Server is running on port ${env.PORT}`);
 })
