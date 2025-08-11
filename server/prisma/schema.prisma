@@ -23,6 +23,7 @@ model User {
   email     String   @unique
   password  String
   role      UserRole @default(PARTICIPANT)
+  institusi String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

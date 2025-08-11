@@ -27,6 +27,7 @@ export const newUser = async (req: Request, res: Response, next: NextFunction) =
           password: hashedPassword,
           name: rest.name,
           email: rest.email,
+          institusi: rest.institusi,
           role: rest.role,
         }
       })
