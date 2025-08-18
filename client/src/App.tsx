@@ -6,7 +6,7 @@ import Stats from "@/components/Stats.tsx";
 
 function App() {
   return (
-    <div className={"min-h-screen bg-white"}>
+    <div className={"min-h-screen bg-white w-full"}>
       <Navbar/>
       <Hero/>
       <Stats/>
