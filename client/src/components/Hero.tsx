@@ -2,6 +2,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {ArrowRight, Calendar} from "lucide-react";
 import {Badge} from "@/components/ui/badge.tsx";
 import bg from '../assets/bg_2.png'
+import TextType from '../components/ui/TextType/TextType';
 
 const Hero = () => {
   return (
@@ -38,10 +39,18 @@ const Hero = () => {
             FOSTIFEST
           </h1>
 
-          <p className="text-lg text-gray-300 mb-12 max-w-3xl mx-auto font-semibold leading-relaxed">
-            Join the most prestigious academic competition of the year. Showcase your talents,
-            compete with the best minds, and win amazing prizes.
-          </p>
+          <TextType
+            text={["Join the most prestigious academic competition of the year. Showcase your talents,\n" +
+            "compete with the best minds, and win amazing prizes."]}
+            typingSpeed={30}
+            pauseDuration={100}
+            deletingSpeed={50}
+            textColors={['oklch(87.2% 0.01 258.338)']}
+            loop={true}
+            showCursor={true}
+            cursorCharacter="|"
+            className={"mb-7 text-gray-400 text-lg font-semibold leading-relaxed "}
+          />
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-16">
             <Button size="lg"
