@@ -1,17 +1,16 @@
 import {Button} from "@/components/ui/button.tsx";
-import {ArrowRight, Award, Calendar, Trophy, Users} from "lucide-react";
+import {ArrowRight, Calendar} from "lucide-react";
 import {Badge} from "@/components/ui/badge.tsx";
-import {Card} from "@/components/ui/card.tsx";
-// import bg from '../assets/6193217.jpg'
+import bg from '../assets/bg_2.png'
 
 const Hero = () => {
   return (
     <section id="home"
-             className="pt-16 min-h-screen bg-black relative overflow-hidden">
+             className=" min-h-screen bg-black relative overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-50">
+      <div className="absolute inset-0 opacity-40">
         <img
-          src={"https://fostifest.fostiums.org/_next/static/media/bg-header.ba455a43.webp"}
+          src={bg}
           alt="University campus background"
           className="w-full h-full object-center bg-cover "
         />
@@ -20,7 +19,8 @@ const Hero = () => {
         <div className="absolute bottom-20 left-1/4 w-40 h-40 bg-orange-300 rounded-full blur-3xl"></div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative">
+      <div
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative flex flex-col items-center justify-center min-h-screen">
         <div className="text-center">
           <Badge variant="secondary"
                  className="inline-flex items-center px-4 py-2 bg-teal-600 text-white font-semibold mb-8">
@@ -38,7 +38,7 @@ const Hero = () => {
             FOSTIFEST
           </h1>
 
-          <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto font-semibold leading-relaxed">
+          <p className="text-lg text-gray-300 mb-12 max-w-3xl mx-auto font-semibold leading-relaxed">
             Join the most prestigious academic competition of the year. Showcase your talents,
             compete with the best minds, and win amazing prizes.
           </p>
@@ -53,37 +53,6 @@ const Hero = () => {
                     className="px-8 py-4 border-2 border-teal-600 text-teal-600 font-semibold hover:bg-teal-600 hover:text-white transition-all duration-300">
               View Categories
             </Button>
-          </div>
-
-          {/* Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <Card
-              className="bg-gray-900/70 backdrop-blur-sm rounded-2xl p-6 border-2 border-orange-800 hover:border-orange-600 transition-colors">
-              <div className="flex items-center justify-center w-12 h-12 bg-orange-900 rounded-xl mb-4 mx-auto">
-                <Users className="w-6 h-6 text-orange-400"/>
-              </div>
-              <h3 className="text-3xl font-bold text-white mb-2">2,500+</h3>
-              <p className="text-gray-300">Registered Participants</p>
-            </Card>
-
-            <Card
-              className="bg-gray-900/70 backdrop-blur-sm rounded-2xl p-6 border-2 border-teal-800 hover:border-teal-600 transition-colors">
-              <div className="flex items-center justify-center w-12 h-12 bg-teal-900 rounded-xl mb-4 mx-auto">
-                <Award className="w-6 h-6 text-teal-300"/>
-              </div>
-              <h3 className="text-3xl font-bold text-white mb-2">15</h3>
-              <p className="text-gray-300">Competition Categories</p>
-            </Card>
-
-            <Card
-              className="bg-gray-900/70 backdrop-blur-sm rounded-2xl p-6 border-2 border-orange-800 hover:border-orange-600 transition-colors">
-              <div
-                className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-orange-700 to-teal-800 rounded-xl mb-4 mx-auto">
-                <Trophy className="w-6 h-6 text-white"/>
-              </div>
-              <h3 className="text-3xl font-bold text-white mb-2">Rp2,5M</h3>
-              <p className="text-gray-300">Total Prize Pool</p>
-            </Card>
           </div>
         </div>
       </div>
