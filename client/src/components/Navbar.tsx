@@ -53,7 +53,7 @@ export function Navbar() {
     },
 
     {
-      title: "Pendaftaran",
+      title: "Login",
       icon: (
         <RiLoginBoxLine className="h-full w-full  text-neutral-300"/>
       ),

@@ -9,7 +9,7 @@ const Hero = () => {
     <section id="home"
              className=" min-h-screen bg-black relative overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-40">
+      <div className="absolute inset-0 opacity-30">
         <img
           src={bg}
           alt="University campus background"
