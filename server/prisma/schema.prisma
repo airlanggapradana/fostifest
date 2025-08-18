@@ -149,7 +149,6 @@ model Registration {
 
   // Relasi ke entitas lain
   transaction Transaction? // Setiap pendaftaran memiliki satu transaksi
-  submission  Submission? // Setiap pendaftaran memiliki satu submission
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -159,20 +158,6 @@ enum RegistrationStatus {
   PENDING // Menunggu pembayaran
   CONFIRMED // Pembayaran berhasil, pendaftaran dikonfirmasi
   REJECTED // Pendaftaran ditolak (misal: syarat tidak lengkap)
-}
-
-/// Model untuk Submission/Pengumpulan Karya Peserta.
-model Submission {
-  id          String   @id @default(cuid())
-  fileUrl     String // URL file yang diupload (misal ke S3, Google Cloud Storage, dll)
-  notes       String?  @db.Text
-  submittedAt DateTime @default(now())
-  grade       Float? // Nilai dari juri
-  feedback    String?  @db.Text // Feedback dari juri
-
-  // Relasi
-  registrationId String       @unique // Setiap pendaftaran hanya bisa memiliki satu submission
-  registration   Registration @relation(fields: [registrationId], references: [id])
 }
 
 // =============================================
@@ -190,10 +175,6 @@ model Transaction {
   status      TransactionStatus @default(PENDING)
   paymentType String?           @map("payment_type") // Misal: "gopay", "bank_transfer", "credit_card"
   paymentCode String?           @map("payment_code") // Misal: VA Number atau kode bayar lainnya
-  pdfUrl      String?           @map("pdf_url") // URL instruksi pembayaran dari Midtrans
-
-  // Sangat disarankan untuk menyimpan raw response dari Midtrans untuk audit dan debugging
-  rawResponse Json? @map("raw_response")
 
   // Relasi
   registrationId String       @unique

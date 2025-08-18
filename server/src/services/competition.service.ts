@@ -46,9 +46,10 @@ export const createCompetition = async (req: Request, res: Response, next: NextF
 
 export const getCompetitions = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const {category} = req.query;
+    const {category, role} = req.query;
     const competitions = await prisma.competition.findMany({
       where: {
+        type: role ? role as 'INDIVIDUAL' | 'TEAM' : undefined,
         category: {
           name: category ? String(category) : undefined
         }

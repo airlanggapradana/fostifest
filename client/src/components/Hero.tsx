@@ -2,7 +2,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {ArrowRight, Award, Calendar, Trophy, Users} from "lucide-react";
 import {Badge} from "@/components/ui/badge.tsx";
 import {Card} from "@/components/ui/card.tsx";
-import bg from '../assets/6193217.jpg'
+// import bg from '../assets/6193217.jpg'
 
 const Hero = () => {
   return (
@@ -11,7 +11,7 @@ const Hero = () => {
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-50">
         <img
-          src={bg}
+          src={"https://fostifest.fostiums.org/_next/static/media/bg-header.ba455a43.webp"}
           alt="University campus background"
           className="w-full h-full object-center bg-cover "
         />
@@ -34,11 +34,11 @@ const Hero = () => {
           </h3>
 
           <h1
-            className="text-4xl md:text-6xl lg:text-7xl font-title bg-gradient-to-t from-emerald-300 to-teal-500 bg-clip-text text-transparent leading-relaxed drop-shadow-lg -tracking-tighter">
+            className="text-4xl md:text-6xl lg:text-7xl font-title bg-gradient-to-t from-emerald-300 to-teal-500 bg-clip-text text-transparent leading-relaxed drop-shadow-lg">
             FOSTIFEST
           </h1>
 
-          <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
+          <p className="text-lg text-gray-400 mb-12 max-w-3xl mx-auto font-semibold leading-relaxed">
             Join the most prestigious academic competition of the year. Showcase your talents,
             compete with the best minds, and win amazing prizes.
           </p>
@@ -81,7 +81,7 @@ const Hero = () => {
                 className="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-orange-700 to-teal-800 rounded-xl mb-4 mx-auto">
                 <Trophy className="w-6 h-6 text-white"/>
               </div>
-              <h3 className="text-3xl font-bold text-white mb-2">$50K+</h3>
+              <h3 className="text-3xl font-bold text-white mb-2">Rp2,5M</h3>
               <p className="text-gray-300">Total Prize Pool</p>
             </Card>
           </div>

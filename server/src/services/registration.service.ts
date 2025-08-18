@@ -9,50 +9,55 @@ export const newRegistrationIndividual = async (req: Request, res: Response, nex
   try {
     const payload: RegistrationIndividualSchema = registrationIndividualSchema.parse(req.body);
     const registration = await prisma.$transaction(async (tx) => {
-      const existingRegistration = await tx.registration.findFirst({
-        where: {
-          AND: [
-            {competitionId: payload.competitionId},
-            {userId: payload.userId},
-          ]
-        }
-      })
-      if (existingRegistration) {
+      // 1. Pastikan kompetisi tipe INDIVIDUAL
+      const competition = await tx.competition.findUnique({
+        where: {id: payload.competitionId},
+        select: {type: true}
+      });
+      if (competition?.type !== "INDIVIDUAL") {
         res.status(400).send({
-          message: 'You have already registered for this competition.'
+          message: "This competition is not for individual participants.",
         })
-        return
-      }
-
-      const isUserParticipant = await tx.user.findUnique({
-        where: {id: payload.userId},
-        select: {role: true}
-      })
-
-      if (isUserParticipant && isUserParticipant.role !== 'PARTICIPANT') {
-        res.status(403).send({
-          message: 'Only participants can register for competitions.'
-        });
         return null;
       }
 
+      // 2. Cek apakah user sudah terdaftar
+      const existingRegistration = await tx.registration.findFirst({
+        where: {
+          competitionId: payload.competitionId,
+          userId: payload.userId
+        }
+      });
+      if (existingRegistration) {
+        res.status(400).send({
+          message: "You are already registered for this competition.",
+        })
+        return null;
+      }
+
+      // 3. Cek role user
+      const user = await tx.user.findUnique({
+        where: {id: payload.userId},
+        select: {role: true}
+      });
+      if (!user || user.role !== "PARTICIPANT") {
+        res.status(400).send({
+          message: "Only participants can register for this competition.",
+        })
+        return null;
+      }
+
+      // 4. Buat registrasi
       return tx.registration.create({
         data: {
-          id: `REG-${crypto.randomUUID().slice(0, 5).toUpperCase()}`,
-          competition: {
-            connect: {
-              id: payload.competitionId
-            }
-          },
-          user: {
-            connect: {
-              id: payload.userId
-            }
-          },
+          id: `REG-${crypto.randomUUID()}`,
+          competition: {connect: {id: payload.competitionId}},
+          user: {connect: {id: payload.userId}},
           status: payload.status
         }
-      })
-    })
+      });
+    });
+
     if (!registration) return;
     res.status(201).send({
       message: 'Registration created successfully',
@@ -68,53 +73,51 @@ export const newRegistrationTeam = async (req: Request, res: Response, next: Nex
   try {
     const payload: RegistrationTeamSchema = registrationTeamSchema.parse(req.body);
     const registration = await prisma.$transaction(async (tx) => {
+      // 1. Cek apakah leader sudah punya tim di kompetisi ini
       const existingTeam = await tx.team.findFirst({
         where: {
-          AND: [
-            {competition: {id: payload.competitionId}},
-            {leader: {id: payload.leaderId}},
-          ]
+          competitionId: payload.competitionId,
+          leaderId: payload.leaderId
         }
-      })
+      });
       if (existingTeam) {
         res.status(400).send({
-          message: 'You have already registered a team for this competition.'
+          message: "You already have a team registered for this competition.",
         })
         return null;
       }
 
-      const isUserParticipant = await tx.user.findUnique({
+      // 2. Cek role leader
+      const leader = await tx.user.findUnique({
         where: {id: payload.leaderId},
         select: {role: true}
-      })
-      if (isUserParticipant && isUserParticipant.role !== 'PARTICIPANT') {
-        res.status(403).send({
-          message: 'Only participants can register for competitions.'
-        });
+      });
+      if (!leader || leader.role !== "PARTICIPANT") {
+        res.status(400).send({
+          message: "Only participants can create a team.",
+        })
         return null;
       }
 
+      // 3. Validasi jumlah anggota
+      if (payload.memberNames.length < 2 || payload.memberNames.length > 3) {
+        res.status(400).send({
+          message: "Team must have 2 to 3 members including the leader.",
+        })
+        return null;
+      }
+
+      // 4. Registrasi + buat tim + anggota
       return tx.registration.create({
         data: {
           id: `REG-${crypto.randomUUID().slice(0, 5).toUpperCase()}`,
-          competition: {
-            connect: {
-              id: payload.competitionId
-            }
-          },
+          status: payload.status,
+          competition: {connect: {id: payload.competitionId}},
           team: {
             create: {
               name: payload.teamName,
-              competition: {
-                connect: {
-                  id: payload.competitionId
-                }
-              },
-              leader: {
-                connect: {
-                  id: payload.leaderId
-                }
-              },
+              competition: {connect: {id: payload.competitionId}},
+              leader: {connect: {id: payload.leaderId}},
               participants: {
                 create: payload.memberNames.map((name, index) => ({
                   name,
@@ -123,11 +126,11 @@ export const newRegistrationTeam = async (req: Request, res: Response, next: Nex
                 }))
               }
             }
-          },
-          status: payload.status
+          }
         }
-      })
-    })
+      });
+    });
+
     if (!registration) return;
     res.status(201).send({
       message: 'Team registration created successfully',
