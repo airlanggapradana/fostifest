@@ -41,10 +41,10 @@ const Hero = () => {
 
           <TextType
             text={["Join the most prestigious academic competition of the year. Showcase your talents,\n" +
-            "compete with the best minds, and win amazing prizes."]}
+            "compete with the best minds, and win amazing prizes.", "Compete in various categories including programming, design, and more.", "Network with industry leaders and fellow students.", "Gain recognition and enhance your resume with this prestigious event."]}
             typingSpeed={30}
-            pauseDuration={100}
-            deletingSpeed={50}
+            pauseDuration={2000}
+            deletingSpeed={10}
             textColors={['oklch(87.2% 0.01 258.338)']}
             loop={true}
             showCursor={true}

@@ -1,4 +1,4 @@
-import {Code, Palette, Lightbulb, Calculator, Globe, Heart, Mic, Camera, Music} from 'lucide-react';
+import {Code, Palette, Lightbulb} from 'lucide-react';
 import {Card, CardContent, CardDescription, CardTitle} from './ui/card';
 
 const Categories = () => {
@@ -6,7 +6,7 @@ const Categories = () => {
     {
       icon: Code,
       name: 'Programming',
-      description: 'Algorithm challenges and software development',
+      description: 'Design and development challenges for coders',
       color: 'from-blue-500 to-purple-600',
       participants: 450,
       prizes: '$8,000'
@@ -21,60 +21,12 @@ const Categories = () => {
     },
     {
       icon: Lightbulb,
-      name: 'Innovation',
+      name: 'Literary',
       description: 'Startup pitches and innovative solutions',
       color: 'from-yellow-500 to-orange-600',
       participants: 280,
       prizes: '$10,000'
     },
-    {
-      icon: Calculator,
-      name: 'Mathematics',
-      description: 'Complex problem solving and analysis',
-      color: 'from-green-500 to-teal-600',
-      participants: 180,
-      prizes: '$4,000'
-    },
-    {
-      icon: Globe,
-      name: 'Business',
-      description: 'Case studies and strategic planning',
-      color: 'from-indigo-500 to-blue-600',
-      participants: 200,
-      prizes: '$7,000'
-    },
-    {
-      icon: Heart,
-      name: 'Healthcare',
-      description: 'Medical innovation and research',
-      color: 'from-red-500 to-pink-600',
-      participants: 150,
-      prizes: '$5,000'
-    },
-    {
-      icon: Mic,
-      name: 'Public Speaking',
-      description: 'Debates and presentation skills',
-      color: 'from-purple-500 to-indigo-600',
-      participants: 120,
-      prizes: '$3,000'
-    },
-    {
-      icon: Camera,
-      name: 'Photography',
-      description: 'Visual storytelling and composition',
-      color: 'from-gray-500 to-slate-600',
-      participants: 250,
-      prizes: '$4,500'
-    },
-    {
-      icon: Music,
-      name: 'Music',
-      description: 'Composition and performance',
-      color: 'from-violet-500 to-purple-600',
-      participants: 180,
-      prizes: '$3,500'
-    }
   ];
 
   return (
