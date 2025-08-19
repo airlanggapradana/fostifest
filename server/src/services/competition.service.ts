@@ -46,24 +46,59 @@ export const createCompetition = async (req: Request, res: Response, next: NextF
 
 export const getCompetitions = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const {category, role} = req.query;
+    const {type} = req.query;
     const competitions = await prisma.competition.findMany({
       where: {
-        type: role ? role as 'INDIVIDUAL' | 'TEAM' : undefined,
-        category: {
-          name: category ? String(category) : undefined
-        }
+        type: type ? type as 'INDIVIDUAL' | 'TEAM' : undefined
       },
       include: {
-        registrations: true,
-        category: {
+        category: true,
+        registrations: {
+          include: {
+            user: true,
+            team: {
+              include: {
+                participants: true,
+              },
+            },
+          },
+        },
+        _count: {
           select: {
-            name: true
-          }
+            registrations: true, // jumlah registrasi
+          },
+        },
+      },
+    });
+
+
+    const result = competitions.map((comp) => {
+      let totalParticipants = 0;
+
+      comp.registrations.forEach((reg) => {
+        if (reg.user) {
+          totalParticipants += 1; // INDIVIDUAL
+        } else if (reg.team) {
+          totalParticipants += reg.team.participants.length; // TEAM members
         }
-      }
-    })
-    if (competitions.length === 0) {
+      });
+
+      return {
+        id: comp.id,
+        name: comp.name,
+        description: comp.description,
+        category: comp.category.name,
+        status: comp.status,
+        startDate: comp.startDate,
+        endDate: comp.endDate,
+        deadline: comp.registrationDeadline,
+        type: comp.type,
+        totalRegistrations: comp._count.registrations, // jumlah registrasi
+        totalParticipants, // jumlah peserta
+      };
+    });
+
+    if (result.length === 0) {
       res.status(200).send({
         message: 'No competitions found',
         data: []
@@ -72,7 +107,7 @@ export const getCompetitions = async (req: Request, res: Response, next: NextFun
     }
     res.status(200).send({
       message: 'Competitions fetched successfully',
-      data: competitions
+      data: result
     })
     return
   } catch (e) {
@@ -84,60 +119,102 @@ export const getCompetitionById = async (req: Request, res: Response, next: Next
   try {
     const {id} = req.params;
     const competition = await prisma.competition.findUnique({
-      where: {
-        id
-      },
+      where: {id}, // ganti sesuai ID
       include: {
+        category: true,
         registrations: {
-          select: {
-            id: true,
-            status: true,
+          include: {
             user: {
-              select: {
-                id: true,
-                name: true,
-                email: true,
-                role: true,
-              }
+              select: {id: true, name: true, email: true},
             },
             team: {
-              select: {
-                id: true,
-                name: true,
-                leader: {
-                  select: {
-                    id: true,
-                    name: true,
-                    email: true
-                  }
-                },
-                participants: {
-                  select: {
-                    id: true,
-                    name: true,
-                    email: true
-                  }
-                }
-              }
-            }
-          }
+              include: {
+                leader: {select: {id: true, name: true, email: true}},
+                participants: {select: {id: true, name: true, email: true}},
+              },
+            },
+          },
         },
-        category: {
-          select: {
-            name: true
+        _count: {select: {registrations: true}},
+      },
+    });
+
+    type ParticipantWithRole = {
+      id: string;
+      name: string;
+      email: string;
+      role: "INDIVIDUAL" | "TEAM_LEADER" | "TEAM_MEMBER";
+    };
+
+    type CompetitionWithStats = {
+      id: string;
+      name: string;
+      description: string;
+      type: "INDIVIDUAL" | "TEAM";
+      category: string;
+      totalRegistrations: number;
+      totalParticipants: number;
+      participants: ParticipantWithRole[];
+    };
+    
+    const result: CompetitionWithStats | null = competition
+      ? {
+        id: competition.id,
+        name: competition.name,
+        description: competition.description,
+        type: competition.type,
+        category: competition.category.name,
+        totalRegistrations: competition._count.registrations,
+        totalParticipants: competition.registrations.reduce((sum, reg) => {
+          if (reg.user) return sum + 1;
+          if (reg.team) return sum + reg.team.participants.length + 1; // +1 leader
+          return sum;
+        }, 0),
+        participants: competition.registrations.flatMap((reg): ParticipantWithRole[] => {
+          if (reg.user) {
+            return [
+              {
+                id: reg.user.id,
+                name: reg.user.name,
+                email: reg.user.email,
+                role: "INDIVIDUAL" as const,
+              },
+            ];
           }
-        }
+
+          if (reg.team) {
+            return [
+              {
+                id: reg.team.leader.id,
+                name: reg.team.leader.name,
+                email: reg.team.leader.email,
+                role: "TEAM_LEADER" as const,
+              },
+              ...reg.team.participants.map((p) => ({
+                id: p.id,
+                name: p.name,
+                email: p.email ?? "", // kalau bisa null, kasih fallback
+                role: "TEAM_MEMBER" as const,
+              })),
+            ];
+          }
+
+          return [];
+        }),
       }
-    })
-    if (!competition) {
-      res.status(404).send({
-        message: 'Competition not found'
+      : null;
+
+    if (!result) {
+      res.status(200).send({
+        message: 'Competition not found',
+        data: []
       })
       return;
     }
+
     res.status(200).send({
       message: 'Competition fetched successfully',
-      data: competition
+      data: result
     })
     return
   } catch (e) {

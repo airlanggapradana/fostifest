@@ -50,7 +50,7 @@ export const newRegistrationIndividual = async (req: Request, res: Response, nex
       // 4. Buat registrasi
       return tx.registration.create({
         data: {
-          id: `REG-${crypto.randomUUID()}`,
+          id: `REG-${crypto.randomUUID().slice(0, 5).toUpperCase()}`,
           competition: {connect: {id: payload.competitionId}},
           user: {connect: {id: payload.userId}},
           status: payload.status
