@@ -1,15 +1,18 @@
 import {Code, Palette, Lightbulb} from 'lucide-react';
 import {Card, CardContent, CardContent as ShadCardContent} from './ui/card';
 import {CardBody, CardContainer, CardItem} from "@/components/ui/3d-card";
+import {useCompetitionContext} from "@/hooks/context.ts";
 
 const Categories = () => {
+  const data = useCompetitionContext();
+
   const categories = [
     {
       icon: Code,
       name: 'Programming',
       description: 'Design and development challenges for coders',
       color: 'from-blue-500 to-purple-600',
-      participants: 450,
+      participants: data.find(c => c.category === 'Programming')?.totalParticipants,
       prizes: '$8,000'
     },
     {
@@ -17,7 +20,7 @@ const Categories = () => {
       name: 'Design',
       description: 'UI/UX Web design and digital art competitions',
       color: 'from-pink-500 to-rose-600',
-      participants: 320,
+      participants: data.find(c => c.category === 'Design')?.totalParticipants,
       prizes: '$6,000'
     },
     {
@@ -25,7 +28,7 @@ const Categories = () => {
       name: 'Literary',
       description: 'Scientific papers and academic research competitions',
       color: 'from-yellow-500 to-orange-600',
-      participants: 280,
+      participants: data.find(c => c.category === 'Literary')?.totalParticipants,
       prizes: '$10,000'
     },
   ];
