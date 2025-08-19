@@ -37,48 +37,47 @@ const FloatingDockMobile = ({
 }) => {
   const [open, setOpen] = useState(false);
   return (
-    <div className={cn("relative block md:hidden", className)}>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            layoutId="nav"
-            className="absolute inset-x-0 bottom-full mb-2 flex flex-col gap-2"
-          >
-            {items.map((item, idx) => (
-              <motion.div
-                key={item.title}
-                initial={{opacity: 0, y: 10}}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                exit={{
-                  opacity: 0,
-                  y: 10,
-                  transition: {
-                    delay: idx * 0.05,
-                  },
-                }}
-                transition={{delay: (items.length - 1 - idx) * 0.05}}
-              >
-                <a
-                  href={item.href}
+    <div className={cn(
+      "fixed bottom-0 left-0 z-50 w-full flex justify-center sm:hidden", // fixed at bottom, full width
+      className
+    )}>
+      <div className="relative w-full max-w-md flex justify-center">
+        <AnimatePresence>
+          {open && (
+            <motion.div
+              layoutId="nav"
+              className="absolute bottom-16 left-1/2 -translate-x-1/2 mb-2 flex flex-row gap-3 bg-neutral-900/95 rounded-xl p-2 shadow-lg"
+            >
+              {items.map((item, idx) => (
+                <motion.div
                   key={item.title}
-                  className="flex h-10 w-10 items-center justify-center rounded-full bg-neutral-900"
+                  initial={{opacity: 0, y: 10}}
+                  animate={{opacity: 1, y: 0}}
+                  exit={{
+                    opacity: 0,
+                    y: 10,
+                    transition: {delay: idx * 0.05},
+                  }}
+                  transition={{delay: (items.length - 1 - idx) * 0.05}}
                 >
-                  <div className="h-4 w-4">{item.icon}</div>
-                </a>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex h-10 w-10 items-center justify-center rounded-full bg-gray-50 dark:bg-neutral-800"
-      >
-        <IconLayoutNavbarCollapse className="h-5 w-5 text-neutral-500 dark:text-neutral-400"/>
-      </button>
+                  <a
+                    href={item.href}
+                    className="flex h-12 w-12 items-center justify-center rounded-full bg-neutral-800"
+                  >
+                    <div className="h-6 w-6">{item.icon}</div>
+                  </a>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
+        <button
+          onClick={() => setOpen(!open)}
+          className="flex h-12 w-12 items-center justify-center rounded-full bg-gray-50 dark:bg-neutral-800 shadow-lg mb-3"
+        >
+          <IconLayoutNavbarCollapse className="h-7 w-7 text-neutral-500 dark:text-neutral-400"/>
+        </button>
+      </div>
     </div>
   );
 };

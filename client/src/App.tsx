@@ -5,6 +5,7 @@ import Competitions from "@/components/Competitions.tsx";
 import Stats from "@/components/Stats.tsx";
 import Sponsors from "@/components/Sponsors.tsx";
 import MediaPartners from "@/components/MediaPartners.tsx";
+import Footer from "@/components/Footer.tsx";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
       <Competitions/>
       <Sponsors/>
       <MediaPartners/>
+      <Footer/>
     </div>
   )
 }
