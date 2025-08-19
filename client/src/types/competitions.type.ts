@@ -8,7 +8,7 @@ export interface Data {
   name: string;
   description: string;
   category: string;
-  status: string;
+  status: 'UPCOMING' | 'ONGOING' | 'FINISHED' | 'CANCELED';
   startDate: Date;
   endDate: Date;
   deadline: Date;

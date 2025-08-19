@@ -3,21 +3,47 @@ import {Calendar, Clock, Users, Trophy, MapPin, Filter} from 'lucide-react';
 import {Button} from './ui/button';
 import {Card, CardContent, CardDescription, CardTitle} from './ui/card';
 import {Badge} from './ui/badge';
+import {useCompetitionContext} from "@/hooks/context.ts";
 
 const Competitions = () => {
   const [activeFilter, setActiveFilter] = useState('All');
+  const data = useCompetitionContext()
 
   const competitions = [
     {
       id: 1,
       title: 'Software Development Challenge',
       category: 'Programming',
-      date: 'March 15, 2025',
-      time: '10:00 AM - 6:00 PM',
+      date: (() => {
+        const comp = data.find(c => c.category === 'Programming' && c.startDate && c.endDate);
+        if (comp) {
+          const start = new Date(comp.startDate).toLocaleDateString("en-US", {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          const end = new Date(comp.endDate).toLocaleDateString("en-US", {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          return start === end ? start : `${start} - ${end}`;
+        }
+        return 'TBA';
+      })(),
+      time: data.find(c => c.category === 'Programming' && c.deadline)
+        ? new Date(data.find(c => c.category === 'Programming')!.deadline).toLocaleDateString("en-US", {
+          year: 'numeric',
+          month: 'long',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+        : 'TBA',
       location: 'Online',
-      participants: 120,
+      participants: data.find(c => c.category === 'Programming')?.totalParticipants,
       prize: 'TBA',
-      status: 'Open',
+      status: data.find(c => c.category === 'Programming')?.status,
       description: 'Test your algorithmic skills in this intensive programming competition.',
       requirements: ['Laptop required', 'Any programming language', 'Up-to 3 members per team']
     },
@@ -25,12 +51,36 @@ const Competitions = () => {
       id: 2,
       title: 'UX/UI Website Design',
       category: 'Design',
-      date: 'March 18, 2025',
-      time: '9:00 AM - 5:00 PM',
+      date: (() => {
+        const comp = data.find(c => c.category === 'Design' && c.startDate && c.endDate);
+        if (comp) {
+          const start = new Date(comp.startDate).toLocaleDateString("en-US", {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          const end = new Date(comp.endDate).toLocaleDateString("en-US", {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          return start === end ? start : `${start} - ${end}`;
+        }
+        return 'TBA';
+      })(),
+      time: data.find(c => c.category === 'Design' && c.deadline)
+        ? new Date(data.find(c => c.category === 'Design')!.deadline).toLocaleDateString("en-US", {
+          year: 'numeric',
+          month: 'long',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+        : 'TBA',
       location: 'Online',
-      participants: 80,
+      participants: data.find(c => c.category === 'Design')?.totalParticipants,
       prize: 'TBA',
-      status: 'Open',
+      status: data.find(c => c.category === 'Design')?.status,
       description: 'Create innovative user experiences and visual designs.',
       requirements: ['Design software knowledge', 'Team of 2-4', 'Portfolio submission']
     },
@@ -38,12 +88,36 @@ const Competitions = () => {
       id: 3,
       title: 'Scientific Paper',
       category: 'Literary',
-      date: 'March 22, 2025',
-      time: '2:00 PM - 8:00 PM',
+      date: (() => {
+        const comp = data.find(c => c.category === 'Literary' && c.startDate && c.endDate);
+        if (comp) {
+          const start = new Date(comp.startDate).toLocaleDateString("en-US", {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          const end = new Date(comp.endDate).toLocaleDateString("en-US", {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          return start === end ? start : `${start} - ${end}`;
+        }
+        return 'TBA';
+      })(),
+      time: data.find(c => c.category === 'Literary' && c.deadline)
+        ? new Date(data.find(c => c.category === 'Literary')!.deadline).toLocaleDateString("en-US", {
+          year: 'numeric',
+          month: 'long',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+        : 'TBA',
       location: 'Business School Amphitheater',
-      participants: 60,
+      participants: data.find(c => c.category === 'Literary')?.totalParticipants,
       prize: 'TBA',
-      status: 'Open',
+      status: data.find(c => c.category === 'Literary')?.status,
       description: 'Present your startup idea to industry experts and investors.',
       requirements: ['Business plan', '10-minute pitch', 'Team of 3-5']
     },
@@ -55,14 +129,16 @@ const Competitions = () => {
     ? competitions
     : competitions.filter(comp => comp.category === activeFilter);
 
-  const getStatusColor = (status: string) => {
+  const getStatusColor = (status: "UPCOMING" | "ONGOING" | "FINISHED" | "CANCELED" | undefined | string) => {
     switch (status) {
-      case 'Open':
+      case 'UPCOMING':
         return 'bg-green-100 text-green-800';
-      case 'Closing Soon':
+      case 'ONGOING':
         return 'bg-orange-100 text-orange-800';
-      case 'Closed':
+      case 'FINISHED':
         return 'bg-red-100 text-red-800';
+      case 'CANCELED':
+        return 'bg-gray-100 text-gray-800';
       default:
         return 'bg-gray-100 text-gray-800';
     }
@@ -140,7 +216,7 @@ const Competitions = () => {
                   <div className="flex items-center text-gray-400">
                     <Clock className="w-5 h-5 mr-3 text-teal-400"/>
                     <div>
-                      <p className="text-xs sm:text-sm text-gray-500">Time</p>
+                      <p className="text-xs sm:text-sm text-gray-500">Registration Deadline</p>
                       <p className="font-medium text-gray-200 text-sm sm:text-base">{competition.time}</p>
                     </div>
                   </div>

@@ -12,8 +12,14 @@ function shuffle<T>(arr: T[]): T[] {
   return arr
 }
 
+function randInt(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
 async function main() {
-  const TARGET = 100
+  const TARGET = 500
+  const TEAM_MIN = 5
+  const TEAM_MAX = 10
   const MAX_PARTICIPANTS_PER_TEAM = 3
 
   const competitions = await prisma.competition.findMany({
@@ -25,48 +31,37 @@ async function main() {
   const individualComps = competitions.filter(c => c.type === 'INDIVIDUAL')
   const teamCompIds = new Set(teamComps.map(c => c.id))
 
-  // Ensure each TEAM competition has at least one team
-  for (const comp of teamComps) {
-    const teamCount = await prisma.team.count({where: {competitionId: comp.id}})
-    if (teamCount === 0 && users.length > 0) {
-      await prisma.team.create({
-        data: {
-          id: faker.string.uuid(),
-          name: `${faker.company.name()} Team`,
-          leaderId: faker.helpers.arrayElement(users).id,
-          competitionId: comp.id
-        }
-      })
-    }
+  // Decide how many team registrations we want (between 5 and 10)
+  let desiredTeamRegs = randInt(TEAM_MIN, TEAM_MAX)
+
+  // If there are no TEAM competitions or no users, we cannot create team regs
+  if (teamComps.length === 0 || users.length === 0) {
+    console.warn('No TEAM competitions or no users; team registrations will be 0.')
+    desiredTeamRegs = 0
   }
 
-  // If there are no INDIVIDUAL competitions, create enough teams to reach TARGET
-  if (individualComps.length === 0) {
-    const totalTeams = await prisma.team.count()
-    const need = Math.max(0, TARGET - totalTeams)
-    if (need > 0) {
-      if (users.length === 0) {
-        console.warn(`No users available to lead teams; can only register existing ${totalTeams} team(s).`)
-      } else {
-        const bulkTeams = Array.from({length: need}, () => {
-          const comp = faker.helpers.arrayElement(teamComps)
-          const leader = faker.helpers.arrayElement(users)
-          return {
-            id: faker.string.uuid(),
-            name: `${faker.company.name()} Team`,
-            leaderId: leader.id,
-            competitionId: comp.id
-          }
-        })
-        await prisma.team.createMany({data: bulkTeams, skipDuplicates: true})
+  // Ensure we have enough teams to support desiredTeamRegs
+  const existingTeamCount = await prisma.team.count()
+  const needTeams = Math.max(0, desiredTeamRegs - existingTeamCount)
+
+  if (needTeams > 0) {
+    const bulkTeams = Array.from({length: needTeams}, () => {
+      const comp = faker.helpers.arrayElement(teamComps)
+      const leader = faker.helpers.arrayElement(users)
+      return {
+        id: faker.string.uuid(),
+        name: `${faker.company.name()} Team ${faker.string.alphanumeric(6)}`, // avoid @@unique([name, competitionId]) collisions
+        leaderId: leader.id,
+        competitionId: comp.id
       }
-    }
+    })
+    await prisma.team.createMany({data: bulkTeams, skipDuplicates: true})
   }
 
   // Refresh teams
   const teams = await prisma.team.findMany({select: {id: true, competitionId: true}})
 
-  // NEW: Seed participants for TEAM competitions (only if team has none yet)
+  // Seed participants for TEAM competitions (up to MAX_PARTICIPANTS_PER_TEAM)
   for (const team of teams) {
     if (!teamCompIds.has(team.competitionId)) continue
 
@@ -88,48 +83,78 @@ async function main() {
     await prisma.participant.createMany({data: participants})
   }
 
-  // One unique registration per team (respects unique teamId)
-  let teamRegs: Prisma.RegistrationCreateManyInput[] = teams.map(t => ({
+  // Pick a random subset of teams to register (size = desiredTeamRegs)
+  const shuffledTeams = shuffle([...teams])
+  const pickedTeams = shuffledTeams.slice(0, desiredTeamRegs)
+
+  const teamRegs: Prisma.RegistrationCreateManyInput[] = pickedTeams.map(t => ({
     id: faker.string.uuid(),
     status: 'PENDING' as RegistrationStatus,
     competitionId: t.competitionId,
     userId: null,
     teamId: t.id
   }))
-  shuffle(teamRegs)
 
-  let registrations: Prisma.RegistrationCreateManyInput[] = []
+  // Fill the rest with individual registrations if possible
+  const remaining = Math.max(0, TARGET - teamRegs.length)
+  let individualRegs: Prisma.RegistrationCreateManyInput[] = []
 
-  if (teamRegs.length >= TARGET) {
-    registrations = teamRegs.slice(0, TARGET)
-  } else {
-    registrations = [...teamRegs]
-    const remaining = TARGET - registrations.length
-
-    if (individualComps.length > 0 && users.length > 0) {
-      const individualRegs: Prisma.RegistrationCreateManyInput[] = Array.from({length: remaining}, () => {
-        const comp = faker.helpers.arrayElement(individualComps)
-        const user = faker.helpers.arrayElement(users)
+  if (remaining > 0 && individualComps.length > 0 && users.length > 0) {
+    individualRegs = Array.from({length: remaining}, () => {
+      const comp = faker.helpers.arrayElement(individualComps)
+      const user = faker.helpers.arrayElement(users)
+      return {
+        id: faker.string.uuid(),
+        status: 'PENDING' as RegistrationStatus,
+        competitionId: comp.id,
+        userId: user.id,
+        teamId: null
+      }
+    })
+  } else if (remaining > 0) {
+    // Fallback: if we cannot create individual regs, try adding more teams
+    const extraNeed = remaining
+    if (teamComps.length > 0 && users.length > 0) {
+      const extraTeams = Array.from({length: extraNeed}, () => {
+        const comp = faker.helpers.arrayElement(teamComps)
+        const leader = faker.helpers.arrayElement(users)
         return {
           id: faker.string.uuid(),
-          status: 'PENDING' as RegistrationStatus,
-          competitionId: comp.id,
-          userId: user.id,
-          teamId: null
+          name: `${faker.company.name()} Team ${faker.string.alphanumeric(6)}`,
+          leaderId: leader.id,
+          competitionId: comp.id
         }
       })
-      registrations = registrations.concat(individualRegs)
+      await prisma.team.createMany({data: extraTeams, skipDuplicates: true})
+
+      const newTeams = await prisma.team.findMany({select: {id: true, competitionId: true}})
+      const registeredTeamIds = new Set(pickedTeams.map(t => t.id))
+      const availableTeams = newTeams.filter(t => !registeredTeamIds.has(t.id))
+      const extraPicked = shuffle(availableTeams).slice(0, extraNeed)
+
+      const extraTeamRegs: Prisma.RegistrationCreateManyInput[] = extraPicked.map(t => ({
+        id: faker.string.uuid(),
+        status: 'PENDING' as RegistrationStatus,
+        competitionId: t.competitionId,
+        userId: null,
+        teamId: t.id
+      }))
+      teamRegs.push(...extraTeamRegs)
     } else {
-      console.warn(`Not enough unique teams and no INDIVIDUAL competitions/users to fill ${TARGET} rows. Will insert ${registrations.length}.`)
+      console.warn(`Could not reach ${TARGET}; inserting ${teamRegs.length} registrations (no individual comps/users).`)
     }
   }
+
+  const registrations = [...teamRegs, ...individualRegs]
 
   await prisma.registration.createMany({
     data: registrations,
     skipDuplicates: true
   })
 
-  console.log(`Attempted to insert ${registrations.length} registrations.`)
+  console.log(
+    `Attempted to insert ${registrations.length} registrations: teams=${teamRegs.length}, individuals=${individualRegs.length}.`
+  )
 }
 
 main()
