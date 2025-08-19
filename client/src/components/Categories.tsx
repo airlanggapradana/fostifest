@@ -15,7 +15,7 @@ const Categories = () => {
     {
       icon: Palette,
       name: 'Design',
-      description: 'UI/UX design and digital art competitions',
+      description: 'UI/UX Web design and digital art competitions',
       color: 'from-pink-500 to-rose-600',
       participants: 320,
       prizes: '$6,000'
@@ -23,7 +23,7 @@ const Categories = () => {
     {
       icon: Lightbulb,
       name: 'Literary',
-      description: 'Startup pitches and innovative solutions',
+      description: 'Scientific papers and academic research competitions',
       color: 'from-yellow-500 to-orange-600',
       participants: 280,
       prizes: '$10,000'
@@ -47,8 +47,8 @@ const Categories = () => {
           {categories.map((category, index) => {
             const IconComponent = category.icon;
             return (
-              <CardContainer key={index} className={'h-full'}>
-                <CardBody className={"relative group"}>
+              <CardContainer key={index} className={'h-full group bg-gray-900 rounded-xl border border-teal-700'}>
+                <CardBody className={"relative"}>
                   <CardContent className="relative p-8 h-full">
                     <CardItem
                       translateZ={150}

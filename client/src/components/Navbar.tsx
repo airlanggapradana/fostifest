@@ -42,7 +42,7 @@ export function Navbar() {
           alt="Aceternity Logo"
         />
       ),
-      href: "#",
+      href: "https://fostiums.org",
     },
     {
       title: "FAQ",
