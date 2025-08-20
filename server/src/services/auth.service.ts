@@ -32,8 +32,8 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         expiresIn: "1d",
       });
 
-      res.cookie("token", token, {
-        httpOnly: true,
+      res.cookie("accessToken", token, {
+        httpOnly: false,
         secure: true,   // hanya lewat HTTPS
         sameSite: "strict",
         maxAge: 24 * 60 * 60 * 1000 // 1 hari
@@ -45,6 +45,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       message: "Login successful",
       data: doLogin
     })
+    return;
   } catch (e) {
     next(e);
   }

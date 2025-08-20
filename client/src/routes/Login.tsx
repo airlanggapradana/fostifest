@@ -12,8 +12,11 @@ import {type SubmitHandler, useForm} from "react-hook-form";
 import {loginSchema, type LoginSchema} from "@/zod/validation.schema.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormLabel, FormMessage} from "@/components/ui/form.tsx";
+import {useLogin} from "@/utils/query.ts";
+import {useNavigate} from "react-router";
 
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const form = useForm<LoginSchema>({
     defaultValues: {
       email: "",
@@ -22,15 +25,13 @@ const LoginPage: React.FC = () => {
     resolver: zodResolver(loginSchema)
   })
 
+  const {mutateAsync: handleLogin, isPending} = useLogin();
+
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     try {
-      if (data.email !== 'rangga@example.com') {
-        throw new Error("Invalid email")
-      }
-      if (data.password !== 'password123') {
-        throw new Error("Invalid password")
-      }
+      await handleLogin(data);
       form.reset()
+      navigate('/', {replace: true});
     } catch (e) {
       form.setError('root', {
         type: 'manual',
@@ -44,7 +45,7 @@ const LoginPage: React.FC = () => {
   }
 
   return (
-    <Card className="w-full max-w-md z-10 border-2 bg-gray-100 border-teal-500">
+    <Card className="w-full max-w-md z-10 bg-gray-100">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl font-bold text-center">Login</CardTitle>
         <CardDescription className="text-center">
@@ -99,12 +100,12 @@ const LoginPage: React.FC = () => {
             />
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-              {form.formState.isSubmitting ? "Signing In..." : "Sign In"}
+            <Button type="submit" className="w-full" disabled={isPending}>
+              {isPending ? "Signing In..." : "Sign In"}
             </Button>
             <div className="text-sm text-center text-muted-foreground">
-              <a href="#" className="hover:underline">
-                Forgot your password?
+              <a href="/register" className="hover:underline">
+                Don't have an account? Register now
               </a>
             </div>
           </CardFooter>

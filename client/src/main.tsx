@@ -6,6 +6,7 @@ import {BrowserRouter, Routes, Route} from "react-router";
 import {TanstackQueryProvider} from "@/utils/QueryProvider.tsx";
 import AuthLayout from "@/components/AuthLayout.tsx";
 import Login from "@/routes/Login.tsx";
+import Register from "@/routes/Register.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -16,7 +17,7 @@ createRoot(document.getElementById('root')!).render(
 
           <Route element={<AuthLayout/>}>
             <Route path={'/login'} element={<Login/>}/>
-            <Route path={'/register'} element={<div>Register</div>}/>
+            <Route path={'/register'} element={<Register/>}/>
           </Route>
         </Routes>
       </TanstackQueryProvider>

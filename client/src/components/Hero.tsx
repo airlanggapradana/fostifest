@@ -1,7 +1,7 @@
 import {Button} from "@/components/ui/button.tsx";
 import {ArrowRight, Calendar} from "lucide-react";
 import {Badge} from "@/components/ui/badge.tsx";
-import vid from "@/assets/playback.mp4"
+import vid from "@/assets/fixed.mp4"
 import TextType from '../components/ui/TextType/TextType';
 
 const Hero = () => {
