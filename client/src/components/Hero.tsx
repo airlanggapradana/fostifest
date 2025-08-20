@@ -1,7 +1,7 @@
 import {Button} from "@/components/ui/button.tsx";
 import {ArrowRight, Calendar} from "lucide-react";
 import {Badge} from "@/components/ui/badge.tsx";
-import bg from '../assets/bg_2.png'
+import vid from "@/assets/playback.mp4"
 import TextType from '../components/ui/TextType/TextType';
 
 const Hero = () => {
@@ -11,11 +11,15 @@ const Hero = () => {
       className="min-h-screen bg-black relative overflow-hidden"
     >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none select-none">
-        <img
-          src={bg}
-          alt="University campus background"
-          className="w-full h-full object-cover"
+      <div className="absolute inset-0 opacity-50 pointer-events-none select-none">
+        <video
+          src={vid}
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover object-center"
+          aria-label="University campus background"
         />
         <div
           className="absolute top-10 left-4 w-20 h-20 sm:top-20 sm:left-10 sm:w-32 sm:h-32 bg-orange-500 rounded-full blur-3xl"></div>

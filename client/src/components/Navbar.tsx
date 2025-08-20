@@ -49,7 +49,7 @@ export function Navbar() {
       icon: (
         <FaRegCircleQuestion className="h-full w-full  text-neutral-300"/>
       ),
-      href: "#",
+      href: "#faq",
     },
 
     {
@@ -57,7 +57,7 @@ export function Navbar() {
       icon: (
         <RiLoginBoxLine className="h-full w-full  text-neutral-300"/>
       ),
-      href: "#",
+      href: "/login",
     },
     {
       title: "Instagaram",

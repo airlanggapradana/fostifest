@@ -39,6 +39,12 @@ export const registrationTeamSchema = z.object({
   memberPhoneNumbers: z.array(z.string().min(1, 'Member phone number is required')).min(1, 'At least one member phone number is required'),
 })
 
+export const loginSchema = z.object({
+  email: z.email('Invalid email address'),
+  password: z.string().min(6, 'Password must be at least 6 characters long'),
+})
+
+export type LoginSchema = z.infer<typeof loginSchema>;
 export type RegistrationTeamSchema = z.infer<typeof registrationTeamSchema>;
 export type RegistrationIndividualSchema = z.infer<typeof registrationIndividualSchema>;
 export type CompetitionSchema = z.infer<typeof competitionSchema>;

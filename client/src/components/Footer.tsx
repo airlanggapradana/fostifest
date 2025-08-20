@@ -1,4 +1,4 @@
-import {Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Youtube} from 'lucide-react';
+import {Mail, Phone, MapPin, Instagram, Linkedin, Youtube} from 'lucide-react';
 import logo from '@/assets/fostifest_logo.png'
 
 const Footer = () => {
@@ -23,11 +23,15 @@ const Footer = () => {
               Empowering students through competitive excellence and innovative challenges that shape the future.
             </p>
             <div className="flex space-x-6 mb-12">
-              <Facebook className="w-6 h-6 text-gray-400 hover:text-teal-500 cursor-pointer transition-colors"/>
-              <Twitter className="w-6 h-6 text-gray-400 hover:text-teal-500 cursor-pointer transition-colors"/>
-              <Instagram className="w-6 h-6 text-gray-400 hover:text-teal-500 cursor-pointer transition-colors"/>
-              <Linkedin className="w-6 h-6 text-gray-400 hover:text-teal-500 cursor-pointer transition-colors"/>
-              <Youtube className="w-6 h-6 text-gray-400 hover:text-teal-500 cursor-pointer transition-colors"/>
+              <a href={'https://www.instagram.com/fosti_ums'} target={'_blank'}>
+                <Instagram className="w-6 h-6 text-gray-400 hover:text-teal-500 cursor-pointer transition-colors"/>
+              </a>
+              <a href={'#'} target={"_blank"}>
+                <Linkedin className="w-6 h-6 text-gray-400 hover:text-teal-500 cursor-pointer transition-colors"/>
+              </a>
+              <a href={'#'} target={"_blank"}>
+                <Youtube className="w-6 h-6 text-gray-400 hover:text-teal-500 cursor-pointer transition-colors"/>
+              </a>
             </div>
 
             <div className="text-gray-400 text-sm mb-6 md:mb-0">

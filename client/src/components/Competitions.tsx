@@ -114,7 +114,7 @@ const Competitions = () => {
           minute: '2-digit'
         })
         : 'TBA',
-      location: 'Business School Amphitheater',
+      location: 'Online',
       participants: data.find(c => c.category === 'Literary')?.totalParticipants,
       prize: 'TBA',
       status: data.find(c => c.category === 'Literary')?.status,
@@ -145,7 +145,7 @@ const Competitions = () => {
   };
 
   return (
-    <section id="competitions" className="py-14 sm:py-20 bg-gradient-to-br from-gray-900 to-emerald-950">
+    <section id="competitions" className="py-14 sm:py-20 bg-gradient-to-b from-gray-900 to-emerald-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-100 mb-4 sm:mb-6">
@@ -195,7 +195,7 @@ const Competitions = () => {
                   </div>
                   <div className="space-x-0 sm:space-x-3">
                     <Badge variant="secondary"
-                           className={`mb-2 ${getStatusColor(competition.status)} text-xs sm:text-sm`}>
+                           className={`mb-2 ${getStatusColor(competition.status)} text-xs sm:text-sm font-semibold`}>
                       {competition.status}
                     </Badge>
                   </div>

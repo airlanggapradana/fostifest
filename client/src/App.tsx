@@ -8,6 +8,7 @@ import MediaPartners from "@/components/MediaPartners.tsx";
 import Footer from "@/components/Footer.tsx";
 import {CompetitionContext} from "@/hooks/context.ts";
 import {useGetAllComps} from "@/utils/query.ts";
+import FAQ from "@/components/FAQ.tsx";
 
 function App() {
   const {data, isLoading, error} = useGetAllComps();
@@ -23,6 +24,7 @@ function App() {
         <Stats/>
         <Categories/>
         <Competitions/>
+        <FAQ/>
         <Sponsors/>
         <MediaPartners/>
         <Footer/>
