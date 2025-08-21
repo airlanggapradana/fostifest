@@ -92,6 +92,7 @@ export const getCompetitions = async (req: Request, res: Response, next: NextFun
         startDate: comp.startDate,
         endDate: comp.endDate,
         deadline: comp.registrationDeadline,
+        prize: comp.registrationFee,
         type: comp.type,
         totalRegistrations: comp._count.registrations, // jumlah registrasi
         totalParticipants, // jumlah peserta
@@ -153,6 +154,7 @@ export const getCompetitionById = async (req: Request, res: Response, next: Next
       startDate: Date;
       endDate: Date;
       deadline: Date;
+      prize: number;
       type: "INDIVIDUAL" | "TEAM";
       category: string;
       totalRegistrations: number;
@@ -167,6 +169,7 @@ export const getCompetitionById = async (req: Request, res: Response, next: Next
         description: competition.description,
         startDate: competition.startDate,
         endDate: competition.endDate,
+        prize: competition.registrationFee,
         deadline: competition.registrationDeadline,
         type: competition.type,
         category: competition.category.name,
