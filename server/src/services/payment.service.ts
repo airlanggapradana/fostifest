@@ -5,6 +5,7 @@ import {TransactionStatus} from "../../generated/prisma";
 import {env} from "../env";
 import midtransClient from 'midtrans-client';
 import crypto from 'crypto';
+import {MidtransStatus} from "../types/midtrans-status.type";
 
 function mapStatus(mtStatus: string, fraud?: string): TransactionStatus {
   if (mtStatus === 'capture') return fraud === 'challenge' ? 'PENDING' : 'SUCCESS';
@@ -106,7 +107,7 @@ export async function handleNotification(req: Request, res: Response, next: Next
     }
 
     // ✅ ambil status dari Midtrans
-    const statusResp = await coreApi.transaction.status(n.order_id);
+    const statusResp: MidtransStatus = await coreApi.transaction.status(n.order_id);
     const dbStatus = mapStatus(statusResp.transaction_status, statusResp.fraud_status);
 
     // ✅ pakai prisma transaction biar atomic

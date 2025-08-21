@@ -14,6 +14,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormLabel, FormMessage} from "@/components/ui/form.tsx";
 import {useLogin} from "@/utils/query.ts";
 import {useNavigate} from "react-router";
+import {toast} from "sonner"
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -30,6 +31,9 @@ const LoginPage: React.FC = () => {
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     try {
       await handleLogin(data);
+      toast.success("Login successful! Redirecting to home page...", {
+        position: 'top-center'
+      });
       form.reset()
       navigate('/', {replace: true});
     } catch (e) {
@@ -45,10 +49,10 @@ const LoginPage: React.FC = () => {
   }
 
   return (
-    <Card className="w-full max-w-md z-10 bg-gray-100">
+    <Card className="w-full max-w-md z-10 bg-gray-800 border-2 border-teal-400">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">Login</CardTitle>
-        <CardDescription className="text-center">
+        <CardTitle className="text-2xl font-bold text-center text-gray-100">Login</CardTitle>
+        <CardDescription className="text-center text-gray-300">
           Enter your username and password to access your account
         </CardDescription>
       </CardHeader>
@@ -66,13 +70,13 @@ const LoginPage: React.FC = () => {
               name="email"
               render={({field}) => (
                 <div className="space-y-2">
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className={'text-gray-100'}>Email</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
                       placeholder="Enter your email"
                       {...field}
-                      className={form.formState.errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}
+                      className={form.formState.errors.email ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 text-gray-100 border-emerald-600"}
                     />
                   </FormControl>
                   <FormMessage/>
@@ -85,13 +89,13 @@ const LoginPage: React.FC = () => {
               name="password"
               render={({field}) => (
                 <div className="space-y-2">
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className={'text-gray-100'}>Password</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
                       placeholder="Enter your password"
                       {...field}
-                      className={form.formState.errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}
+                      className={form.formState.errors.password ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 text-gray-100 border-emerald-600"}
                     />
                   </FormControl>
                   <FormMessage/>

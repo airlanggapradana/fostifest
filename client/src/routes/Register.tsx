@@ -6,8 +6,11 @@ import {type SubmitHandler, useForm} from "react-hook-form";
 import {registerSchema, type RegisterSchema} from "@/zod/validation.schema.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useRegister} from "@/utils/query.ts";
+import {toast} from "sonner";
+import {useNavigate} from "react-router";
 
 const RegisterPage = () => {
+  const navigate = useNavigate();
   const form = useForm<RegisterSchema>({
     defaultValues: {
       email: "",
@@ -24,7 +27,11 @@ const RegisterPage = () => {
   const onSubmit: SubmitHandler<RegisterSchema> = async (data) => {
     try {
       await handleRegister(data);
+      toast.success("Register successful! Redirecting to home page...", {
+        position: 'top-center'
+      });
       form.reset();
+      navigate('/login', {replace: true});
     } catch (e) {
       form.setError('root', {
         type: 'manual',
@@ -40,10 +47,10 @@ const RegisterPage = () => {
     }
   }
   return (
-    <Card className="w-full max-w-md z-10 bg-gray-100">
+    <Card className="w-full max-w-md z-10 bg-gray-800 border-2 border-teal-400">
       <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">Register</CardTitle>
-        <CardDescription className="text-center">
+        <CardTitle className="text-2xl font-bold text-center text-gray-100">Register</CardTitle>
+        <CardDescription className="text-center text-gray-300">
           Fill in the form below to create a new account
         </CardDescription>
       </CardHeader>
@@ -61,13 +68,13 @@ const RegisterPage = () => {
               name="email"
               render={({field}) => (
                 <div className="space-y-2">
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel className={'text-gray-100'}>Email</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
                       placeholder="Enter your email"
                       {...field}
-                      className={form.formState.errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}
+                      className={form.formState.errors.email ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 text-gray-100 border-emerald-600"}
                     />
                   </FormControl>
                   <FormMessage/>
@@ -79,13 +86,13 @@ const RegisterPage = () => {
               name="name"
               render={({field}) => (
                 <div className="space-y-2">
-                  <FormLabel>Fullname</FormLabel>
+                  <FormLabel className={'text-gray-100'}>Fullname</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
                       placeholder="Enter your fullname"
                       {...field}
-                      className={form.formState.errors.name ? "border-red-500 focus-visible:ring-red-500" : ""}
+                      className={form.formState.errors.name ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 text-gray-100 border-emerald-600"}
                     />
                   </FormControl>
                   <FormMessage/>
@@ -98,13 +105,13 @@ const RegisterPage = () => {
               name="password"
               render={({field}) => (
                 <div className="space-y-2">
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel className={'text-gray-100'}>Password</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
                       placeholder="Enter your password"
                       {...field}
-                      className={form.formState.errors.password ? "border-red-500 focus-visible:ring-red-500" : ""}
+                      className={form.formState.errors.password ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 text-gray-100 border-emerald-600"}
                     />
                   </FormControl>
                   <FormMessage/>
@@ -116,13 +123,13 @@ const RegisterPage = () => {
               name="confirmPassword"
               render={({field}) => (
                 <div className="space-y-2">
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel className={'text-gray-100'}>Confirm Password</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
                       placeholder="Enter your password"
                       {...field}
-                      className={form.formState.errors.confirmPassword ? "border-red-500 focus-visible:ring-red-500" : ""}
+                      className={form.formState.errors.confirmPassword ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 text-gray-100 border-emerald-600"}
                     />
                   </FormControl>
                   <FormMessage/>
@@ -135,13 +142,13 @@ const RegisterPage = () => {
               name="institusi"
               render={({field}) => (
                 <div className="space-y-2">
-                  <FormLabel>Institution</FormLabel>
+                  <FormLabel className={'text-gray-100'}>Institution</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
                       placeholder="Enter your institution"
                       {...field}
-                      className={form.formState.errors.institusi ? "border-red-500 focus-visible:ring-red-500" : ""}
+                      className={form.formState.errors.institusi ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 text-gray-100 border-emerald-600"}
                     />
                   </FormControl>
                   <FormMessage/>
