@@ -12,6 +12,7 @@ export interface Data {
   startDate: Date;
   endDate: Date;
   deadline: Date;
+  prize: number;
   type: string;
   totalRegistrations: number;
   totalParticipants: number;

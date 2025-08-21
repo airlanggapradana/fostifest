@@ -8,6 +8,7 @@ import AuthLayout from "@/components/AuthLayout.tsx";
 import Login from "@/routes/Login.tsx";
 import Register from "@/routes/Register.tsx";
 import {AnimatePresence} from 'framer-motion';
+import RegisterCompetition from "@/routes/register-competition.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -21,6 +22,8 @@ createRoot(document.getElementById('root')!).render(
               <Route path={'/login'} element={<Login/>}/>
               <Route path={'/register'} element={<Register/>}/>
             </Route>
+            
+            <Route path={'/register-competition/:competitionId'} element={<RegisterCompetition/>}/>
           </Routes>
         </AnimatePresence>
       </TanstackQueryProvider>

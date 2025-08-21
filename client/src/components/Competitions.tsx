@@ -1,17 +1,19 @@
 import {useState} from 'react';
-import {Calendar, Clock, Users, Trophy, MapPin, Filter} from 'lucide-react';
+import {Calendar, Clock, Users, MapPin, Filter, DollarSign} from 'lucide-react';
 import {Button} from './ui/button';
 import {Card, CardContent, CardDescription, CardTitle} from './ui/card';
 import {Badge} from './ui/badge';
 import {useCompetitionContext} from "@/hooks/context.ts";
+import {useNavigate} from "react-router";
 
 const Competitions = () => {
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState('All');
   const data = useCompetitionContext()
 
   const competitions = [
     {
-      id: 1,
+      id: data.find(c => c.category === 'Programming')?.id,
       title: 'Software Development Challenge',
       category: 'Programming',
       date: (() => {
@@ -42,13 +44,13 @@ const Competitions = () => {
         : 'TBA',
       location: 'Online',
       participants: data.find(c => c.category === 'Programming')?.totalParticipants,
-      prize: 'TBA',
+      prize: data.find(c => c.category === 'Programming')?.prize,
       status: data.find(c => c.category === 'Programming')?.status,
       description: 'Test your algorithmic skills in this intensive programming competition.',
       requirements: ['Laptop required', 'Any programming language', 'Up-to 3 members per team']
     },
     {
-      id: 2,
+      id: data.find(c => c.category === 'Design')?.id,
       title: 'UX/UI Website Design',
       category: 'Design',
       date: (() => {
@@ -79,13 +81,13 @@ const Competitions = () => {
         : 'TBA',
       location: 'Online',
       participants: data.find(c => c.category === 'Design')?.totalParticipants,
-      prize: 'TBA',
+      prize: data.find(c => c.category === 'Design')?.prize,
       status: data.find(c => c.category === 'Design')?.status,
       description: 'Create innovative user experiences and visual designs.',
       requirements: ['Design software knowledge', 'Team of 2-4', 'Portfolio submission']
     },
     {
-      id: 3,
+      id: data.find(c => c.category === 'Literary')?.id,
       title: 'Scientific Paper',
       category: 'Literary',
       date: (() => {
@@ -116,7 +118,7 @@ const Competitions = () => {
         : 'TBA',
       location: 'Online',
       participants: data.find(c => c.category === 'Literary')?.totalParticipants,
-      prize: 'TBA',
+      prize: data.find(c => c.category === 'Literary')?.prize,
       status: data.find(c => c.category === 'Literary')?.status,
       description: 'Present your startup idea to industry experts and investors.',
       requirements: ['Business plan', '10-minute pitch', 'Team of 3-5']
@@ -228,10 +230,14 @@ const Competitions = () => {
                     </div>
                   </div>
                   <div className="flex items-center text-gray-400">
-                    <Trophy className="w-5 h-5 mr-3 text-teal-400"/>
+                    <DollarSign className="w-5 h-5 mr-3 text-teal-400"/>
                     <div>
-                      <p className="text-xs sm:text-sm text-gray-500">Prize</p>
-                      <p className="font-medium text-white text-sm sm:text-base">{competition.prize}</p>
+                      <p className="text-xs sm:text-sm text-gray-500">Registration Fee</p>
+                      <p
+                        className="font-medium text-white text-sm sm:text-base">{competition.prize?.toLocaleString('id-ID', {
+                        style: 'currency',
+                        currency: 'IDR'
+                      })}</p>
                     </div>
                   </div>
                 </div>
@@ -255,7 +261,9 @@ const Competitions = () => {
                   </div>
 
                   <Button
-                    className="w-full bg-gradient-to-r from-emerald-600 to-teal-700 text-white py-2 sm:py-3 rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-800 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base">
+                    className="w-full bg-gradient-to-r from-emerald-600 to-teal-700 text-white py-2 sm:py-3 rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-800 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
+                    onClick={() => navigate(`/register-competition/${competition.id}`)}
+                  >
                     Register Now
                   </Button>
                 </div>

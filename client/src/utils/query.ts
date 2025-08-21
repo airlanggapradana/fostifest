@@ -5,6 +5,7 @@ import type {GetAllCompetitionsResponse} from "@/types/competitions.type.ts";
 import type {LoginSchema, RegisterSchema} from "@/zod/validation.schema.ts";
 import type {RegisterResponse} from "@/types/register.type.ts";
 import Cookies from "js-cookie";
+import type {GetCompetitionByIdResponse} from "@/types/competitionById.type.ts";
 
 export const useGetAllComps = () => {
   return useQuery({
@@ -37,7 +38,7 @@ export const useLogin = () => {
             'Content-Type': 'application/json'
           },
           method: 'POST',
-          // withCredentials: true
+          withCredentials: true
         }).then(res => res.data as { message: string, data: string });
         // Set the access token in cookies
         Cookies.set('accessToken', res.data)
@@ -76,6 +77,28 @@ export const useRegister = () => {
           throw new Error(e.response?.data.message || 'Registration failed');
         }
         throw new Error('An unexpected error occurred during registration');
+      }
+    }
+  })
+}
+
+export const useGetCompeById = (competitionId: string) => {
+  return useQuery({
+    queryKey: ['getCompetition', {competitionId}],
+    queryFn: async () => {
+      try {
+        const res = await axios.get(`${VITE_BASE_API_URL}/competition/${competitionId}`, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          method: 'GET'
+        }).then(res => res.data as GetCompetitionByIdResponse)
+        return res.data;
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Failed to fetch competition details');
+        }
+        throw new Error('An unexpected error occurred while fetching competition details');
       }
     }
   })
