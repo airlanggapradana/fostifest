@@ -35,7 +35,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       res.cookie("accessToken", token, {
         httpOnly: false,
         secure: false,   // hanya lewat HTTPS
-        sameSite: 'none',
+        sameSite: 'lax',
         maxAge: 24 * 60 * 60 * 1000 // 1 hari
       })
       return token;
