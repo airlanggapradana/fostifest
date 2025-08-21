@@ -6,6 +6,7 @@ import {errorHandler} from "./middlewares/errorHandler";
 import competitionRouter from "./controllers/competition.controller";
 import registrationRouter from "./controllers/registration.controller";
 import authRouter from "./controllers/auth.controller";
+import paymentRouter from "./controllers/payment.controller";
 
 const app: Application = express();
 
@@ -24,6 +25,7 @@ app.use('/api/user', userRouter)
 app.use('/api/competition', competitionRouter)
 app.use('/api/registration', registrationRouter)
 app.use('/api/auth', authRouter)
+app.use('/api/payment', paymentRouter)
 
 app.use(errorHandler)
 app.listen(env.PORT, () => {

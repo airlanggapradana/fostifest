@@ -44,6 +44,17 @@ export const loginSchema = z.object({
   password: z.string().min(6, 'Password must be at least 6 characters long'),
 })
 
+export const createPaymentBody = z.object({
+  registrationId: z.string().min(1),
+  customer: z.object({
+    name: z.string(),
+    email: z.email(),
+    phone: z.string().optional(),
+  }),
+});
+
+
+export type CreatePaymentBody = z.infer<typeof createPaymentBody>;
 export type LoginSchema = z.infer<typeof loginSchema>;
 export type RegistrationTeamSchema = z.infer<typeof registrationTeamSchema>;
 export type RegistrationIndividualSchema = z.infer<typeof registrationIndividualSchema>;
