@@ -27,7 +27,7 @@ const RegisterPage = () => {
   const onSubmit: SubmitHandler<RegisterSchema> = async (data) => {
     try {
       await handleRegister(data);
-      toast.success("Register successful! Redirecting to home page...", {
+      toast.success("Register successful! Redirecting to login page...", {
         position: 'top-center'
       });
       form.reset();
