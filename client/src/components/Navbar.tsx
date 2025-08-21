@@ -16,6 +16,7 @@ import {useNavigate} from "react-router";
 export function Navbar() {
   const navigate = useNavigate();
   const token = Cookies.get("accessToken");
+  console.log(token);
 
   const decodedToken = decodeJwt(token);
 

@@ -4,6 +4,7 @@ import {VITE_BASE_API_URL} from "@/env.ts";
 import type {GetAllCompetitionsResponse} from "@/types/competitions.type.ts";
 import type {LoginSchema, RegisterSchema} from "@/zod/validation.schema.ts";
 import type {RegisterResponse} from "@/types/register.type.ts";
+import Cookies from "js-cookie";
 
 export const useGetAllComps = () => {
   return useQuery({
@@ -36,8 +37,10 @@ export const useLogin = () => {
             'Content-Type': 'application/json'
           },
           method: 'POST',
-          withCredentials: true
+          // withCredentials: true
         }).then(res => res.data as { message: string, data: string });
+        // Set the access token in cookies
+        Cookies.set('accessToken', res.data)
         return res.data
       } catch (e) {
         // console.log(e)
