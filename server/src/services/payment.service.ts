@@ -48,7 +48,7 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
 
       const competition = reg.competition;
       const amount = competition.registrationFee;
-      const orderId = `FF-${body.registrationId}-${Date.now()}`;
+      const orderId = `FF-${crypto.randomUUID().slice(0, 3).toUpperCase()}`;
 
       // buat transaksi pending di DB
       await tx.transaction.create({

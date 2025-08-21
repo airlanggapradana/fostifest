@@ -17,7 +17,7 @@ function randInt(min: number, max: number): number {
 }
 
 async function main() {
-  const TARGET = 500
+  const TARGET = 100
   const TEAM_MIN = 5
   const TEAM_MAX = 10
   const MAX_PARTICIPANTS_PER_TEAM = 3

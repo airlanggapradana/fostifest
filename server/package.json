@@ -10,7 +10,8 @@
     "db:push": "prisma db push",
     "db:pull": "prisma db pull",
     "db:generate": "prisma generate",
-    "db:seed": "ts-node prisma/seed.ts"
+    "db:seedReg": "ts-node prisma/seed.ts",
+    "db:seedUser": "ts-node prisma/seedUser.ts"
   },
   "keywords": [],
   "author": "",
