@@ -150,18 +150,24 @@ export const getCompetitionById = async (req: Request, res: Response, next: Next
       id: string;
       name: string;
       description: string;
+      startDate: Date;
+      endDate: Date;
+      deadline: Date;
       type: "INDIVIDUAL" | "TEAM";
       category: string;
       totalRegistrations: number;
       totalParticipants: number;
       participants: ParticipantWithRole[];
     };
-    
+
     const result: CompetitionWithStats | null = competition
       ? {
         id: competition.id,
         name: competition.name,
         description: competition.description,
+        startDate: competition.startDate,
+        endDate: competition.endDate,
+        deadline: competition.registrationDeadline,
         type: competition.type,
         category: competition.category.name,
         totalRegistrations: competition._count.registrations,
