@@ -53,6 +53,7 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
       // buat transaksi pending di DB
       await tx.transaction.create({
         data: {
+          id: `FF-${crypto.randomUUID()}`,
           midtransOrderId: orderId,
           amount,
           status: 'PENDING',
@@ -115,7 +116,7 @@ export async function handleNotification(req: Request, res: Response, next: Next
         data: {
           status: dbStatus,
           paymentType: statusResp.payment_type,
-          paymentCode: statusResp.payment_code || null,
+          paymentCode: `pay-${crypto.randomUUID()}`,
           transactionTime: statusResp.transaction_time ? new Date(statusResp.transaction_time) : null,
         },
         include: {registration: true},
