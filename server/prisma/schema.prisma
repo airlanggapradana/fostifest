@@ -10,7 +10,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -50,7 +50,7 @@ model Competition {
   description          String            @db.Text
   startDate            DateTime          @db.Date // Tanggal mulai lomba
   endDate              DateTime          @db.Date // Tanggal selesai lomba
-  registrationDeadline DateTime          @db.DateTime() // Batas akhir pendaftaran
+  registrationDeadline DateTime // Batas akhir pendaftaran
   type                 CompetitionType // Tipe lomba: perorangan atau tim
   registrationFee      Int // Biaya pendaftaran
   status               CompetitionStatus @default(UPCOMING)
