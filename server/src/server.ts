@@ -11,7 +11,7 @@ import paymentRouter from "./controllers/payment.controller";
 const app: Application = express();
 
 app.use(cors({
-  origin: 'http://localhost:5173', // Ganti dengan URL frontend Anda
+  origin: env.FRONTEND_URL, // Ganti dengan URL frontend Anda
   credentials: true
 }));
 app.use(express.json());
