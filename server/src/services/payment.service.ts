@@ -116,7 +116,7 @@ export async function handleNotification(req: Request, res: Response, next: Next
         data: {
           status: dbStatus,
           paymentType: statusResp.payment_type,
-          paymentCode: `pay-${crypto.randomUUID()}`,
+          paymentCode: statusResp.signature_key,
           transactionTime: statusResp.transaction_time ? new Date(statusResp.transaction_time) : null,
         },
         include: {registration: true},
