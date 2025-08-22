@@ -8,6 +8,7 @@ const data = Array.from({length: 100}).map((_) => {
     id: faker.string.uuid(),
     name: faker.person.fullName(),
     email: faker.internet.email(),
+    phone: faker.phone.number({style: 'international'}),
     password: faker.internet.password(),
     role: 'PARTICIPANT' as UserRole,
     institusi: faker.company.name(),
