@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import {cn} from "@/lib/utils";
 
 import React, {
   createContext,
@@ -15,10 +15,10 @@ const MouseEnterContext = createContext<
 >(undefined);
 
 export const CardContainer = ({
-  children,
-  className,
-  containerClassName,
-}: {
+                                children,
+                                className,
+                                containerClassName,
+                              }: {
   children?: React.ReactNode;
   className?: string;
   containerClassName?: string;
@@ -28,19 +28,21 @@ export const CardContainer = ({
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
-    const { left, top, width, height } =
+    const {left, top, width, height} =
       containerRef.current.getBoundingClientRect();
     const x = (e.clientX - left - width / 2) / 25;
     const y = (e.clientY - top - height / 2) / 25;
     containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
   };
 
-  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleMouseEnter = (_e: React.MouseEvent<HTMLDivElement>) => {
     setIsMouseEntered(true);
     if (!containerRef.current) return;
   };
 
-  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const handleMouseLeave = (_e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     setIsMouseEntered(false);
     containerRef.current.style.transform = `rotateY(0deg) rotateX(0deg)`;
@@ -77,9 +79,9 @@ export const CardContainer = ({
 };
 
 export const CardBody = ({
-  children,
-  className,
-}: {
+                           children,
+                           className,
+                         }: {
   children: React.ReactNode;
   className?: string;
 }) => {
@@ -96,17 +98,17 @@ export const CardBody = ({
 };
 
 export const CardItem = ({
-  as: Tag = "div",
-  children,
-  className,
-  translateX = 0,
-  translateY = 0,
-  translateZ = 0,
-  rotateX = 0,
-  rotateY = 0,
-  rotateZ = 0,
-  ...rest
-}: {
+                           as: Tag = "div",
+                           children,
+                           className,
+                           translateX = 0,
+                           translateY = 0,
+                           translateZ = 0,
+                           rotateX = 0,
+                           rotateY = 0,
+                           rotateZ = 0,
+                           ...rest
+                         }: {
   as?: React.ElementType;
   children: React.ReactNode;
   className?: string;
