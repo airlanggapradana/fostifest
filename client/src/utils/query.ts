@@ -1,11 +1,19 @@
-import {useMutation, useQuery} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import axios, {AxiosError} from "axios";
 import {VITE_BASE_API_URL} from "@/env.ts";
 import type {GetAllCompetitionsResponse} from "@/types/competitions.type.ts";
-import type {LoginSchema, RegisterSchema} from "@/zod/validation.schema.ts";
+import type {
+  LoginSchema,
+  PaymentSchema,
+  RegisterSchema,
+  RegistrationIndividualSchema,
+  RegistrationTeamSchema
+} from "@/zod/validation.schema.ts";
 import type {RegisterResponse} from "@/types/register.type.ts";
 import Cookies from "js-cookie";
 import type {GetCompetitionByIdResponse} from "@/types/competitionById.type.ts";
+import type {PaymentAPIResponse} from "@/types/payment.type.ts";
+import type {RegistrationResponse} from "@/types/registration.type.ts";
 
 export const useGetAllComps = () => {
   return useQuery({
@@ -61,6 +69,7 @@ export const useRegister = () => {
         const res = await axios.post(`${VITE_BASE_API_URL}/user`, {
           name: data.name,
           email: data.email,
+          phone: data.phone,
           password: data.password,
           confirmPassword: data.confirmPassword,
           institusi: data.institusi,
@@ -99,6 +108,90 @@ export const useGetCompeById = (competitionId: string) => {
           throw new Error(e.response?.data.message || 'Failed to fetch competition details');
         }
         throw new Error('An unexpected error occurred while fetching competition details');
+      }
+    }
+  })
+}
+
+export const useRegisterIndividual = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: RegistrationIndividualSchema) => {
+      try {
+        const res = await axios.post(`${VITE_BASE_API_URL}/registration/individual`, {
+          competitionId: data.competitionId,
+          status: 'PENDING',
+          userId: data.userId
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          method: 'POST',
+        }).then(res => res.data as RegistrationResponse)
+        return res.data;
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Failed to register for competition');
+        }
+        throw new Error('An unexpected error occurred while registering for competition');
+      }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({queryKey: ['getAllComps']});
+    }
+  })
+}
+
+export const useRegisterTeam = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (data: RegistrationTeamSchema) => {
+      try {
+        const res = await axios.post(`${VITE_BASE_API_URL}/registration/team`, {
+          competitionId: data.competitionId,
+          status: "PENDING",
+          leaderId: data.leaderId,
+          teamName: data.teamName,
+          memberNames: data.memberNames,
+          memberEmails: data.memberEmails,
+          memberPhoneNumbers: data.memberPhoneNumbers
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          method: 'POST'
+        }).then(res => res.data as RegistrationResponse)
+        return res.data
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Failed to register team for competition');
+        }
+        throw new Error('An unexpected error occurred while registering team for competition');
+      }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({queryKey: ['getAllComps']});
+    }
+  })
+}
+
+export const usePayment = () => {
+  return useMutation({
+    mutationFn: async (data: PaymentSchema) => {
+      try {
+        return await axios.post(`${VITE_BASE_API_URL}/payment`, {
+          registrationId: data.registrationId,
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          method: 'POST'
+        }).then(res => res.data as PaymentAPIResponse);
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Payment failed');
+        }
+        throw new Error('An unexpected error occurred during payment');
       }
     }
   })

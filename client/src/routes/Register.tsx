@@ -15,6 +15,7 @@ const RegisterPage = () => {
     defaultValues: {
       email: "",
       password: "",
+      phone: '',
       name: "",
       confirmPassword: "",
       institusi: ""
@@ -40,6 +41,7 @@ const RegisterPage = () => {
       form.reset({
         email: "",
         password: "",
+        phone: '',
         name: "",
         confirmPassword: "",
         institusi: ""
@@ -73,6 +75,24 @@ const RegisterPage = () => {
                     <Input
                       type="email"
                       placeholder="Enter your email"
+                      {...field}
+                      className={form.formState.errors.email ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 text-gray-100 border-emerald-600"}
+                    />
+                  </FormControl>
+                  <FormMessage/>
+                </div>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({field}) => (
+                <div className="space-y-2">
+                  <FormLabel className={'text-gray-100'}>Phone</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="tel"
+                      placeholder="+6281227163232"
                       {...field}
                       className={form.formState.errors.email ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 text-gray-100 border-emerald-600"}
                     />

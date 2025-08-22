@@ -8,6 +8,7 @@ export const loginSchema = z.object({
 export const registerSchema = z.object({
   email: z.email('Invalid email address').min(1, 'Email is required'),
   name: z.string().min(1, 'Name is required'),
+  phone: z.string().min(1, 'Phone number is required').regex(/^\+?\d{10,15}$/, 'Invalid phone number format'),
   password: z.string().min(6, 'Password must be at least 6 characters long'),
   confirmPassword: z.string().min(6, 'Confirm Password must be at least 6 characters long'),
   institusi: z.string().min(1, 'Institution is required'),
@@ -30,6 +31,11 @@ export const registrationTeamSchema = z.object({
   memberPhoneNumbers: z.array(z.string().min(1, 'Member phone number is required')).min(1, 'At least one member phone number is required'),
 })
 
+export const paymentSchema = z.object({
+  registrationId: z.string().min(1, 'Registration id is required'),
+})
+
+export type PaymentSchema = z.infer<typeof paymentSchema>;
 export type RegistrationIndividualSchema = z.infer<typeof registrationIndividualSchema>;
 export type RegistrationTeamSchema = z.infer<typeof registrationTeamSchema>;
 export type RegisterSchema = z.infer<typeof registerSchema>;
