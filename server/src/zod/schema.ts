@@ -5,6 +5,7 @@ export const userSchema = z.object({
   email: z.email('Invalid email address'),
   password: z.string().min(6, 'Password must be at least 6 characters long'),
   confirmPassword: z.string().min(6, 'Confirm password must be at least 6 characters long'),
+  phone: z.string().min(1, 'Phone number is required').regex(/^\+?\d{10,15}$/, 'Invalid phone number format'),
   institusi: z.string().min(1, 'Institution is required'),
   role: z.enum(['ADMIN', 'PARTICIPANT'], 'Role must be either ADMIN or PARTICIPANT'),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -46,11 +47,6 @@ export const loginSchema = z.object({
 
 export const createPaymentBody = z.object({
   registrationId: z.string().min(1),
-  customer: z.object({
-    name: z.string(),
-    email: z.email(),
-    phone: z.string().optional(),
-  }),
 });
 
 

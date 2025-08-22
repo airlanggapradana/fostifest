@@ -42,12 +42,13 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
       // ambil registration + competition
       const reg = await tx.registration.findUnique({
         where: {id: body.registrationId},
-        include: {competition: true},
+        include: {competition: true, user: true},
       });
 
       if (!reg) throw new Error('Registration not found');
 
       const competition = reg.competition;
+      const user = reg.user;
       const amount = competition.registrationFee;
       const orderId = `FF-${crypto.randomUUID().slice(0, 3).toUpperCase()}`;
 
@@ -69,9 +70,9 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
           gross_amount: amount,
         },
         customer_details: {
-          first_name: body.customer.name,
-          email: body.customer.email,
-          phone: body.customer.phone,
+          first_name: user?.name,
+          email: user?.email,
+          phone: user?.phone,
         },
         item_details: [
           {

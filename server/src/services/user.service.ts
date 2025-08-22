@@ -26,6 +26,7 @@ export const newUser = async (req: Request, res: Response, next: NextFunction) =
           id: `USER-${crypto.randomUUID().slice(0, 3).toUpperCase()}`,
           password: hashedPassword,
           name: rest.name,
+          phone: rest.phone,
           email: rest.email,
           institusi: rest.institusi,
           role: rest.role,
@@ -54,6 +55,7 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
       select: {
         id: true,
         name: true,
+        phone: true,
         email: true,
         role: true,
         createdAt: true,
