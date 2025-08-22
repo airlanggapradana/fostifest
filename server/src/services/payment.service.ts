@@ -40,17 +40,47 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
 
     const result = await prisma.$transaction(async (tx) => {
       // ambil registration + competition
-      const reg = await tx.registration.findUnique({
+      const reg = await prisma.registration.findUnique({
         where: {id: body.registrationId},
-        include: {competition: true, user: true},
+        include: {
+          competition: true,
+          user: true, // individual
+          team: {
+            include: {leader: true}, // team leader (user)
+          },
+        },
       });
 
       if (!reg) throw new Error('Registration not found');
 
       const competition = reg.competition;
-      const user = reg.user;
       const amount = competition.registrationFee;
       const orderId = `FF-${crypto.randomUUID().slice(0, 3).toUpperCase()}`;
+
+      // tentukan customer details
+      let customer = {
+        first_name: "",
+        email: "",
+        phone: undefined as string | undefined,
+      };
+
+      if (reg.user) {
+        // INDIVIDUAL
+        customer = {
+          first_name: reg.user.name,
+          email: reg.user.email,
+          phone: reg.user.phone || undefined,
+        };
+      } else if (reg.team) {
+        // TEAM → pakai leader
+        customer = {
+          first_name: reg.team.leader.name,
+          email: reg.team.leader.email,
+          phone: reg.team.leader.phone || undefined,
+        };
+      } else {
+        throw new Error("No user or team leader found for this registration");
+      }
 
       // buat transaksi pending di DB
       await tx.transaction.create({
@@ -69,11 +99,7 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
           order_id: orderId,
           gross_amount: amount,
         },
-        customer_details: {
-          first_name: user?.name,
-          email: user?.email,
-          phone: user?.phone,
-        },
+        customer_details: customer,
         item_details: [
           {
             id: competition.id,
