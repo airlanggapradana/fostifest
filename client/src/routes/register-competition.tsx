@@ -147,7 +147,7 @@ const RegisterCompetition = () => {
           registrationId: reg.id,
         })
         if (res.redirect_url) {
-          window.open(res.redirect_url, '_blank');
+          window.open(res.redirect_url, '_top');
         }
       } else {
         const payload = values as RegistrationIndividualSchema;
@@ -159,7 +159,7 @@ const RegisterCompetition = () => {
           registrationId: reg.id,
         })
         if (res.redirect_url) {
-          window.open(res.redirect_url, '_blank');
+          window.open(res.redirect_url, '_top');
         }
       }
       reset(); // Reset form after successful submission

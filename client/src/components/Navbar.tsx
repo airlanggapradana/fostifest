@@ -82,7 +82,7 @@ export function Navbar() {
         href: "/login",
       },
     {
-      title: "Instagaram",
+      title: "Instagram",
       icon: (
         <IconBrandInstagram className="h-full w-full  text-neutral-300"/>
       ),

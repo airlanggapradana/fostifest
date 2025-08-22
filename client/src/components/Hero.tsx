@@ -83,7 +83,9 @@ const Hero = () => {
               size="lg"
               className="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 border-2 border-teal-600 text-teal-600 font-semibold hover:bg-teal-600 hover:text-white transition-all duration-300"
             >
-              View Categories
+              <a href={'#categories'}>
+                View Categories
+              </a>
             </Button>
           </div>
         </div>
