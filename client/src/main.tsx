@@ -13,8 +13,8 @@ import PaymentSuccess from "@/routes/PaymentSuccess.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
-      <TanstackQueryProvider>
+    <TanstackQueryProvider>
+      <BrowserRouter>
         <Routes>
           <Route path={'/'} element={<App/>}/>
 
@@ -28,7 +28,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path={'/register-competition/success'} element={<PaymentSuccess/>}/>
           </Route>
         </Routes>
-      </TanstackQueryProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </TanstackQueryProvider>
   </StrictMode>,
 )
