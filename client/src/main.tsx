@@ -7,7 +7,6 @@ import {TanstackQueryProvider} from "@/utils/QueryProvider.tsx";
 import AuthLayout from "@/components/AuthLayout.tsx";
 import Login from "@/routes/Login.tsx";
 import Register from "@/routes/Register.tsx";
-import {AnimatePresence} from 'framer-motion';
 import RegisterCompetition from "@/routes/register-competition.tsx";
 import RegistrationLayout from "@/components/RegistrationLayout.tsx";
 import PaymentSuccess from "@/routes/PaymentSuccess.tsx";
@@ -16,21 +15,19 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
       <TanstackQueryProvider>
-        <AnimatePresence mode={'sync'} initial={true}>
-          <Routes>
-            <Route path={'/'} element={<App/>}/>
+        <Routes>
+          <Route path={'/'} element={<App/>}/>
 
-            <Route element={<AuthLayout/>}>
-              <Route path={'/login'} element={<Login/>}/>
-              <Route path={'/register'} element={<Register/>}/>
-            </Route>
+          <Route element={<AuthLayout/>}>
+            <Route path={'/login'} element={<Login/>}/>
+            <Route path={'/register'} element={<Register/>}/>
+          </Route>
 
-            <Route element={<RegistrationLayout/>}>
-              <Route path={'/register-competition/:competitionId'} element={<RegisterCompetition/>}/>
-              <Route path={'/register-competition/success'} element={<PaymentSuccess/>}/>
-            </Route>
-          </Routes>
-        </AnimatePresence>
+          <Route element={<RegistrationLayout/>}>
+            <Route path={'/register-competition/:competitionId'} element={<RegisterCompetition/>}/>
+            <Route path={'/register-competition/success'} element={<PaymentSuccess/>}/>
+          </Route>
+        </Routes>
       </TanstackQueryProvider>
     </BrowserRouter>
   </StrictMode>,
