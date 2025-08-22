@@ -28,17 +28,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         return null;
       }
 
-      const token = jwt.sign({id: user.id, email: user.email, name: user.name}, env.JWT_SECRET, {
+      return jwt.sign({id: user.id, email: user.email, name: user.name}, env.JWT_SECRET, {
         expiresIn: "1d",
       });
-
-      // res.cookie("accessToken", token, {
-      //   httpOnly: false,
-      //   secure: false,   // hanya lewat HTTPS
-      //   sameSite: 'lax',
-      //   maxAge: 24 * 60 * 60 * 1000 // 1 hari
-      // })
-      return token;
     })
     if (!doLogin) return;
     res.status(200).send({

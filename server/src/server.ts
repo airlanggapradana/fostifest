@@ -11,10 +11,7 @@ import exportRouter from "./controllers/export.controller";
 
 const app: Application = express();
 
-app.use(cors({
-  origin: env.FRONTEND_URL, // Ganti dengan URL frontend Anda
-  credentials: true
-}));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
