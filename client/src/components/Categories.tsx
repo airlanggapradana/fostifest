@@ -13,7 +13,7 @@ const Categories = () => {
       description: 'Design and development challenges for coders',
       color: 'from-blue-500 to-purple-600',
       participants: data.find(c => c.category === 'Programming')?.totalParticipants,
-      prizes: '$8,000'
+      prizes: data.find(c => c.category === 'Programming')?.prize
     },
     {
       icon: Palette,
@@ -21,7 +21,7 @@ const Categories = () => {
       description: 'UI/UX Web design and digital art competitions',
       color: 'from-pink-500 to-rose-600',
       participants: data.find(c => c.category === 'Design')?.totalParticipants,
-      prizes: '$6,000'
+      prizes: data.find(c => c.category === 'Programming')?.prize
     },
     {
       icon: Lightbulb,
@@ -29,14 +29,14 @@ const Categories = () => {
       description: 'Scientific papers and academic research competitions',
       color: 'from-yellow-500 to-orange-600',
       participants: data.find(c => c.category === 'Literary')?.totalParticipants,
-      prizes: '$10,000'
+      prizes: data.find(c => c.category === 'Literary')?.prize
     },
   ];
 
   return (
     <section id="categories" className="py-10 sm:py-20 bg-gray-950">
       <div className="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8">
-        <div className="text-center mb-8 sm:mb-16">
+        <div className="text-center mb-8">
           <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-gray-100 mb-3 sm:mb-6">
             Competition <span
             className="text-transparent bg-clip-text bg-gradient-to-b from-emerald-200 to-teal-400">Categories</span>
@@ -46,13 +46,14 @@ const Categories = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
           {categories.map((category, index) => {
             const IconComponent = category.icon;
             return (
               <div key={index}>
                 {/* Mobile: shadcn Card, no 3D */}
-                <Card className="block sm:hidden bg-gray-900 border-2 border-teal-700 rounded-xl min-h-[300px]">
+                <Card
+                  className="block sm:hidden bg-gray-900 border-2 border-teal-700 rounded-xl max-w-[350px] mx-auto min-h-[300px]">
                   <ShadCardContent className="p-4 flex flex-col h-full">
                     <div
                       className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br ${category.color} rounded-2xl mb-3 text-white shadow-lg`}>
@@ -66,8 +67,12 @@ const Categories = () => {
                         <p className="text-sm font-semibold text-gray-100">{category.participants}</p>
                       </div>
                       <div className="text-right">
-                        <p className="text-xs text-gray-400">Prize Pool</p>
-                        <p className="text-sm font-semibold text-emerald-400">{category.prizes}</p>
+                        <p className="text-xs text-gray-400">Fees</p>
+                        <p
+                          className="text-sm font-semibold text-emerald-400">{category.prizes?.toLocaleString("id-ID", {
+                          style: 'currency',
+                          currency: 'IDR'
+                        })}</p>
                       </div>
                     </div>
                   </ShadCardContent>
@@ -107,9 +112,12 @@ const Categories = () => {
                                     className="text-lg font-semibold text-gray-100">{category.participants}</CardItem>
                         </CardItem>
                         <CardItem className="text-right">
-                          <CardItem className="text-sm text-gray-400" as={'p'}>Prize Pool</CardItem>
+                          <CardItem className="text-sm text-gray-400" as={'p'}>Fees</CardItem>
                           <CardItem className="text-lg font-semibold text-emerald-400"
-                                    as={'p'}>{category.prizes}</CardItem>
+                                    as={'p'}>{category.prizes?.toLocaleString('id-ID', {
+                            style: 'currency',
+                            currency: 'IDR'
+                          })}</CardItem>
                         </CardItem>
                       </CardItem>
                     </CardContent>

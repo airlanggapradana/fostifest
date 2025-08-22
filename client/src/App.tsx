@@ -23,7 +23,7 @@ function App() {
   if (!data) return <div className="text-center text-gray-400">No data available</div>;
   return (
     <CompetitionContext.Provider value={data}>
-      <div className={"min-h-screen bg-white w-full"}>
+      <main className={"min-h-screen bg-white w-full overflow-hidden"}>
         <Navbar/>
         <Hero/>
         <Stats/>
@@ -33,7 +33,7 @@ function App() {
         <Sponsors/>
         <MediaPartners/>
         <Footer/>
-      </div>
+      </main>
     </CompetitionContext.Provider>
   )
 }
