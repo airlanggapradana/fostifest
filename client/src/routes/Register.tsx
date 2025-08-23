@@ -8,6 +8,7 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import {useRegister} from "@/utils/query.ts";
 import {toast} from "sonner";
 import {useNavigate} from "react-router";
+import {ArrowLeft} from "lucide-react";
 
 const RegisterPage = () => {
   const navigate = useNavigate();
@@ -51,6 +52,10 @@ const RegisterPage = () => {
   return (
     <Card className="w-full max-w-md z-10 bg-gray-800 border-2 border-teal-400">
       <CardHeader className="space-y-1">
+        <Button className={'w-1/4'} onClick={() => navigate(-1)}>
+          <ArrowLeft/>
+          Back
+        </Button>
         <CardTitle className="text-2xl font-bold text-center text-gray-100">Register</CardTitle>
         <CardDescription className="text-center text-gray-300">
           Fill in the form below to create a new account

@@ -107,7 +107,7 @@ const Categories = () => {
                                 rotateX={20}
                                 className="flex relative w-full justify-between items-center pt-4 border-t border-gray-800">
                         <CardItem>
-                          <CardItem as={'p'} className="text-sm text-gray-400">Participants</CardItem>
+                          <CardItem as={'p'} className="text-sm text-gray-400">Total Registrations</CardItem>
                           <CardItem as={'p'}
                                     className="text-lg font-semibold text-gray-100">{category.participants}</CardItem>
                         </CardItem>

@@ -5,12 +5,12 @@ import {
   SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
   SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import {Home, Settings} from "lucide-react";
+import {Home, LogOut, Settings} from "lucide-react";
 import {Button} from "@/components/ui/button.tsx";
 import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
+import {useLocation, useNavigate} from "react-router";
+import {useUserSessionContext} from "@/hooks/context.ts";
 import Cookies from "js-cookie";
-import {decodeJwt} from "@/utils/helper.ts";
-import {useLocation} from "react-router";
 
 // Menu items.
 const items = [
@@ -27,37 +27,37 @@ const items = [
 ]
 
 export function AppSidebar() {
-  const token = Cookies.get("accessToken");
-  const decodedToken = decodeJwt(token as string);
+  const navigate = useNavigate();
+  const session = useUserSessionContext()
   const location = useLocation();
   return (
-    <Sidebar>
-      <SidebarHeader>
+    <Sidebar className={'border-none'}>
+      <SidebarHeader className={'bg-teal-950 py-4'}>
         <div className="flex items-center gap-3">
           <Avatar>
-            <AvatarImage src={`https://ui-avatars.com/api/?name=${decodedToken?.payload.name}`} alt="User Avatar"/>
+            <AvatarImage src={`https://ui-avatars.com/api/?name=${session.payload.name}`} alt="User Avatar"/>
             <AvatarFallback>US</AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-1">
-            <span className="text-sm font-semibold">{decodedToken?.payload.name}</span>
-            <span className="text-[12px] text-muted-foreground">{decodedToken?.payload.email}</span>
+            <span className="text-sm font-semibold text-gray-100">{session.payload.name}</span>
+            <span className="text-[12px] text-gray-300">{session.payload.email}</span>
           </div>
         </div>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className={'bg-teal-950'}>
         <SidebarGroup>
-          <SidebarGroupLabel>Main</SidebarGroupLabel>
+          <SidebarGroupLabel className={'text-gray-100'}>Main Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => {
                 const isActive = location.pathname === item.url;
                 return (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild>
+                    <SidebarMenuButton asChild size={'lg'}>
                       <Button
                         asChild
                         variant="ghost"
-                        className={`w-full justify-start ${isActive ? " bg-teal-100 font-semibold text-teal-500" : "font-normal text-muted-foreground"}`}
+                        className={`w-full justify-start hover:bg-teal-900 hover:text-teal-50 transition-colors active:bg-teal-800 active:text-teal-300 ${isActive ? " bg-teal-700 font-semibold text-teal-300" : "font-normal text-gray-300"}`}
                       >
                         <a href={item.url} className="flex items-center gap-2">
                           <item.icon/>
@@ -72,7 +72,17 @@ export function AppSidebar() {
           </SidebarGroupContent>
         </SidebarGroup>
       </SidebarContent>
-      <SidebarFooter/>
+      <SidebarFooter className={'bg-teal-950'}>
+        <Button
+          onClick={() => {
+            Cookies.remove('accessToken')
+            navigate('/login', {replace: true})
+          }}
+        >
+          <LogOut className="h-6 w-6"/>
+          Logout
+        </Button>
+      </SidebarFooter>
     </Sidebar>
   )
 }

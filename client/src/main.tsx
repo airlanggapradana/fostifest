@@ -12,6 +12,7 @@ import RegistrationLayout from "@/components/RegistrationLayout.tsx";
 import PaymentSuccess from "@/routes/PaymentSuccess.tsx";
 import NotFoundPage from "@/routes/NotFound.tsx";
 import ProfileLayout from "@/components/ProfileLayout.tsx";
+import ProfileMain from "@/routes/ProfileMain.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -25,13 +26,13 @@ createRoot(document.getElementById('root')!).render(
             <Route path={'/register'} element={<Register/>}/>
           </Route>
 
-          <Route element={<RegistrationLayout/>}>
-            <Route path={'/register-competition/:competitionId'} element={<RegisterCompetition/>}/>
-            <Route path={'/register-competition/success'} element={<PaymentSuccess/>}/>
+          <Route path={'register-competition'} element={<RegistrationLayout/>}>
+            <Route index path={':competitionId'} element={<RegisterCompetition/>}/>
+            <Route path={'success'} element={<PaymentSuccess/>}/>
           </Route>
 
           <Route path={'/profile'} element={<ProfileLayout/>}>
-            <Route index element={<div>Profile main</div>}/>
+            <Route index element={<ProfileMain/>}/>
             <Route path={'settings'} element={<div>Profile settings</div>}/>
           </Route>
 

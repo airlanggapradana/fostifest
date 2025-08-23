@@ -15,6 +15,7 @@ import {Form, FormControl, FormField, FormLabel, FormMessage} from "@/components
 import {useLogin} from "@/utils/query.ts";
 import {useNavigate} from "react-router";
 import {toast} from "sonner"
+import {ArrowLeft} from "lucide-react";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -51,6 +52,10 @@ const LoginPage: React.FC = () => {
   return (
     <Card className="w-full max-w-md z-10 bg-gray-800 border-2 border-teal-400">
       <CardHeader className="space-y-1">
+        <Button className={'w-1/4'} onClick={() => navigate('/')}>
+          <ArrowLeft/>
+          Back
+        </Button>
         <CardTitle className="text-2xl font-bold text-center text-gray-100">Login</CardTitle>
         <CardDescription className="text-center text-gray-300">
           Enter your username and password to access your account

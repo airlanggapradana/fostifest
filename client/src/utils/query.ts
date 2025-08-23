@@ -14,6 +14,7 @@ import Cookies from "js-cookie";
 import type {GetCompetitionByIdResponse} from "@/types/competitionById.type.ts";
 import type {PaymentAPIResponse} from "@/types/payment.type.ts";
 import type {RegistrationResponse} from "@/types/registration.type.ts";
+import type {GetUserDetailsResponse} from "@/types/userDetails.type.ts";
 
 export const useGetAllComps = () => {
   return useQuery({
@@ -137,6 +138,7 @@ export const useRegisterIndividual = () => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({queryKey: ['getAllComps']});
+      await queryClient.invalidateQueries({queryKey: ['getUserDetails']});
     }
   })
 }
@@ -170,6 +172,7 @@ export const useRegisterTeam = () => {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({queryKey: ['getAllComps']});
+      await queryClient.invalidateQueries({queryKey: ['getUserDetails']});
     }
   })
 }
@@ -191,6 +194,28 @@ export const usePayment = () => {
           throw new Error(e.response?.data.message || 'Payment failed');
         }
         throw new Error('An unexpected error occurred during payment');
+      }
+    }
+  })
+}
+
+export const useGetUserDetails = (userId: string) => {
+  return useQuery({
+    queryKey: ['getUserDetails', {userId}],
+    queryFn: async () => {
+      try {
+        const res = await axios.get(`${VITE_BASE_API_URL}/user/${userId}`, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          method: 'GET'
+        }).then(res => res.data as GetUserDetailsResponse)
+        return res.data
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Failed to fetch user details');
+        }
+        throw new Error('An unexpected error occurred while fetching user details');
       }
     }
   })
