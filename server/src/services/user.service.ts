@@ -121,6 +121,8 @@ export async function getUserDetails(req: Request, res: Response, next: NextFunc
         competition: {
           id: r.competition.id,
           name: r.competition.name,
+          startDate: r.competition.startDate,
+          endDate: r.competition.endDate,
           description: r.competition.description,
           type: r.competition.type,
           category: r.competition.category,
