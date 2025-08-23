@@ -113,6 +113,7 @@ export const newRegistrationTeam = async (req: Request, res: Response, next: Nex
           id: `REG-${crypto.randomUUID().slice(0, 5).toUpperCase()}`,
           status: payload.status,
           competition: {connect: {id: payload.competitionId}},
+          user: {connect: {id: payload.leaderId}},
           team: {
             create: {
               name: payload.teamName,

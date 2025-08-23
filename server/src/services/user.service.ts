@@ -81,25 +81,99 @@ export const getAllUsers = async (req: Request, res: Response, next: NextFunctio
   }
 }
 
-export const getUserById = async (req: Request, res: Response, next: NextFunction) => {
+export async function getUserDetails(req: Request, res: Response, next: NextFunction) {
   try {
     const {id} = req.params;
+
     const user = await prisma.user.findUnique({
-      where: {id}
-    })
+      where: {id},
+      include: {
+        registrations: {
+          include: {
+            competition: {include: {category: true}},
+            transaction: true,
+            team: {
+              include: {
+                leader: true,
+                participants: true,
+              },
+            },
+            user: true
+          },
+        },
+      },
+    });
+
     if (!user) {
-      res.status(404).send({
-        message: 'User not found'
-      });
+      res.status(404).json({message: "User not found"});
       return;
     }
+
+    // Format response supaya lebih rapih
+    const formatted = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
+      registrations: user.registrations.map((r) => ({
+        registrationId: r.id,
+        status: r.status,
+        competition: {
+          id: r.competition.id,
+          name: r.competition.name,
+          description: r.competition.description,
+          type: r.competition.type,
+          category: r.competition.category,
+        },
+        transaction: r.transaction
+          ? {
+            id: r.transaction.id,
+            status: r.transaction.status,
+            amount: r.transaction.amount,
+            paymentType: r.transaction.paymentType,
+            paymentCode: r.transaction.paymentCode,
+            midtransOrderId: r.transaction.midtransOrderId,
+            transactionTime: r.transaction.transactionTime,
+          }
+          : null,
+        team:
+          r.competition.type === "TEAM" && r.team
+            ? {
+              id: r.team.id,
+              name: r.team.name,
+              leader: {
+                id: r.team.leader.id,
+                name: r.team.leader.name,
+                email: r.team.leader.email,
+                phone: r.team.leader.phone,
+              },
+              members: r.team.participants.map((p) => ({
+                id: p.id,
+                name: p.name,
+                email: p.email,
+                phone: p.phoneNumber,
+              })),
+            }
+            : null,
+      })),
+    };
+
+    if (!formatted) {
+      res.status(200).send({
+        message: "No user details found",
+        data: null,
+      })
+      return;
+    }
+
     res.status(200).send({
-      message: 'User fetched successfully',
-      data: user
+      message: "User details fetched successfully",
+      data: formatted,
     })
-    return
-  } catch (e) {
-    next(e);
+    return;
+  } catch (err) {
+    console.error("Get user details error:", err);
+    next(err);
   }
 }
 
