@@ -46,7 +46,6 @@ export const useLogin = () => {
             'Content-Type': 'application/json'
           },
           method: 'POST',
-          withCredentials: true
         }).then(res => res.data as { message: string, data: string });
         // Set the access token in cookies
         Cookies.set('accessToken', res.data)
