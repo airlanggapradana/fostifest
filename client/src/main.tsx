@@ -11,6 +11,7 @@ import RegisterCompetition from "@/routes/register-competition.tsx";
 import RegistrationLayout from "@/components/RegistrationLayout.tsx";
 import PaymentSuccess from "@/routes/PaymentSuccess.tsx";
 import NotFoundPage from "@/routes/NotFound.tsx";
+import ProfileLayout from "@/components/ProfileLayout.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -27,6 +28,11 @@ createRoot(document.getElementById('root')!).render(
           <Route element={<RegistrationLayout/>}>
             <Route path={'/register-competition/:competitionId'} element={<RegisterCompetition/>}/>
             <Route path={'/register-competition/success'} element={<PaymentSuccess/>}/>
+          </Route>
+
+          <Route path={'/profile'} element={<ProfileLayout/>}>
+            <Route index element={<div>Profile main</div>}/>
+            <Route path={'settings'} element={<div>Profile settings</div>}/>
           </Route>
 
           <Route path={'*'} element={<NotFoundPage/>}/>
