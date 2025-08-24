@@ -7,6 +7,7 @@ import {useNavigate} from "react-router";
 import {Badge} from "@/components/ui/badge.tsx";
 import {useGetUserDetails} from "@/utils/query.ts";
 import {useState} from "react";
+import DashboardLoading from "@/components/DashboardLoading.tsx";
 
 const getStatusIcon = (status: string) => {
   switch (status) {
@@ -48,7 +49,7 @@ const ProfileMain = () => {
   };
 
   const {data: user, isLoading, error} = useGetUserDetails(session.payload.id);
-  if (isLoading) return <div className="text-gray-100">Loading...</div>;
+  if (isLoading) return <DashboardLoading/>;
   if (error) return <div className="text-red-500">Error: {error.message}</div>;
   if (!user) return <div className="text-red-500">Error: User details not found</div>;
 
