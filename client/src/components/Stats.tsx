@@ -66,8 +66,9 @@ const Stats = () => {
               <div className={`flex items-center justify-center w-12 h-12 ${stat.bg} rounded-xl mb-4 mx-auto`}>
                 {stat.icon}
               </div>
-              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2">{stat.value}</h3>
-              <p className="text-gray-300 text-sm sm:text-base">{stat.label}</p>
+              <h3
+                className="text-2xl sm:text-3xl font-bold text-white mb-1 sm:mb-2 text-center sm:text-start">{stat.value}</h3>
+              <p className="text-gray-300 text-sm sm:text-base text-center sm:text-start">{stat.label}</p>
             </Card>
           </AnimatedContent>
         ))}
