@@ -50,14 +50,14 @@ const LoginPage: React.FC = () => {
   }
 
   return (
-    <Card className="w-full max-w-md z-10 bg-gray-800 border-2 border-teal-400">
-      <CardHeader className="space-y-1">
-        <Button className={'w-1/4'} onClick={() => navigate('/')}>
+    <Card className="w-full max-w-[20rem] sm:max-w-md z-10 bg-gray-800 border-2 border-teal-400">
+      <CardHeader className="space-y-1 w-full">
+        <Button className={'w-1/3 sm:w-1/4 text-xs sm:text-sm'} size={'sm'} onClick={() => navigate('/')}>
           <ArrowLeft/>
           Back
         </Button>
-        <CardTitle className="text-2xl font-bold text-center text-gray-100">Login</CardTitle>
-        <CardDescription className="text-center text-gray-300">
+        <CardTitle className="text-lg sm:text-2xl text-start font-bold sm:text-center text-gray-100">Login</CardTitle>
+        <CardDescription className="text-start sm:text-center text-xs sm:text-base text-gray-300">
           Enter your username and password to access your account
         </CardDescription>
       </CardHeader>
@@ -75,13 +75,13 @@ const LoginPage: React.FC = () => {
               name="email"
               render={({field}) => (
                 <div className="space-y-2">
-                  <FormLabel className={'text-gray-100'}>Email</FormLabel>
+                  <FormLabel className={'text-gray-100 text-xs sm:text-base'}>Email</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
                       placeholder="Enter your email"
                       {...field}
-                      className={form.formState.errors.email ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 text-gray-100 border-emerald-600"}
+                      className={form.formState.errors.email ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 placeholder:text-xs placeholder:sm:text-base text-gray-100 border-emerald-600"}
                     />
                   </FormControl>
                   <FormMessage/>
@@ -94,13 +94,13 @@ const LoginPage: React.FC = () => {
               name="password"
               render={({field}) => (
                 <div className="space-y-2">
-                  <FormLabel className={'text-gray-100'}>Password</FormLabel>
+                  <FormLabel className={'text-gray-100 text-xs sm:text-base'}>Password</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
                       placeholder="Enter your password"
                       {...field}
-                      className={form.formState.errors.password ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 text-gray-100 border-emerald-600"}
+                      className={form.formState.errors.password ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 placeholder:text-xs placeholder:sm:text-base text-gray-100 border-emerald-600"}
                     />
                   </FormControl>
                   <FormMessage/>
@@ -109,10 +109,10 @@ const LoginPage: React.FC = () => {
             />
           </CardContent>
           <CardFooter className="flex flex-col space-y-4">
-            <Button type="submit" className="w-full" disabled={isPending}>
+            <Button type="submit" className="w-full text-sm" disabled={isPending}>
               {isPending ? "Signing In..." : "Sign In"}
             </Button>
-            <div className="text-sm text-center text-muted-foreground">
+            <div className="text-xs sm:text-sm text-center text-muted-foreground">
               <a href="/register" className="hover:underline">
                 Don't have an account? Register now
               </a>

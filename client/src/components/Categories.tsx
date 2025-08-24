@@ -1,5 +1,5 @@
 import {Code, Palette, Lightbulb} from 'lucide-react';
-import {Card, CardContent, CardContent as ShadCardContent} from './ui/card';
+import {Card, CardContent} from './ui/card';
 import {CardBody, CardContainer, CardItem} from "@/components/ui/3d-card";
 import {useCompetitionContext} from "@/hooks/context.ts";
 
@@ -46,36 +46,37 @@ const Categories = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-5">
+        <div className="flex sm:flex-row flex-col gap-12 sm:gap-5">
           {categories.map((category, index) => {
             const IconComponent = category.icon;
             return (
-              <div key={index}>
+              <div key={index} className={'flex'}>
                 {/* Mobile: shadcn Card, no 3D */}
                 <Card
-                  className="block sm:hidden bg-gray-900 border-2 border-teal-700 rounded-xl max-w-[350px] mx-auto min-h-[300px]">
-                  <ShadCardContent className="p-4 flex flex-col h-full">
+                  className="block sm:hidden bg-gray-900 border-2 border-teal-700 rounded-xl min-w-[350px] mx-auto min-h-[200px]">
+                  <CardContent className="px-4 flex flex-col h-full">
                     <div
-                      className={`inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br ${category.color} rounded-2xl mb-3 text-white shadow-lg`}>
-                      <IconComponent className="w-6 h-6"/>
+                      className={`inline-flex items-center justify-center w-10 h-10 bg-gradient-to-br ${category.color} rounded-xl mb-2 text-white shadow-md`}>
+                      <IconComponent className="w-5 h-5"/>
                     </div>
-                    <h1 className="text-lg font-bold text-gray-100 mb-1">{category.name}</h1>
-                    <p className="text-gray-400 text-xs mb-3 leading-relaxed">{category.description}</p>
-                    <div className="flex w-full justify-between items-center pt-2 border-t border-gray-800 mt-auto">
+                    <h1 className="text-base font-bold text-gray-100 mb-0.5">{category.name}</h1>
+                    <p className="text-gray-400 text-xs mb-2 leading-snug">{category.description}</p>
+                    <div className="flex w-full justify-between items-center pt-1 border-t border-gray-800 mt-auto">
                       <div>
                         <p className="text-xs text-gray-400">Participants</p>
                         <p className="text-sm font-semibold text-gray-100">{category.participants}</p>
                       </div>
                       <div className="text-right">
                         <p className="text-xs text-gray-400">Fees</p>
-                        <p
-                          className="text-sm font-semibold text-emerald-400">{category.prizes?.toLocaleString("id-ID", {
-                          style: 'currency',
-                          currency: 'IDR'
-                        })}</p>
+                        <p className="text-sm font-semibold text-emerald-400">
+                          {category.prizes?.toLocaleString("id-ID", {
+                            style: 'currency',
+                            currency: 'IDR'
+                          })}
+                        </p>
                       </div>
                     </div>
-                  </ShadCardContent>
+                  </CardContent>
                 </Card>
                 {/* Desktop: 3D Card */}
                 <CardContainer

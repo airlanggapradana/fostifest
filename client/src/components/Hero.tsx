@@ -48,7 +48,7 @@ const Hero = () => {
           </h3>
 
           <h1
-            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-title bg-gradient-to-t from-emerald-300 to-teal-500 bg-clip-text text-transparent leading-relaxed drop-shadow-lg mt-2 sm:mt-4">
+            className="text-4xl md:text-6xl lg:text-7xl font-title bg-gradient-to-t from-emerald-300 to-teal-500 bg-clip-text text-transparent leading-relaxed drop-shadow-lg mt-2 sm:mt-4">
             FOSTIFEST
           </h1>
 
@@ -66,7 +66,7 @@ const Hero = () => {
             loop={true}
             showCursor={true}
             cursorCharacter="|"
-            className="mb-5 sm:mb-7 text-gray-400 text-base sm:text-lg font-semibold leading-relaxed"
+            className="mb-6 mt-4 sm:mb-7 text-gray-400 text-sm sm:text-lg font-semibold leading-relaxed"
           />
 
           <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center mb-10 sm:mb-16 w-full">
@@ -81,7 +81,7 @@ const Hero = () => {
             <Button
               variant="outline"
               size="lg"
-              className="w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 border-2 border-teal-600 text-teal-600 font-semibold hover:bg-teal-600 hover:text-white transition-all duration-300"
+              className="w-full sm:w-auto px-6 py-3 bg-transparent sm:px-8 sm:py-4 border-2 border-teal-600 text-teal-600 font-semibold hover:bg-teal-800 hover:text-white transition-all duration-300"
             >
               <a href={'#categories'}>
                 View Categories
