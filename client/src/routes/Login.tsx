@@ -81,7 +81,7 @@ const LoginPage: React.FC = () => {
                       type="email"
                       placeholder="Enter your email"
                       {...field}
-                      className={form.formState.errors.email ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 placeholder:text-xs placeholder:sm:text-base text-gray-100 border-emerald-600"}
+                      className={form.formState.errors.email ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 text-xs sm:text-sm placeholder:text-xs placeholder:sm:text-base text-gray-100 border-emerald-600"}
                     />
                   </FormControl>
                   <FormMessage/>
@@ -100,7 +100,7 @@ const LoginPage: React.FC = () => {
                       type="password"
                       placeholder="Enter your password"
                       {...field}
-                      className={form.formState.errors.password ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 placeholder:text-xs placeholder:sm:text-base text-gray-100 border-emerald-600"}
+                      className={form.formState.errors.password ? "border-red-500 focus-visible:ring-red-500" : "placeholder:text-gray-500 text-xs sm:text-sm placeholder:text-xs placeholder:sm:text-base text-gray-100 border-emerald-600"}
                     />
                   </FormControl>
                   <FormMessage/>

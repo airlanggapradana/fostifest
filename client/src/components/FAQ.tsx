@@ -70,13 +70,13 @@ const FAQ = () => {
         </div>
 
         <div className="max-w-5xl mx-auto px-3">
-          <div className="space-y-4">
+          <div className="space-y-7">
             {faqs.map((faq, index) => (
               <Collapsible
                 key={index}
                 open={openItems.includes(index)}
                 onOpenChange={() => toggleItem(index)}
-                className="border border-teal-300 rounded-lg bg-teal-900/80"
+                className="border-none rounded-lg bg-teal-900/80"
               >
                 <CollapsibleTrigger
                   className="flex w-full items-center justify-between p-4 text-left rounded-lg hover:bg-teal-800/90 transition-colors">
@@ -87,8 +87,8 @@ const FAQ = () => {
                     }`}
                   />
                 </CollapsibleTrigger>
-                <CollapsibleContent className="px-4 pb-4 border-t border-teal-500">
-                  <div className="pt-2 text-gray-400 leading-relaxed text-sm sm:text-base">{faq.answer}</div>
+                <CollapsibleContent className="px-4 pb-4 border-t border-teal-500 bg-emerald-900/70 rounded-b-lg">
+                  <div className="pt-2 text-gray-300 leading-relaxed text-sm sm:text-base">{faq.answer}</div>
                 </CollapsibleContent>
               </Collapsible>
             ))}

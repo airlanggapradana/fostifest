@@ -92,7 +92,7 @@ const RegisterPage = () => {
                         className={
                           form.formState.errors.email
                             ? "border-red-500 focus-visible:ring-red-500 h-11 sm:h-10 placeholder:text-gray-500 text-gray-100"
-                            : "placeholder:text-gray-500 placeholder:text-sm placeholder:sm:text-base text-gray-100 border-emerald-600 h-11 sm:h-10"
+                            : "placeholder:text-gray-500 text-xs sm:text-sm placeholder:text-sm placeholder:sm:text-base text-gray-100 border-emerald-600 h-11 sm:h-10"
                         }
                       />
                     </FormControl>
@@ -116,7 +116,7 @@ const RegisterPage = () => {
                         className={
                           form.formState.errors.name
                             ? "border-red-500 focus-visible:ring-red-500 h-11 sm:h-10 placeholder:text-gray-500 text-gray-100"
-                            : "placeholder:text-gray-500 placeholder:text-sm placeholder:sm:text-base text-gray-100 border-emerald-600 h-11 sm:h-10"
+                            : "placeholder:text-gray-500 text-xs sm:text-sm placeholder:text-sm placeholder:sm:text-base text-gray-100 border-emerald-600 h-11 sm:h-10"
                         }
                       />
                     </FormControl>
@@ -141,7 +141,7 @@ const RegisterPage = () => {
                         className={
                           form.formState.errors.phone
                             ? "border-red-500 focus-visible:ring-red-500 h-11 sm:h-10 placeholder:text-gray-500 text-gray-100"
-                            : "placeholder:text-gray-500 placeholder:text-sm placeholder:sm:text-base text-gray-100 border-emerald-600 h-11 sm:h-10"
+                            : "placeholder:text-gray-500 text-xs sm:text-sm placeholder:text-sm placeholder:sm:text-base text-gray-100 border-emerald-600 h-11 sm:h-10"
                         }
                       />
                     </FormControl>
@@ -165,7 +165,7 @@ const RegisterPage = () => {
                         className={
                           form.formState.errors.password
                             ? "border-red-500 focus-visible:ring-red-500 h-11 sm:h-10 placeholder:text-gray-500 text-gray-100"
-                            : "placeholder:text-gray-500 placeholder:text-sm placeholder:sm:text-base text-gray-100 border-emerald-600 h-11 sm:h-10"
+                            : "placeholder:text-gray-500 text-xs sm:text-sm placeholder:text-sm placeholder:sm:text-base text-gray-100 border-emerald-600 h-11 sm:h-10"
                         }
                       />
                     </FormControl>
@@ -189,7 +189,7 @@ const RegisterPage = () => {
                         className={
                           form.formState.errors.confirmPassword
                             ? "border-red-500 focus-visible:ring-red-500 h-11 sm:h-10 placeholder:text-gray-500 text-gray-100"
-                            : "placeholder:text-gray-500 placeholder:text-sm placeholder:sm:text-base text-gray-100 border-emerald-600 h-11 sm:h-10"
+                            : "placeholder:text-gray-500 text-xs sm:text-sm placeholder:text-sm placeholder:sm:text-base text-gray-100 border-emerald-600 h-11 sm:h-10"
                         }
                       />
                     </FormControl>
@@ -213,7 +213,7 @@ const RegisterPage = () => {
                         className={
                           form.formState.errors.institusi
                             ? "border-red-500 focus-visible:ring-red-500 h-11 sm:h-10 placeholder:text-gray-500 text-gray-100"
-                            : "placeholder:text-gray-500 placeholder:text-sm placeholder:sm:text-base text-gray-100 border-emerald-600 h-11 sm:h-10"
+                            : "placeholder:text-gray-500 text-xs sm:text-sm placeholder:text-sm placeholder:sm:text-base text-gray-100 border-emerald-600 h-11 sm:h-10"
                         }
                       />
                     </FormControl>
