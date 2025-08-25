@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import path from "path"
 import ViteSitemapPlugin from "vite-plugin-sitemap";
+import {VITE_BASE_URL} from "./src/env.ts";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -10,9 +11,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
     ViteSitemapPlugin({
-      hostname: "https://mysite.com", // ganti sesuai domain
+      hostname: VITE_BASE_URL, // ganti sesuai domain
       outDir: "dist",
-      dynamicRoutes: ["/", "/about", "/contact"], // tambahin routes
+      dynamicRoutes: ["/", "/login", "/register"], // tambahin routes
     }),],
   resolve: {
     alias: {
