@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://fostifest.vercel.app/sitemap.xml
