@@ -26,7 +26,7 @@ const LoginPage: React.FC = () => {
     useSEO({
       title: "Login",
       description:
-        "Festival teknologi dan inovasi tahunan yang diselenggarakan oleh FOSTI UMS. Ikuti berbagai kompetisi dan seminar di FOSTIFEST 2025!",
+        "Login ke akun FOSTIFEST 2025 Anda untuk mengelola profil, mengunggah karya, dan mengikuti acara kami.",
       url: VITE_BASE_URL,
       image: ogHome,
       schema: WebSiteSchema("FOSTIFEST 2025", VITE_BASE_URL)

@@ -14,6 +14,7 @@ import {useSEO} from "@/hooks/useSEO.tsx";
 import {WebSiteSchema} from "@/hooks/seoSchema.ts";
 import {VITE_BASE_URL} from "@/env.ts";
 import ogHome from "@/assets/og/og-home.png";
+import Timeline from "@/components/Timeline.tsx";
 
 function App() {
   {
@@ -44,6 +45,7 @@ function App() {
         <Stats/>
         <Categories/>
         <Competitions/>
+        <Timeline/>
         <FAQ/>
         <Sponsors/>
         <MediaPartners/>
