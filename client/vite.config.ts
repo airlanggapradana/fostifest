@@ -10,9 +10,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
     ViteSitemapPlugin({
-      hostname: "https://mysite.com", // ganti sesuai domain
+      hostname: "https://fostifest.vercel.app", // ganti sesuai domain
       outDir: "dist",
-      dynamicRoutes: ["/", "/about", "/contact"], // tambahin routes
+      dynamicRoutes: ["/", "/login", "/register"], // tambahin routes
     }),],
   resolve: {
     alias: {
