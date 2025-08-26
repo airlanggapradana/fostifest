@@ -9,8 +9,22 @@ import {useRegister} from "@/utils/query.ts";
 import {toast} from "sonner";
 import {useNavigate} from "react-router";
 import {ArrowLeft} from "lucide-react";
+import {useSEO} from "@/hooks/useSEO.tsx";
+import {VITE_BASE_URL} from "@/env.ts";
+import ogHome from "@/assets/og/og-home.png";
+import {WebSiteSchema} from "@/hooks/seoSchema.ts";
 
 const RegisterPage = () => {
+  {
+    useSEO({
+      title: "Register",
+      description:
+        "Festival teknologi dan inovasi tahunan yang diselenggarakan oleh FOSTI UMS. Ikuti berbagai kompetisi dan seminar di FOSTIFEST 2025!",
+      url: VITE_BASE_URL,
+      image: ogHome,
+      schema: WebSiteSchema("FOSTIFEST 2025", VITE_BASE_URL)
+    })
+  }
   const navigate = useNavigate();
   const form = useForm<RegisterSchema>({
     defaultValues: {
