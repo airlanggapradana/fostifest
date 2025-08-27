@@ -11,9 +11,10 @@ import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar.tsx";
 import {useLocation, useNavigate} from "react-router";
 import {useUserSessionContext} from "@/hooks/context.ts";
 import Cookies from "js-cookie";
+import {BiUser} from "react-icons/bi";
 
 // Menu items.
-const items = [
+const participantItems = [
   {
     title: "Home",
     url: "/profile",
@@ -23,6 +24,19 @@ const items = [
     title: "Settings",
     url: "/profile/settings",
     icon: Settings,
+  },
+]
+
+const adminItems = [
+  {
+    title: "Dashboard",
+    url: "/profile/admin",
+    icon: Home,
+  },
+  {
+    title: "Users Management",
+    url: "/profile/users",
+    icon: BiUser,
   },
 ]
 
@@ -49,7 +63,25 @@ export function AppSidebar() {
           <SidebarGroupLabel className={'text-gray-100'}>Main Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => {
+              {session.payload.role === 'PARTICIPANT' ? participantItems.map((item) => {
+                const isActive = location.pathname === item.url;
+                return (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild size={'lg'}>
+                      <Button
+                        asChild
+                        variant="ghost"
+                        className={`w-full justify-start hover:bg-teal-900 hover:text-teal-50 transition-colors active:bg-teal-800 active:text-teal-300 ${isActive ? " bg-teal-700 font-semibold text-teal-300" : "font-normal text-gray-300"}`}
+                      >
+                        <a href={item.url} className="flex items-center gap-2">
+                          <item.icon/>
+                          <span>{item.title}</span>
+                        </a>
+                      </Button>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              }) : adminItems.map((item) => {
                 const isActive = location.pathname === item.url;
                 return (
                   <SidebarMenuItem key={item.title}>

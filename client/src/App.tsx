@@ -29,10 +29,8 @@ function App() {
   }
 
   const {data, isLoading, error} = useGetAllComps();
-  const loadingText = ['We are preparing something from the kitchen...', 'Fetching data...', 'Preparing the stage...', 'Getting things ready...'];
 
   if (isLoading) return <LoadingPage
-    loadingText={loadingText[Math.floor(Math.random() * loadingText.length)]}
     size={'sm'}
   />;
   if (error) return <div className="text-center text-red-500">Error: {error.message}</div>;

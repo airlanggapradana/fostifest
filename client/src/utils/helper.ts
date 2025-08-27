@@ -7,6 +7,7 @@ export type JwtPayload = Record<string, unknown> & {
   id: string;
   email: string;
   name: string;
+  role: 'PARTICIPANT' | 'ADMIN';
   exp: number;
   iat: number;
 };

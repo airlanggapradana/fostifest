@@ -160,7 +160,7 @@ const Timeline: React.FC = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-950 via-teal-800 to-emerald-950">
+    <section id={'timeline'} className="min-h-screen bg-gradient-to-b from-emerald-950 via-teal-800 to-emerald-950">
       <div className="container mx-auto px-4 py-16">
         {/* Header */}
         <div
@@ -293,7 +293,7 @@ const Timeline: React.FC = () => {
           })}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

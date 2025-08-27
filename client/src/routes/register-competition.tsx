@@ -76,7 +76,7 @@ const RegisterCompetition = () => {
   // Reset defaults when competition/token loaded
   useEffect(() => {
     if (!competition || !decodedToken) return;
-    if (competition.type === "INDIVIDUAL") {
+    if (competition.type === "INDIVIDUAL" || competition.type === 'WORKSHOP') {
       reset({
         competitionId: competitionId ?? "",
         userId: decodedToken.payload.id ?? "",
@@ -93,7 +93,7 @@ const RegisterCompetition = () => {
     }
   }, [competition, decodedToken, competitionId, reset]);
 
-  const teamMode = competition?.type !== "INDIVIDUAL";
+  const teamMode = competition?.type === "TEAM";
 
   // Field arrays only for team mode; types narrowed to team schema to avoid TS2344
   const teamControl = control as unknown as Control<RegistrationTeamSchema>;

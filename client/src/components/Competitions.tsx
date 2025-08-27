@@ -14,7 +14,7 @@ const Competitions = () => {
   const competitions = [
     {
       id: data.find(c => c.category === 'Programming')?.id,
-      title: 'Software Development Challenge',
+      title: data.find(c => c.category === 'Programming')?.name,
       category: 'Programming',
       date: (() => {
         const comp = data.find(c => c.category === 'Programming' && c.startDate && c.endDate);
@@ -51,7 +51,7 @@ const Competitions = () => {
     },
     {
       id: data.find(c => c.category === 'Design')?.id,
-      title: 'UX/UI Website Design',
+      title: data.find(c => c.category === 'Design')?.name,
       category: 'Design',
       date: (() => {
         const comp = data.find(c => c.category === 'Design' && c.startDate && c.endDate);
@@ -88,7 +88,7 @@ const Competitions = () => {
     },
     {
       id: data.find(c => c.category === 'Literary')?.id,
-      title: 'Scientific Paper',
+      title: data.find(c => c.category === 'Literary')?.name,
       category: 'Literary',
       date: (() => {
         const comp = data.find(c => c.category === 'Literary' && c.startDate && c.endDate);
@@ -123,9 +123,46 @@ const Competitions = () => {
       description: 'Present your startup idea to industry experts and investors.',
       requirements: ['Business plan', '10-minute pitch', 'Team of 3-5']
     },
+    {
+      id: data.find(c => c.category === 'Workshops')?.id,
+      title: data.find(c => c.category === 'Workshops')?.name,
+      category: 'Workshops',
+      date: (() => {
+        const comp = data.find(c => c.category === 'Workshops' && c.startDate && c.endDate);
+        if (comp) {
+          const start = new Date(comp.startDate).toLocaleDateString("en-US", {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          const end = new Date(comp.endDate).toLocaleDateString("en-US", {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+          });
+          return start === end ? start : `${start} - ${end}`;
+        }
+        return 'TBA';
+      })(),
+      time: data.find(c => c.category === 'Workshops' && c.deadline)
+        ? new Date(data.find(c => c.category === 'Workshops')!.deadline).toLocaleDateString("en-US", {
+          year: 'numeric',
+          month: 'long',
+          day: '2-digit',
+          hour: '2-digit',
+          minute: '2-digit'
+        })
+        : 'TBA',
+      location: 'Online',
+      participants: data.find(c => c.category === 'Workshops')?.totalParticipants,
+      prize: data.find(c => c.category === 'Workshops')?.prize,
+      status: data.find(c => c.category === 'Workshops')?.status,
+      description: 'Build your own scalable web applications from scratch.',
+      requirements: ['Basic understanding of Express, React, and Database relations', 'Has ever been used React', 'Laptop required']
+    },
   ];
 
-  const filters = ['All', 'Programming', 'Design', 'Literary'];
+  const filters = ['All', 'Programming', 'Design', 'Literary', 'Workshops'];
 
   const filteredCompetitions = activeFilter === 'All'
     ? competitions

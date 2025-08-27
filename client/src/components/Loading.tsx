@@ -8,11 +8,6 @@ interface LoadingPageProps {
    * Custom loading text to display
    * @default "Loading..."
    */
-  loadingText?: string;
-  /**
-   * Show progress indicator
-   * @default false
-   */
   showProgress?: boolean;
   /**
    * Progress value (0-100) when showProgress is true
@@ -31,7 +26,6 @@ interface LoadingPageProps {
 }
 
 const LoadingPage: React.FC<LoadingPageProps> = ({
-                                                   loadingText = "Loading...",
                                                    showProgress = false,
                                                    progress,
                                                    className,
@@ -49,6 +43,19 @@ const LoadingPage: React.FC<LoadingPageProps> = ({
     lg: "text-lg"
   };
 
+  const loadingText = [
+    'We are preparing something from the kitchen...',
+    'Fetching data...',
+    'Preparing the stage...',
+    'Getting things ready...',
+    'Mixing up some magic...',
+    'Loading your experience...',
+    'Brewing fresh content...',
+    'Almost there, hang tight!',
+    'Warming up the engines...',
+    'Just a moment, making things awesome...'
+  ];
+
   return (
     <div
       className={cn(
@@ -58,7 +65,7 @@ const LoadingPage: React.FC<LoadingPageProps> = ({
       )}
       role="status"
       aria-live="polite"
-      aria-label={loadingText}
+      aria-label={loadingText[Math.floor(Math.random() * loadingText.length)]}
     >
       <Card className="w-full max-w-md bg-gray-800 border-2 border-teal-500">
         <CardContent className="flex flex-col items-center justify-center p-8 space-y-6">
@@ -90,7 +97,7 @@ const LoadingPage: React.FC<LoadingPageProps> = ({
                 textSizes[size]
               )}
             >
-              {loadingText}
+              {loadingText[Math.floor(Math.random() * loadingText.length)]}
             </h2>
 
             <p className="text-sm text-gray-300">

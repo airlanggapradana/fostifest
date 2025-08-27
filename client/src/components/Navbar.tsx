@@ -41,7 +41,7 @@ export function Navbar() {
       icon: (
         <FaTimeline className="h-full w-full  text-neutral-300"/>
       ),
-      href: "#",
+      href: "#timeline",
     },
     {
       title: "FOSTI UMS",
@@ -72,7 +72,7 @@ export function Navbar() {
             <AvatarFallback>{decodedToken?.payload.name.slice(0, 1)}</AvatarFallback>
           </Avatar>
         ),
-        href: "/profile",
+        href: `/profile${decodedToken?.payload.role === 'ADMIN' ? '/admin' : ''}`,
       }
       : {
         title: "Login",
