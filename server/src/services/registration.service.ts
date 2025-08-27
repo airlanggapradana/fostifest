@@ -9,12 +9,12 @@ export const newRegistrationIndividual = async (req: Request, res: Response, nex
   try {
     const payload: RegistrationIndividualSchema = registrationIndividualSchema.parse(req.body);
     const registration = await prisma.$transaction(async (tx) => {
-      // 1. Pastikan kompetisi tipe INDIVIDUAL
+      // 1. Pastikan kompetisi tipe INDIVIDUAL atau WORKSHOP
       const competition = await tx.competition.findUnique({
         where: {id: payload.competitionId},
         select: {type: true}
       });
-      if (competition?.type !== "INDIVIDUAL") {
+      if (competition?.type !== "INDIVIDUAL" && competition?.type !== "WORKSHOP") {
         res.status(400).send({
           message: "This competition is not for individual participants.",
         })
