@@ -76,6 +76,7 @@ model CompetitionCategory {
 enum CompetitionType {
   INDIVIDUAL
   TEAM
+  WORKSHOP // Untuk acara workshop, bukan lomba
 }
 
 enum CompetitionStatus {

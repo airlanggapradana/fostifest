@@ -49,7 +49,7 @@ export const getCompetitions = async (req: Request, res: Response, next: NextFun
     const {type} = req.query;
     const competitions = await prisma.competition.findMany({
       where: {
-        type: type ? type as 'INDIVIDUAL' | 'TEAM' : undefined
+        type: type ? type as 'INDIVIDUAL' | 'TEAM' | 'WORKSHOP' : undefined
       },
       include: {
         category: true,
@@ -155,7 +155,7 @@ export const getCompetitionById = async (req: Request, res: Response, next: Next
       endDate: Date;
       deadline: Date;
       prize: number;
-      type: "INDIVIDUAL" | "TEAM";
+      type: "INDIVIDUAL" | "TEAM" | "WORKSHOP";
       category: string;
       totalRegistrations: number;
       totalParticipants: number;

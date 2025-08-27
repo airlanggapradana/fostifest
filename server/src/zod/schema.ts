@@ -18,7 +18,7 @@ export const competitionSchema = z.object({
   startDate: z.iso.datetime('Start date is required'),
   endDate: z.iso.datetime('End date is required'),
   registrationDeadline: z.iso.datetime('Registration deadline is required'),
-  type: z.enum(['INDIVIDUAL', 'TEAM'], 'Competition type must be either INDIVIDUAL or TEAM'),
+  type: z.enum(['INDIVIDUAL', 'TEAM', 'WORKSHOP'], 'Competition type must be either INDIVIDUAL, TEAM, or WORKSHOP'),
   registrationFee: z.number().min(0, 'Registration fee must be a non-negative number'),
   status: z.enum(['UPCOMING', 'ONGOING', 'FINISHED', 'CANCELED'], 'Competition status must be one of the predefined values'),
   category: z.string().min(1, 'Category is required'),
