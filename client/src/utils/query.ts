@@ -15,6 +15,7 @@ import type {GetCompetitionByIdResponse} from "@/types/competitionById.type.ts";
 import type {PaymentAPIResponse} from "@/types/payment.type.ts";
 import type {RegistrationResponse} from "@/types/registration.type.ts";
 import type {GetUserDetailsResponse} from "@/types/userDetails.type.ts";
+import type {GetCompsStatsResponse} from "@/types/get-comps-stats.type.ts";
 
 export const useGetAllComps = () => {
   return useQuery({
@@ -216,6 +217,28 @@ export const useGetUserDetails = (userId: string) => {
           throw new Error(e.response?.data.message || 'Failed to fetch user details');
         }
         throw new Error('An unexpected error occurred while fetching user details');
+      }
+    }
+  })
+}
+
+export const useGetCompsStats = () => {
+  return useQuery({
+    queryKey: ['getCompsStats'],
+    queryFn: async () => {
+      try {
+        const res = await axios.get(`${VITE_BASE_API_URL}/admin/get-comps-stats`, {
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          method: 'GET'
+        }).then(res => res.data as GetCompsStatsResponse)
+        return res.data;
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Failed to fetch competitions statistics');
+        }
+        throw new Error('An unexpected error occurred while fetching competitions statistics');
       }
     }
   })

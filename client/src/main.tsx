@@ -13,6 +13,7 @@ import PaymentSuccess from "@/routes/PaymentSuccess.tsx";
 import NotFoundPage from "@/routes/NotFound.tsx";
 import ProfileLayout from "@/components/ProfileLayout.tsx";
 import ProfileMain from "@/routes/ProfileMain.tsx";
+import AdminDashboard from "@/routes/AdminDashboard.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -34,7 +35,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path={'/profile'} element={<ProfileLayout/>}>
             <Route index element={<ProfileMain/>}/>
             <Route path={'settings'} element={<div>Profile settings</div>}/>
-            <Route path={'admin'} element={<div>Profile Admin</div>}/>
+            <Route path={'admin'} element={<AdminDashboard/>}/>
             <Route path={'users'} element={<div>Users Management</div>}/>
           </Route>
 
