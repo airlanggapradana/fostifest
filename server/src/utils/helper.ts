@@ -3,7 +3,7 @@ export function getMonthName(month: number): string {
 }
 
 export function mapToChartData(apiResponse: any[]) {
-  // 1. Ambil semua nama kompetisi unik
+  // 1. Ambil semua kompetisi unik
   const allCompetitions = new Set<string>();
   apiResponse.forEach((item) => {
     item.competitions.forEach((comp: any) => {
@@ -11,21 +11,56 @@ export function mapToChartData(apiResponse: any[]) {
     });
   });
 
+  const competitionList = Array.from(allCompetitions);
+
   // 2. Mapping per bulan
   return apiResponse.map((item) => {
     const row: any = {month: item.monthName};
 
-    // isi 0 dulu untuk semua kompetisi
-    allCompetitions.forEach((name) => {
-      row[name] = 0;
+    // isi null dulu untuk semua kompetisi
+    competitionList.forEach((name) => {
+      row[name] = null;
+      row[`${name}_percentage`] = null;
     });
 
-    // overwrite dengan nilai yang ada
+    // total semua kompetisi bulan ini
+    const totalInMonth = item.competitions.reduce(
+      (sum: number, comp: any) => sum + comp.totalRegistrations,
+      0
+    );
+
+    let sumPercentages = 0;
+    let countCompetitions = competitionList.length;
+
+    // overwrite dengan nilai yg ada
     item.competitions.forEach((comp: any) => {
       row[comp.competitionName] = comp.totalRegistrations;
+      const percentage =
+        totalInMonth > 0
+          ? (comp.totalRegistrations / totalInMonth) * 100
+          : 0;
+
+      row[`${comp.competitionName}_percentage`] = parseFloat(
+        percentage.toFixed(2)
+      );
+
+      sumPercentages += percentage;
     });
+
+    // kompetisi yg tidak ada dianggap 0%
+    const missingCount = countCompetitions - item.competitions.length;
+    if (missingCount > 0) {
+      sumPercentages += 0 * missingCount;
+    }
+
+    // rata-rata persentase bulan ini
+    row["average_percentage"] =
+      countCompetitions > 0
+        ? parseFloat((sumPercentages / countCompetitions).toFixed(2))
+        : null;
 
     return row;
   });
 }
+
 
