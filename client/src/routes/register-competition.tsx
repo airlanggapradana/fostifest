@@ -172,7 +172,7 @@ const RegisterCompetition = () => {
     }
   };
 
-  if (isLoading) return <LoadingPage loadingText={'Fetching Data...'} className={'bg-transparent'}/>
+  if (isLoading) return <LoadingPage className={'bg-transparent'}/>
   if (error) return <div
     className="flex items-center justify-center h-screen text-red-600">Error: {error.message}</div>;
   if (!competition)
