@@ -69,3 +69,48 @@ export const getRegistrationsByCompetitionLastMonths = async (_req: Request, res
     next(e);
   }
 }
+
+export const getDataSummary = async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    // total user
+    const totalUsers = await prisma.user.count();
+
+    // total registrasi per status (PENDING & CONFIRMED)
+    const registrations = await prisma.registration.groupBy({
+      by: ["status"],
+      _count: {id: true},
+      where: {
+        status: {in: ["PENDING", "CONFIRMED"]},
+      },
+    });
+
+    const pendingCount =
+      registrations.find((r) => r.status === "PENDING")?._count.id || 0;
+    const confirmedCount =
+      registrations.find((r) => r.status === "CONFIRMED")?._count.id || 0;
+
+    // jumlah tim di kompetisi tipe TEAM
+    const totalTeams = await prisma.team.count({
+      where: {
+        competition: {
+          type: "TEAM",
+        },
+      },
+    });
+
+    res.status(200).json({
+      message: "Data summary fetched successfully",
+      data: {
+        totalUsers,
+        registrations: {
+          pending: pendingCount,
+          confirmed: confirmedCount,
+        },
+        totalTeams,
+      }
+    });
+    return
+  } catch (error) {
+    next(error);
+  }
+}
