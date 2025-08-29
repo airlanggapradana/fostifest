@@ -17,6 +17,7 @@ import type {RegistrationResponse} from "@/types/registration.type.ts";
 import type {GetUserDetailsResponse} from "@/types/userDetails.type.ts";
 import type {GetCompsStatsResponse} from "@/types/get-comps-stats.type.ts";
 import type {GetSummaryStatsResponse} from "@/types/get-summary-stats.type.ts";
+import type {GetUsersDataResponse} from "@/types/get-users-data.type.ts";
 
 export const useGetAllComps = () => {
   return useQuery({
@@ -223,6 +224,7 @@ export const useGetUserDetails = (userId: string) => {
   })
 }
 
+// admin
 export const useGetCompsStats = () => {
   const token = Cookies.get('accessToken');
   return useQuery({
@@ -266,6 +268,29 @@ export const useGetSummaryStats = () => {
           throw new Error(e.response?.data.message || 'Failed to fetch summary statistics');
         }
         throw new Error('An unexpected error occurred while fetching summary statistics');
+      }
+    }
+  })
+}
+
+export const useGetUsersData = (page?: number, limit?: number) => {
+  const token = Cookies.get('accessToken');
+  return useQuery({
+    queryKey: ['getUsersData', {page, limit}],
+    queryFn: async () => {
+      try {
+        return await axios.get(`${VITE_BASE_API_URL}/admin/get-users-data${page && limit ? `?page=${page}&limit=${limit}` : ''}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          method: 'GET'
+        }).then(res => res.data as GetUsersDataResponse);
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Failed to fetch users data');
+        }
+        throw new Error('An unexpected error occurred while fetching users data');
       }
     }
   })
