@@ -25,10 +25,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {Edit, Eye, Trash} from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog.tsx";
+import UserDetails from "@/components/UserDetails.tsx";
 
 const UsersManagement = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+
+  const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
+  const [userId, setUserId] = useState<string | undefined>(undefined);
 
   const {data, isLoading, error} = useGetUsersData(page, limit);
   if (error) return <div className="text-red-500">Error: {error.message}</div>;
@@ -42,7 +54,7 @@ const UsersManagement = () => {
         <p className="text-gray-300">Manage all registered users here.</p>
       </div>
       <div>
-        <Card className={'bg-teal-700 border-teal-300'}>
+        <Card className={'bg-teal-800 border-teal-300'}>
           <CardHeader>
             <p className={'text-sm text-gray-100 font-medium'}>Limit items per page</p>
             <Select onValueChange={(value: string) => {
@@ -72,13 +84,14 @@ const UsersManagement = () => {
                   <TableHead className="text-white">Institution</TableHead>
                   <TableHead className="text-white">Registered At</TableHead>
                   <TableHead className="text-white">Total Competitions</TableHead>
+                  <TableHead className="text-white">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {data && data.data && data.data.length > 0 ? (
                   data.data.map((user) => (
-                    <TableRow key={user.id} className={'text-gray-200'}>
-                      <TableCell>{`${user.id.slice(0, 10)}...`}</TableCell>
+                    <TableRow key={user.id} className={'text-gray-200 hover:bg-teal-700'}>
+                      <TableCell>{`${user.id}`}</TableCell>
                       <TableCell>{user.name}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.phone}</TableCell>
@@ -89,6 +102,23 @@ const UsersManagement = () => {
                         day: "numeric",
                       })}</TableCell>
                       <TableCell>{user.totalCompetitions}</TableCell>
+                      <TableCell className={'flex items-center gap-2'}>
+                        <Button
+                          variant="secondary" size="sm"
+                          onClick={() => {
+                            setUserId(user.id)
+                            setIsViewDialogOpen(true)
+                          }}
+                        >
+                          <Eye/>
+                        </Button>
+                        <Button variant="secondary" size="sm">
+                          <Edit/>
+                        </Button>
+                        <Button variant="destructive" size="sm">
+                          <Trash/>
+                        </Button>
+                      </TableCell>
                     </TableRow>
                   ))
                 ) : isLoading ? (
@@ -107,7 +137,7 @@ const UsersManagement = () => {
               </TableBody>
               <TableFooter>
                 <TableRow>
-                  <TableCell colSpan={7} className="text-center bg-teal-700">
+                  <TableCell colSpan={8} className="text-center bg-teal-800">
                     <Pagination>
                       <PaginationContent>
                         <PaginationItem>
@@ -133,6 +163,19 @@ const UsersManagement = () => {
           </CardContent>
         </Card>
       </div>
+
+      {/* View Dialog */}
+      <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
+        <DialogContent className={'sm:max-w-4xl'}>
+          <DialogHeader>
+            <DialogTitle>User Details</DialogTitle>
+            <DialogDescription>
+              Detailed information about the user.
+            </DialogDescription>
+            {userId && <UserDetails userId={userId}/>}
+          </DialogHeader>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
