@@ -224,13 +224,15 @@ export const useGetUserDetails = (userId: string) => {
 }
 
 export const useGetCompsStats = () => {
+  const token = Cookies.get('accessToken');
   return useQuery({
     queryKey: ['getCompsStats'],
     queryFn: async () => {
       try {
         const res = await axios.get(`${VITE_BASE_API_URL}/admin/get-comps-stats`, {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           },
           method: 'GET'
         }).then(res => res.data as GetCompsStatsResponse)
@@ -246,13 +248,15 @@ export const useGetCompsStats = () => {
 }
 
 export const useGetSummaryStats = () => {
+  const token = Cookies.get('accessToken');
   return useQuery({
     queryKey: ['getSummaryStats'],
     queryFn: async () => {
       try {
         const res = await axios.get(`${VITE_BASE_API_URL}/admin/get-data-summary`, {
           headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
           },
           method: 'GET'
         }).then(res => res.data as GetSummaryStatsResponse)
