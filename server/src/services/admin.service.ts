@@ -114,3 +114,84 @@ export const getDataSummary = async (_req: Request, res: Response, next: NextFun
     next(error);
   }
 }
+
+export const getUserData = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+
+    // total user untuk pagination
+    const totalUsers = await prisma.user.count();
+
+    const users = await prisma.user.findMany({
+      skip,
+      take: limit,
+      where: {role: "PARTICIPANT"},
+      include: {
+        registrations: {
+          select: {competitionId: true},
+        },
+      },
+    });
+
+    // map user + total kompetisi
+    const data = users.map((u) => ({
+      id: u.id,
+      name: u.name,
+      email: u.email,
+      phone: u.phone,
+      institution: u.institusi,
+      joinedAt: u.createdAt,
+      totalCompetitions: u.registrations.length,
+    }));
+
+    res.status(200).json({
+      message: "User data fetched successfully",
+      page,
+      limit,
+      totalUsers,
+      totalPages: Math.ceil(totalUsers / limit),
+      data,
+    });
+    return;
+  } catch (error) {
+    next(error)
+  }
+}
+
+export const getUserDetails = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {id} = req.params;
+
+    const user = await prisma.user.findUnique({
+      where: {id},
+      include: {
+        registrations: {
+          include: {
+            competition: true,
+            team: {
+              include: {
+                participants: true,
+              },
+            },
+            transaction: true,
+          },
+        },
+      },
+    });
+
+    if (!user) {
+      res.status(200).json({message: "User not found", data: null});
+      return;
+    }
+
+    res.status(200).json({
+      message: "User details fetched successfully",
+      data: user,
+    });
+    return;
+  } catch (error) {
+    next(error);
+  }
+}

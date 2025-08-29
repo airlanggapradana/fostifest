@@ -105,7 +105,7 @@ export async function getUserDetails(req: Request, res: Response, next: NextFunc
     });
 
     if (!user) {
-      res.status(404).json({message: "User not found"});
+      res.status(200).json({message: "User not found", data: null});
       return;
     }
 

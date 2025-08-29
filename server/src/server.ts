@@ -9,6 +9,7 @@ import authRouter from "./controllers/auth.controller";
 import paymentRouter from "./controllers/payment.controller";
 import exportRouter from "./controllers/export.controller";
 import adminRouter from "./controllers/admin.controller";
+import {decodeJwtWithoutVerify} from "./middlewares/authorization.middleware";
 
 const app: Application = express();
 
@@ -26,7 +27,7 @@ app.use('/api/registration', registrationRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/payment', paymentRouter)
 app.use('/api/export', exportRouter)
-app.use('/api/admin', adminRouter)
+app.use('/api/admin', decodeJwtWithoutVerify, adminRouter)
 
 app.use(errorHandler)
 app.listen(env.PORT, () => {
