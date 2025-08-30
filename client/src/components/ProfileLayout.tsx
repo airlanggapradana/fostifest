@@ -14,7 +14,7 @@ const ProfileLayout = () => {
     <UserSessionContext.Provider value={decodedToken}>
       <SidebarProvider>
         <AppSidebar/>
-        <main className={'bg-gradient-to-br from-teal-800 to-teal-950 flex-1 p-4'}>
+        <main className={'bg-gradient-to-br from-teal-800 to-teal-950 flex-1 p-4 w-full overflow-hidden'}>
           <SidebarTrigger className={'text-gray-50'} variant={'ghost'}/>
           <Outlet/>
         </main>

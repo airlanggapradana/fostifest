@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {Edit, Eye, Trash} from "lucide-react";
+import {Edit, Eye, Search, Trash} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -34,15 +34,19 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog.tsx";
 import UserDetails from "@/components/UserDetails.tsx";
+import {Input} from "@/components/ui/input.tsx";
+import {useDebounce} from 'use-debounce';
 
 const UsersManagement = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
+  const [search, setSearch] = useState<string | undefined>(undefined);
+  const [debouncedSearch] = useDebounce(search, 1000);
 
   const [isViewDialogOpen, setIsViewDialogOpen] = useState(false);
   const [userId, setUserId] = useState<string | undefined>(undefined);
 
-  const {data, isLoading, error} = useGetUsersData(page, limit);
+  const {data, isLoading, error} = useGetUsersData(page, limit, debouncedSearch);
   if (error) return <div className="text-red-500">Error: {error.message}</div>;
   return (
     <div className="max-w-full mx-auto mt-3">
@@ -71,6 +75,20 @@ const UsersManagement = () => {
                 <SelectItem value="50">50</SelectItem>
               </SelectContent>
             </Select>
+            <div className="mt-2 w-[300px]">
+              <div className="relative">
+                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-300"/>
+                <Input
+                  placeholder="Search users..."
+                  className="bg-teal-700 border-teal-400 text-white placeholder:text-gray-300 focus-visible:ring-teal-400 pl-8"
+                  value={search || ''}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                    setPage(1); // Reset to first page when search changes
+                  }}
+                />
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
             <Table>
@@ -166,7 +184,7 @@ const UsersManagement = () => {
 
       {/* View Dialog */}
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-        <DialogContent className={'sm:max-w-4xl'}>
+        <DialogContent className={'sm:max-w-4xl max-h-[90vh] overflow-y-auto'}>
           <DialogHeader>
             <DialogTitle>User Details</DialogTitle>
             <DialogDescription>

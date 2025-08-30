@@ -274,13 +274,13 @@ export const useGetSummaryStats = () => {
   })
 }
 
-export const useGetUsersData = (page?: number, limit?: number) => {
+export const useGetUsersData = (page: number, limit: number, name?: string) => {
   const token = Cookies.get('accessToken');
   return useQuery({
-    queryKey: ['getUsersData', {page, limit}],
+    queryKey: ['getUsersData', {page, limit, name}],
     queryFn: async () => {
       try {
-        return await axios.get(`${VITE_BASE_API_URL}/admin/get-users-data${page && limit ? `?page=${page}&limit=${limit}` : ''}`, {
+        return await axios.get(`${VITE_BASE_API_URL}/admin/get-users-data?page=${page}&limit=${limit}${name ? `&name=${name}` : ''}`, {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${token}`
