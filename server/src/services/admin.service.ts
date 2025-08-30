@@ -137,10 +137,17 @@ export const getUserData = async (req: Request, res: Response, next: NextFunctio
       skip,
       take: limit,
       where: {
-        name: {
-          contains: nameFilter,
-          mode: "insensitive",
-        },
+        AND: [
+          {
+            name: {
+              contains: nameFilter,
+              mode: "insensitive",
+            },
+          },
+          {
+            role: "PARTICIPANT"
+          }
+        ]
       },
       include: {
         registrations: {
