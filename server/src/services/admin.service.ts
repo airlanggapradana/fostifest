@@ -121,13 +121,27 @@ export const getUserData = async (req: Request, res: Response, next: NextFunctio
     const limit = parseInt(req.query.limit as string) || 10;
     const skip = (page - 1) * limit;
 
+    const nameFilter = (req.query.name as string) || "";
+
     // total user untuk pagination
-    const totalUsers = await prisma.user.count();
+    const totalUsers = await prisma.user.count({
+      where: {
+        name: {
+          contains: nameFilter,
+          mode: "insensitive", // biar case-insensitive
+        },
+      },
+    });
 
     const users = await prisma.user.findMany({
       skip,
       take: limit,
-      where: {role: "PARTICIPANT"},
+      where: {
+        name: {
+          contains: nameFilter,
+          mode: "insensitive",
+        },
+      },
       include: {
         registrations: {
           select: {competitionId: true},
