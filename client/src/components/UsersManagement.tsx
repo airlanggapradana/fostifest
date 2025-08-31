@@ -184,7 +184,7 @@ const UsersManagement = () => {
 
       {/* View Dialog */}
       <Dialog open={isViewDialogOpen} onOpenChange={setIsViewDialogOpen}>
-        <DialogContent className={'sm:max-w-4xl max-h-[90vh] overflow-y-auto'}>
+        <DialogContent className={'sm:max-w-8xl max-h-[90vh] overflow-y-auto'}>
           <DialogHeader>
             <DialogTitle>User Details</DialogTitle>
             <DialogDescription>

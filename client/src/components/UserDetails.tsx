@@ -1,99 +1,69 @@
 import {useGetUserDetailsAdmin} from "@/utils/query.ts";
+import {UserProfile} from "@/components/UserProfile.tsx";
+import {StatsCard} from "@/components/StatsCard.tsx";
+import {CheckCircle, CreditCard, DollarSign, Trophy} from "lucide-react";
+import {RegistrationCard} from "@/components/RegistrationCard.tsx";
 
 const UserDetails = ({userId}: { userId: string }) => {
   const {data: user, isLoading, error} = useGetUserDetailsAdmin(userId)
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading user details.</div>;
   if (!user) return <div>No user data available.</div>;
+
+  const totalRegistrations = user.registrations.length;
+  const confirmedRegistrations = user.registrations.filter(reg => reg.status === 'CONFIRMED').length;
+  const successfulPayments = user.registrations.filter(reg => reg.transaction?.status === 'SUCCESS').length;
+  const totalAmountPaid = user.registrations.reduce((sum, reg) => sum + (reg.transaction?.amount ?? 0), 0);
+
+  const formatCurrency = (amount: number | undefined | null) => {
+    if (!amount) return 'Rp0';
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR'
+    }).format(amount);
+  };
   return (
     <div>
-      {/* User Profile */}
-      <div className="max-w-full mx-auto bg-white shadow-md rounded-2xl p-6 mb-8">
-        <h1 className="text-2xl font-bold mb-2">{user.name}</h1>
-        <p className="text-gray-600">{user.email}</p>
-        <p className="text-gray-600">{user.phone}</p>
-        <p className="text-sm mt-2">
-          <span className="font-semibold">Role:</span> {user.role}
-        </p>
-        <p className="text-sm">
-          <span className="font-semibold">Institusi:</span> {user.institusi}
-        </p>
-      </div>
+      <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <UserProfile user={user}/>
 
-      {/* Registrations */}
-      <div className="max-w-4xl mx-auto space-y-4">
-        <h2 className="text-xl font-bold mb-4">Registrations</h2>
-        {user.registrations.length > 0 ? user.registrations.map((reg) => (
-          <div
-            key={reg.id}
-            className="bg-white shadow rounded-2xl p-5 border border-gray-200"
-          >
-            <div className="flex justify-between items-center">
-              <h3 className="text-lg font-semibold">
-                {reg.competition.name}
-              </h3>
-              <span
-                className={`px-3 py-1 text-sm rounded-full ${
-                  reg.status === "CONFIRMED"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-yellow-100 text-yellow-700"
-                }`}
-              >
-                {reg.status}
-              </span>
-            </div>
-            <p className="text-gray-600 text-sm mb-3">
-              {reg.competition.description}
-            </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <StatsCard
+            title="Total Registrations"
+            value={totalRegistrations}
+            icon={Trophy}
+            color="bg-blue-500"
+          />
+          <StatsCard
+            title="Confirmed"
+            value={confirmedRegistrations}
+            icon={CheckCircle}
+            color="bg-green-500"
+          />
+          <StatsCard
+            title="Successful Payments"
+            value={successfulPayments}
+            icon={CreditCard}
+            color="bg-purple-500"
+          />
+          <StatsCard
+            title="Total Paid"
+            value={formatCurrency(totalAmountPaid)}
+            icon={DollarSign}
+            color="bg-emerald-500"
+          />
+        </div>
 
-            {/*Transaction */}
-            <div className="bg-gray-50 rounded-lg p-3 text-sm">
-              {reg.transaction ? (
-                <>
-                  <p>
-                    <span className="font-semibold">Payment:</span>{" "}
-                    {reg.transaction.paymentType} -{" "}
-                    <span
-                      className={`font-bold ${
-                        reg.transaction.status === "SUCCESS"
-                          ? "text-green-600"
-                          : "text-red-600"
-                      }`}
-                    >
-                      {reg.transaction.status}
-                    </span>
-                  </p>
-                  <p>
-                    <span className="font-semibold">Amount:</span> Rp{" "}
-                    {reg.transaction.amount.toLocaleString("id-ID")}
-                  </p>
-                  <p>
-                    <span className="font-semibold">Transaction Time:</span>{" "}
-                    {new Date(reg.transaction.transactionTime).toLocaleString()}
-                  </p>
-                </>
-              ) : (
-                <p className="text-gray-400 italic">No transaction data available.</p>
-              )}
-            </div>
+        <div className="mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Registration History</h2>
+          <p className="text-gray-600">View all your competition registrations and payment details</p>
+        </div>
 
-            {/* Team Info */}
-            {reg.team && (
-              <div className="mt-4">
-                <h4 className="font-semibold mb-2">Team: {reg.team.name}</h4>
-                <ul className="list-disc list-inside text-sm text-gray-700">
-                  {reg.team.participants.map((p) => (
-                    <li key={p.id}>
-                      {p.name} ({p.email}) - {p.phoneNumber}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-          </div>
-        )) : (
-          <p className="text-gray-500 italic">No registrations found.</p>
-        )}
+        <div className="space-y-6">
+          {user.registrations.map((registration) => (
+            <RegistrationCard key={registration.id} registration={registration}/>
+          ))}
+        </div>
       </div>
     </div>
   );
