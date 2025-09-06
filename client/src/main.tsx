@@ -15,34 +15,37 @@ import ProfileLayout from "@/components/ProfileLayout.tsx";
 import ProfileMain from "@/routes/ProfileMain.tsx";
 import AdminDashboard from "@/routes/AdminDashboard.tsx";
 import UsersManagement from "@/components/UsersManagement.tsx";
+import {HelmetProvider} from "react-helmet-async";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <TanstackQueryProvider>
-      <BrowserRouter>
-        <Routes>
-          <Route path={'/'} element={<App/>}/>
+    <HelmetProvider>
+      <TanstackQueryProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path={'/'} element={<App/>}/>
 
-          <Route element={<AuthLayout/>}>
-            <Route path={'/login'} element={<Login/>}/>
-            <Route path={'/register'} element={<Register/>}/>
-          </Route>
+            <Route element={<AuthLayout/>}>
+              <Route path={'/login'} element={<Login/>}/>
+              <Route path={'/register'} element={<Register/>}/>
+            </Route>
 
-          <Route path={'register-competition'} element={<RegistrationLayout/>}>
-            <Route index path={':competitionId'} element={<RegisterCompetition/>}/>
-            <Route path={'success'} element={<PaymentSuccess/>}/>
-          </Route>
+            <Route path={'register-competition'} element={<RegistrationLayout/>}>
+              <Route index path={':competitionId'} element={<RegisterCompetition/>}/>
+              <Route path={'success'} element={<PaymentSuccess/>}/>
+            </Route>
 
-          <Route path={'/profile'} element={<ProfileLayout/>}>
-            <Route index element={<ProfileMain/>}/>
-            <Route path={'settings'} element={<div>Profile settings</div>}/>
-            <Route path={'admin'} element={<AdminDashboard/>}/>
-            <Route path={'users'} element={<UsersManagement/>}/>
-          </Route>
+            <Route path={'/profile'} element={<ProfileLayout/>}>
+              <Route index element={<ProfileMain/>}/>
+              <Route path={'settings'} element={<div>Profile settings</div>}/>
+              <Route path={'admin'} element={<AdminDashboard/>}/>
+              <Route path={'users'} element={<UsersManagement/>}/>
+            </Route>
 
-          <Route path={'*'} element={<NotFoundPage/>}/>
-        </Routes>
-      </BrowserRouter>
-    </TanstackQueryProvider>
+            <Route path={'*'} element={<NotFoundPage/>}/>
+          </Routes>
+        </BrowserRouter>
+      </TanstackQueryProvider>
+    </HelmetProvider>
   </StrictMode>,
 )

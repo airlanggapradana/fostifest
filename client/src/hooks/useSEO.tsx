@@ -1,4 +1,6 @@
 import {Helmet} from "react-helmet-async";
+import {VITE_BASE_URL} from "@/env.ts";
+import home from '../assets/home.png'
 
 interface SEOProps {
   title: string;
@@ -15,8 +17,8 @@ const TITLE_SEPARATOR = " | ";
 export const useSEO = ({
                          title,
                          description,
-                         url = "https://mysite.com",
-                         image = "https://mysite.com/preview.png",
+                         url = VITE_BASE_URL,
+                         image = home,
                          type = "website",
                          schema,
                        }: SEOProps) => {

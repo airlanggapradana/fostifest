@@ -13,21 +13,20 @@ import LoadingPage from "@/components/Loading.tsx";
 import {useSEO} from "@/hooks/useSEO.tsx";
 import {WebSiteSchema} from "@/hooks/seoSchema.ts";
 import {VITE_BASE_URL} from "@/env.ts";
-import ogHome from "@/assets/og/og-home.png";
+import ogHome from "@/assets/home.png";
 import Timeline from "@/components/Timeline.tsx";
 import About from "@/components/About.tsx";
 
 function App() {
-  {
-    useSEO({
-      title: "Home",
-      description:
-        "Festival teknologi dan inovasi tahunan yang diselenggarakan oleh FOSTI UMS. Ikuti berbagai kompetisi dan seminar di FOSTIFEST 2025!",
-      url: VITE_BASE_URL,
-      image: ogHome,
-      schema: WebSiteSchema("FOSTIFEST 2025", VITE_BASE_URL)
-    })
-  }
+  useSEO({
+    title: "Home",
+    description:
+      "Festival teknologi dan inovasi tahunan yang diselenggarakan oleh FOSTI UMS. Ikuti berbagai kompetisi dan seminar di FOSTIFEST 2025!",
+    url: VITE_BASE_URL,
+    image: ogHome,
+    schema: WebSiteSchema("FOSTIFEST 2025", VITE_BASE_URL)
+  })
+
 
   const {data, isLoading, error} = useGetAllComps();
 
