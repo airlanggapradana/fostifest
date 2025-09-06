@@ -1,4 +1,6 @@
 import TextHighlighter from "@/components/fancy/text/text-highlighter.tsx";
+import SplitText from "@/components/ui/SplitText/SplitText.tsx";
+import AnimatedContent from "@/components/ui/AnimatedContent/AnimatedContent.tsx";
 
 const About = () => {
   return (
@@ -10,10 +12,20 @@ const About = () => {
             About <span
             className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-600">Us</span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            Since 2018, we've been empowering university students worldwide to showcase their talents,
-            connect with peers, and compete at the highest level across diverse academic disciplines.
-          </p>
+          <SplitText
+            text="Since 2018, we've been empowering university students worldwide to showcase their talents,
+            connect with peers, and compete at the highest level across diverse academic disciplines."
+            className="text-xl text-gray-400 max-w-4xl mx-auto leading-relaxed"
+            delay={100}
+            duration={0.5}
+            ease="power3.out"
+            splitType="words"
+            from={{opacity: 0, y: 20}}
+            to={{opacity: 1, y: 0}}
+            threshold={0.1}
+            rootMargin="-100px"
+            textAlign="center"
+          />
         </div>
 
         {/* Our Story */}
@@ -70,14 +82,28 @@ const About = () => {
             </div>
           </div>
 
-          <div className="relative">
-            <img
-              src="https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=800"
-              alt="University students collaborating"
-              className="w-full h-80 object-cover rounded-2xl shadow-lg"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent rounded-2xl"></div>
-          </div>
+          <AnimatedContent
+            distance={150}
+            direction="horizontal"
+            reverse={false}
+            duration={1.7}
+            ease="power3.out"
+            initialOpacity={0}
+            animateOpacity
+            scale={1}
+            threshold={0.2}
+            delay={0.5}
+          >
+            <div className="relative">
+              <img
+                src="https://images.pexels.com/photos/1181671/pexels-photo-1181671.jpeg?auto=compress&cs=tinysrgb&w=800"
+                alt="University students collaborating"
+                className="w-full h-80 object-cover rounded-2xl shadow-lg"
+              />
+              <div
+                className="absolute inset-0 bg-gradient-to-t -bottom-[15%] from-black/50 to-transparent rounded-2xl"></div>
+            </div>
+          </AnimatedContent>
         </div>
       </div>
     </section>
