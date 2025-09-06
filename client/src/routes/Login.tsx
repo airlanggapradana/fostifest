@@ -16,14 +16,14 @@ import {useLogin} from "@/utils/query.ts";
 import {useNavigate} from "react-router";
 import {toast} from "sonner"
 import {ArrowLeft} from "lucide-react";
-import {useSEO} from "@/hooks/useSEO.tsx";
+import {SEO} from "@/hooks/SEO.tsx";
 import {VITE_BASE_URL} from "@/env.ts";
 import ogHome from "@/assets/og/og-home.png";
 import {WebSiteSchema} from "@/hooks/seoSchema.ts";
 
 const LoginPage: React.FC = () => {
   {
-    useSEO({
+    SEO({
       title: "Login",
       description:
         "Login ke akun FOSTIFEST 2025 Anda untuk mengelola profil, mengunggah karya, dan mengikuti acara kami.",

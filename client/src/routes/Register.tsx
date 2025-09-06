@@ -9,14 +9,14 @@ import {useRegister} from "@/utils/query.ts";
 import {toast} from "sonner";
 import {useNavigate} from "react-router";
 import {ArrowLeft} from "lucide-react";
-import {useSEO} from "@/hooks/useSEO.tsx";
+import {SEO} from "@/hooks/SEO.tsx";
 import {VITE_BASE_URL} from "@/env.ts";
 import ogHome from "@/assets/og/og-home.png";
 import {WebSiteSchema} from "@/hooks/seoSchema.ts";
 
 const RegisterPage = () => {
   {
-    useSEO({
+    SEO({
       title: "Register",
       description:
         "Buat akun FOSTIFEST 2025 kamu sekarang dan jadilah bagian dari komunitas yang menginspirasi!",

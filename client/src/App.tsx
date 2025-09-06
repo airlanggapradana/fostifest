@@ -10,24 +10,13 @@ import {CompetitionContext} from "@/hooks/context.ts";
 import {useGetAllComps} from "@/utils/query.ts";
 import FAQ from "@/components/FAQ.tsx";
 import LoadingPage from "@/components/Loading.tsx";
-import {useSEO} from "@/hooks/useSEO.tsx";
-import {WebSiteSchema} from "@/hooks/seoSchema.ts";
-import {VITE_BASE_URL} from "@/env.ts";
-import ogHome from "@/assets/home.png";
 import Timeline from "@/components/Timeline.tsx";
 import About from "@/components/About.tsx";
+import SEO from "@/hooks/SEO.tsx";
+import {VITE_BASE_URL} from "@/env.ts";
+import home from "@/assets/home.png"
 
 function App() {
-  useSEO({
-    title: "Home",
-    description:
-      "Festival teknologi dan inovasi tahunan yang diselenggarakan oleh FOSTI UMS. Ikuti berbagai kompetisi dan seminar di FOSTIFEST 2025!",
-    url: VITE_BASE_URL,
-    image: ogHome,
-    schema: WebSiteSchema("FOSTIFEST 2025", VITE_BASE_URL)
-  })
-
-
   const {data, isLoading, error} = useGetAllComps();
 
   if (isLoading) return <LoadingPage
@@ -37,6 +26,30 @@ function App() {
   if (!data) return <div className="text-center text-gray-400">No data available</div>;
   return (
     <CompetitionContext.Provider value={data}>
+      <SEO
+        title="FOSTIFEST 2025 | Festival Teknologi & Workshop – FOSTI UMS"
+        description="FOSTIFEST 2025 oleh FOSTI UMS: lomba Competitive Programming, Software Development, UI/UX, dan workshop Vue.js. Daftar sekarang!"
+        schema={{
+          "@context": "https://schema.org",
+          "@type": "Event",
+          "name": "FOSTIFEST 2025",
+          "startDate": "2025-10-20T08:00",
+          "endDate": "2025-10-20T17:00",
+          "location": {
+            "@type": "Place",
+            "name": "Universitas Muhammadiyah Surakarta (UMS)",
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Jl. A. Yani No.2",
+              "addressLocality": "Surakarta",
+              "addressRegion": "Central Java",
+              "addressCountry": "ID"
+            }
+          },
+          "image": home,
+          "url": VITE_BASE_URL
+        }}
+      />
       <main className={"min-h-screen bg-white w-full overflow-hidden"}>
         <Navbar/>
         <Hero/>
