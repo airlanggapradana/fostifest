@@ -1,6 +1,5 @@
 import express, {Application} from "express";
 import cors from "cors";
-import {env} from "./env";
 import userRouter from "./controllers/user.controller";
 import {errorHandler} from "./middlewares/errorHandler";
 import competitionRouter from "./controllers/competition.controller";
@@ -30,6 +29,5 @@ app.use('/api/export', exportRouter)
 app.use('/api/admin', decodeJwtWithoutVerify, adminRouter)
 
 app.use(errorHandler)
-app.listen(env.PORT, () => {
-  console.log(`Server is running on port ${env.PORT}`);
-})
+
+export default app;

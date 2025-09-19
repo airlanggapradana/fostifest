@@ -33,6 +33,8 @@ model User {
 
   // Relasi ke pendaftaran individu tetap ada, jika user mendaftar lomba individu
   registrations Registration[]
+  Submission    Submission?
+  Feedback      Feedback[]
 }
 
 enum UserRole {
@@ -62,8 +64,9 @@ model Competition {
   registrations Registration[]
   teams         Team[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  Submission Submission[]
 }
 
 /// Model untuk Kategori Lomba, misal: "Debat", "Pemrograman", "Karya Tulis Ilmiah".
@@ -109,6 +112,7 @@ model Team {
 
   // Relasi ke pendaftaran
   registration Registration?
+  Submission   Submission?
 
   @@unique([name, competitionId])
 }
@@ -160,6 +164,36 @@ enum RegistrationStatus {
   PENDING // Menunggu pembayaran
   CONFIRMED // Pembayaran berhasil, pendaftaran dikonfirmasi
   REJECTED // Pendaftaran ditolak (misal: syarat tidak lengkap)
+}
+
+model Submission {
+  id            String      @id @default(uuid())
+  competition   Competition @relation(fields: [competitionId], references: [id])
+  competitionId String
+
+  team   Team?   @relation(fields: [teamId], references: [id])
+  teamId String? @unique
+
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String? @unique
+
+  fileUrl     String?
+  linkUrl     String?
+  submittedAt DateTime @default(now())
+
+  feedbacks Feedback?
+}
+
+model Feedback {
+  id           String     @id @default(uuid())
+  submission   Submission @relation(fields: [submissionId], references: [id])
+  submissionId String     @unique
+
+  admin   User   @relation(fields: [adminId], references: [id])
+  adminId String
+
+  message   String
+  createdAt DateTime @default(now())
 }
 
 // =============================================
