@@ -9,18 +9,13 @@ import paymentRouter from "./controllers/payment.controller";
 import exportRouter from "./controllers/export.controller";
 import adminRouter from "./controllers/admin.controller";
 import {decodeJwtWithoutVerify} from "./middlewares/authorization.middleware";
-import {env} from "./env";
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 
 const app: Application = express();
 
 app.use(
-  cors({
-    // Change this to your frontend origin for better security
-    origin: env.FRONTEND_URL || 'http://localhost:5173/',
-    credentials: true,
-  }),
+  cors(),
 );
 app.use(cookieParser());
 app.use(express.json());
