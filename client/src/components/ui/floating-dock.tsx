@@ -9,7 +9,7 @@ import {
   useTransform,
 } from "motion/react";
 
-import {useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 
 export const FloatingDock = ({
                                items,

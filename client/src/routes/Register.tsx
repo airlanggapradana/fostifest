@@ -243,7 +243,7 @@ const RegisterPage = () => {
                   {isPending ? "Creating account..." : "Create Account"}
                 </Button>
                 <div className="col-span-2 text-sm text-center text-muted-foreground">
-                  <a href="/login" className="hover:underline">
+                  <a href="/auth/login" className="hover:underline">
                     Already have an account? Sign In
                   </a>
                 </div>
