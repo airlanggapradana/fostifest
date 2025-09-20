@@ -11,6 +11,7 @@ import adminRouter from "./controllers/admin.controller";
 import {decodeJwtWithoutVerify} from "./middlewares/authorization.middleware";
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
+import {env} from "./env";
 
 const app: Application = express();
 
@@ -37,4 +38,6 @@ app.use('/api/admin', decodeJwtWithoutVerify, adminRouter)
 
 app.use(errorHandler)
 
-export default app;
+app.listen(env.PORT, () => {
+  console.log(`Server is running on port ${env.PORT}`);
+})
