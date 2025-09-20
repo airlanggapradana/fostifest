@@ -4,15 +4,13 @@
     {
       "src": "client/package.json",
       "use": "@vercel/static-build",
-      "framework": "vite",
       "config": {
         "distDir": "dist"
       }
     },
     {
       "src": "server/src/server.ts",
-      "use": "@vercel/node",
-      "framework": null
+      "use": "@vercel/node"
     }
   ],
   "routes": [
@@ -22,7 +20,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "client/$1"
+      "dest": "client/src/$1"
     }
   ]
 }
