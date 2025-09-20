@@ -23,11 +23,11 @@ createRoot(document.getElementById('root')!).render(
       <TanstackQueryProvider>
         <BrowserRouter>
           <Routes>
-            <Route path={'/'} element={<App/>}/>
+            <Route index element={<App/>}/>
 
             <Route element={<AuthLayout/>}>
-              <Route path={'/login'} element={<Login/>}/>
-              <Route path={'/register'} element={<Register/>}/>
+              <Route path={'login'} element={<Login/>}/>
+              <Route path={'register'} element={<Register/>}/>
             </Route>
 
             <Route path={'register-competition'} element={<RegistrationLayout/>}>
@@ -35,7 +35,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path={'success'} element={<PaymentSuccess/>}/>
             </Route>
 
-            <Route path={'/profile'} element={<ProfileLayout/>}>
+            <Route path={'profile'} element={<ProfileLayout/>}>
               <Route index element={<ProfileMain/>}/>
               <Route path={'settings'} element={<div>Profile settings</div>}/>
               <Route path={'admin'} element={<AdminDashboard/>}/>
