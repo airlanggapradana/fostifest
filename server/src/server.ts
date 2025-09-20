@@ -57,4 +57,7 @@ app.use('/api/admin', decodeJwtWithoutVerify, adminRouter)
 
 app.use(errorHandler)
 
-export default app;
+// Convert express app ke handler
+export default (req, res) => {
+  return app(req, res);
+};
