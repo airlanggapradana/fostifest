@@ -73,7 +73,7 @@ const Hero = () => {
             <Button
               size="lg"
               className="group w-full sm:w-auto px-6 py-3 sm:px-8 sm:py-4 bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-semibold hover:from-emerald-600 hover:to-teal-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-              onClick={() => navigate('/register')}
+              onClick={() => navigate('/auth/register')}
             >
               Register Now
               <ArrowRight className="inline-block ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform"/>

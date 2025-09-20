@@ -79,7 +79,7 @@ export function Navbar() {
         icon: (
           <RiLoginBoxLine className="h-full w-full  text-neutral-300"/>
         ),
-        href: "/login",
+        href: "/auth/login",
       },
     {
       title: "Instagram",

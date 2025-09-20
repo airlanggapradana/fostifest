@@ -35,7 +35,7 @@ const RegisterPage = () => {
         position: 'top-center'
       });
       form.reset();
-      navigate('/login', {replace: true});
+      navigate('/auth/login', {replace: true});
     } catch (e) {
       form.setError('root', {
         type: 'manual',
