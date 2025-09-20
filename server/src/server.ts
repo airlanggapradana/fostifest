@@ -18,7 +18,7 @@ const app: Application = express();
 app.use(
   cors({
     // Change this to your frontend origin for better security
-    origin: env.FRONTEND_URL || 'http://localhost:5173',
+    origin: env.FRONTEND_URL || 'http://localhost:5173/',
     credentials: true,
   }),
 );
