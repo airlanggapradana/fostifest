@@ -4,7 +4,6 @@
     {
       "src": "client/package.json",
       "use": "@vercel/static-build",
-      "$schema": "https://openapi.vercel.sh/vercel.json",
       "framework": "vite",
       "config": {
         "distDir": "dist"
@@ -13,7 +12,6 @@
     {
       "src": "server/src/server.ts",
       "use": "@vercel/node",
-      "$schema": "https://openapi.vercel.sh/vercel.json",
       "framework": null
     }
   ],
