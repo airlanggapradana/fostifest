@@ -222,7 +222,15 @@ export const getUserDetails = async (req: Request, res: Response, next: NextFunc
       include: {
         registrations: {
           include: {
-            competition: true,
+            competition: {
+              include: {
+                Submission: {
+                  include: {
+                    feedbacks: true
+                  }
+                }
+              }
+            },
             team: {
               include: {
                 participants: true,
