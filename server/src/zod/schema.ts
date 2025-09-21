@@ -53,7 +53,6 @@ export const createSubmissionSchema = z.object({
   teamId: z.string().min(1, 'Team id is required').optional(),
   userId: z.string().min(1, 'User id is required').optional(),
   fileUrl: z.url('Invalid file URL').min(1, 'File URL is required'),
-  linkUrl: z.url('Invalid link URL').min(1, 'Link URL is required').optional(),
 })
 
 export const createFeedbackSchema = z.object({

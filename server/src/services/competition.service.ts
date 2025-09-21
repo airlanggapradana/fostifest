@@ -244,7 +244,6 @@ export const createSubmission = async (req: Request, res: Response, next: NextFu
       teamId,
       userId,
       fileUrl,
-      linkUrl
     }: CreateSubmissionSchema = createSubmissionSchema.parse(req.body);
 
     // Cek kompetisi ada atau tidak
@@ -288,7 +287,6 @@ export const createSubmission = async (req: Request, res: Response, next: NextFu
         teamId,
         userId,
         fileUrl,
-        linkUrl,
       },
     });
 
