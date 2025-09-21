@@ -344,6 +344,31 @@ export const createFeedback = async (req: Request, res: Response, next: NextFunc
   }
 }
 
+export const updateFeedback = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {feedbackId} = req.params;
+    const {message, adminId}: Partial<CreateFeedbackSchema> = createFeedbackSchema.partial().parse(req.body);
+
+    const existing = await prisma.feedback.findUnique({where: {id: feedbackId}});
+    if (!existing) {
+      res.status(404).json({message: "Feedback tidak ditemukan"});
+      return;
+    }
+
+    const updated = await prisma.feedback.update({
+      where: {id: feedbackId},
+      data: {
+        message,
+        adminId,
+      },
+    });
+
+    res.json(updated);
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const updateCompetition = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {id} = req.params;
