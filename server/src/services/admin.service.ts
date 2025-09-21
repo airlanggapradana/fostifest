@@ -181,6 +181,38 @@ export const getUserData = async (req: Request, res: Response, next: NextFunctio
   }
 }
 
+export const getAllSubmissions = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
+
+    const [submissions, total] = await Promise.all([
+      prisma.submission.findMany({
+        skip,
+        take: limit,
+        include: {
+          competition: {select: {id: true, name: true}},
+          team: {include: {participants: {select: {id: true, name: true}}}},
+          user: {select: {id: true, name: true, email: true}},
+          feedbacks: {include: {admin: {select: {id: true, name: true}}}},
+        },
+      }),
+      prisma.submission.count(),
+    ]);
+
+    res.json({
+      page,
+      limit,
+      total,
+      data: submissions,
+    });
+    return;
+  } catch (err) {
+    next(err);
+  }
+}
+
 export const getUserDetails = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {id} = req.params;

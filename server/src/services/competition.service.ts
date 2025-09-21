@@ -1,6 +1,12 @@
 import {Request, Response, NextFunction} from "express";
 import prisma from "../../prisma/prisma";
-import {CompetitionSchema, competitionSchema} from "../zod/schema";
+import {
+  CompetitionSchema,
+  competitionSchema, createFeedbackSchema,
+  CreateFeedbackSchema,
+  createSubmissionSchema,
+  CreateSubmissionSchema
+} from "../zod/schema";
 
 export const createCompetition = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -228,6 +234,113 @@ export const getCompetitionById = async (req: Request, res: Response, next: Next
     return
   } catch (e) {
     next(e);
+  }
+}
+
+export const createSubmission = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {competitionId} = req.params;
+    const {
+      teamId,
+      userId,
+      fileUrl,
+      linkUrl
+    }: CreateSubmissionSchema = createSubmissionSchema.parse(req.body);
+
+    // Cek kompetisi ada atau tidak
+    const competition = await prisma.competition.findUnique({
+      where: {id: competitionId},
+    });
+    if (!competition) {
+      res.status(404).json({message: "Competition tidak ditemukan"});
+      return;
+    }
+
+    // Cek apakah user/team terdaftar di competition ini
+    const registration = await prisma.registration.findFirst({
+      where: {
+        competitionId,
+        OR: [{userId}, {teamId}],
+      },
+    });
+    if (!registration) {
+      res.status(400).json({message: "User/Team belum terdaftar di competition ini"});
+      return;
+    }
+
+    // Cek apakah user/team sudah pernah submit sebelumnya
+    const existingSubmission = await prisma.submission.findFirst({
+      where: {
+        competitionId,
+        OR: [{userId}, {teamId}],
+      },
+    });
+    if (existingSubmission) {
+      res.status(400).json({message: "User/Team sudah pernah submit"});
+      return;
+    }
+
+    // Simpan submission
+    const submission = await prisma.submission.create({
+      data: {
+        id: crypto.randomUUID().slice(0, 12),
+        competitionId,
+        teamId,
+        userId,
+        fileUrl,
+        linkUrl,
+      },
+    });
+
+    res.status(201).json(submission);
+    return;
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const createFeedback = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {submissionId} = req.params;
+    const {adminId, message}: CreateFeedbackSchema = createFeedbackSchema.parse(req.body);
+
+    // Cek submission valid
+    const submission = await prisma.submission.findUnique({
+      where: {id: submissionId},
+    });
+    if (!submission) {
+      res.status(404).json({message: "Submission tidak ditemukan"});
+      return;
+    }
+
+    // Cek admin valid dan role ADMIN
+    const admin = await prisma.user.findUnique({where: {id: adminId}});
+    if (!admin || admin.role !== "ADMIN") {
+      res.status(403).json({message: "User bukan admin"});
+      return;
+    }
+
+    // Cek apakah submission sudah punya feedback (karena UNIQUE constraint)
+    const existingFeedback = await prisma.feedback.findUnique({
+      where: {submissionId},
+    });
+    if (existingFeedback) {
+      res.status(400).json({message: "Submission ini sudah punya feedback"});
+      return;
+    }
+
+    const feedback = await prisma.feedback.create({
+      data: {
+        id: crypto.randomUUID().slice(0, 12),
+        submissionId,
+        adminId,
+        message,
+      },
+    });
+
+    res.status(201).json(feedback);
+  } catch (error) {
+    next(error)
   }
 }
 

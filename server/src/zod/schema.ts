@@ -49,7 +49,20 @@ export const createPaymentBody = z.object({
   registrationId: z.string().min(1),
 });
 
+export const createSubmissionSchema = z.object({
+  teamId: z.string().min(1, 'Team id is required').optional(),
+  userId: z.string().min(1, 'User id is required').optional(),
+  fileUrl: z.url('Invalid file URL').min(1, 'File URL is required'),
+  linkUrl: z.url('Invalid link URL').min(1, 'Link URL is required').optional(),
+})
 
+export const createFeedbackSchema = z.object({
+  adminId: z.string().min(1, 'Admin id is required'),
+  message: z.string().min(1, 'Feedback message is required'),
+})
+
+export type CreateFeedbackSchema = z.infer<typeof createFeedbackSchema>;
+export type CreateSubmissionSchema = z.infer<typeof createSubmissionSchema>;
 export type CreatePaymentBody = z.infer<typeof createPaymentBody>;
 export type LoginSchema = z.infer<typeof loginSchema>;
 export type RegistrationTeamSchema = z.infer<typeof registrationTeamSchema>;
