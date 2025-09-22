@@ -7,7 +7,7 @@ import type {
   PaymentSchema,
   RegisterSchema,
   RegistrationIndividualSchema,
-  RegistrationTeamSchema
+  RegistrationTeamSchema, SendSubmissionSchema
 } from "@/zod/validation.schema.ts";
 import type {RegisterResponse} from "@/types/register.type.ts";
 import Cookies from "js-cookie";
@@ -221,6 +221,30 @@ export const useGetUserDetails = (userId: string) => {
         }
         throw new Error('An unexpected error occurred while fetching user details');
       }
+    }
+  })
+}
+
+export const useSendSubmission = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({data, competitionId}: { data: SendSubmissionSchema, competitionId: string }) => {
+      try {
+        return await axios.post(`${VITE_BASE_API_URL}/competition/submission/${competitionId}`, data, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: "POST"
+        }).then(res => res.status)
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Failed to send submission');
+        }
+        throw new Error('An unexpected error occurred while sending submission');
+      }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({queryKey: ['getUserDetailsAdmin']});
     }
   })
 }

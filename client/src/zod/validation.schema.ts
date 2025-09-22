@@ -35,6 +35,13 @@ export const paymentSchema = z.object({
   registrationId: z.string().min(1, 'Registration id is required'),
 })
 
+export const sendSubmissionSchema = z.object({
+  fileUrl: z.string().url().min(1, 'Submission URL is required'),
+  userId: z.string().min(1, 'User id is required').optional(),
+  teamId: z.string().min(1, 'Team id is required').optional(),
+})
+
+export type SendSubmissionSchema = z.infer<typeof sendSubmissionSchema>;
 export type PaymentSchema = z.infer<typeof paymentSchema>;
 export type RegistrationIndividualSchema = z.infer<typeof registrationIndividualSchema>;
 export type RegistrationTeamSchema = z.infer<typeof registrationTeamSchema>;

@@ -1,6 +1,5 @@
 import {Outlet} from "react-router";
 import {FlickeringGrid} from "@/components/magicui/flickering-grid";
-import {Toaster} from "@/components/ui/sonner"
 
 const AuthLayout = () => {
   return (
@@ -14,7 +13,6 @@ const AuthLayout = () => {
         flickerChance={0.1}
       />
       <Outlet/>
-      <Toaster/>
     </div>
   );
 };

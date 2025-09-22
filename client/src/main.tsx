@@ -17,6 +17,7 @@ import AdminDashboard from "@/routes/AdminDashboard.tsx";
 import UsersManagement from "@/components/UsersManagement.tsx";
 import {HelmetProvider} from "react-helmet-async";
 import Submissions from "@/routes/Submissions.tsx";
+import {Toaster} from "@/components/ui/sonner.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -47,6 +48,7 @@ createRoot(document.getElementById('root')!).render(
             <Route path={'*'} element={<NotFoundPage/>}/>
           </Routes>
         </BrowserRouter>
+        <Toaster/>
       </TanstackQueryProvider>
     </HelmetProvider>
   </StrictMode>,

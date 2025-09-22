@@ -1,12 +1,60 @@
 import {useUserSessionContext} from "@/hooks/context.ts";
-import {useGetUserDetailsAdmin} from "@/utils/query.ts";
+import {useGetUserDetailsAdmin, useSendSubmission} from "@/utils/query.ts";
 import {Separator} from "@/components/ui/separator.tsx";
-import {Calendar, File, Trophy} from "lucide-react";
+import {Calendar, Edit, File, Trophy} from "lucide-react";
 import {Button} from "@/components/ui/button.tsx";
+import {useState} from "react";
+import {type SubmitHandler, useForm} from "react-hook-form";
+import {sendSubmissionSchema, type SendSubmissionSchema} from "@/zod/validation.schema.ts";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {Input} from "@/components/ui/input.tsx";
+import {Form, FormControl, FormField, FormLabel, FormMessage} from "@/components/ui/form.tsx";
+import {BiPlus} from "react-icons/bi";
+import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from "@/components/ui/dialog.tsx";
+import {toast} from "sonner";
+import {AxiosError} from "axios";
 
 const Submissions = () => {
   const session = useUserSessionContext()
   const {data: user, isLoading, error} = useGetUserDetailsAdmin(session.payload.id)
+  const {mutateAsync: handleSendSubmission, isPending} = useSendSubmission()
+  const [competitionId, setCompetitionId] = useState<string | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const form = useForm<SendSubmissionSchema>({
+    defaultValues: {
+      fileUrl: '',
+    },
+    resolver: zodResolver(sendSubmissionSchema)
+  })
+
+  const onSubmit: SubmitHandler<SendSubmissionSchema> = async (data) => {
+    try {
+      if (!competitionId) return (
+        toast.error("Competition ID is missing")
+      );
+      const res = await handleSendSubmission({
+        data,
+        competitionId
+      })
+      if (res === 201) {
+        toast.success("Submission sent successfully", {position: "top-center", richColors: true})
+        setIsModalOpen(false)
+        form.reset()
+      } else {
+        form.reset()
+        setIsModalOpen(false)
+        toast.error("Failed to send submission", {position: "top-center", richColors: true})
+      }
+    } catch (e) {
+      form.reset()
+      toast.error(e instanceof AxiosError ? e.response?.data.message : (e as Error).message, {
+        position: "top-center",
+        richColors: true
+      })
+      setIsModalOpen(false)
+    }
+  }
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">Error: {error.message}</div>;
@@ -52,21 +100,49 @@ const Submissions = () => {
               </div>
               <Separator className="bg-gray-500"/>
               <div>
-                <h3 className="text-xl font-semibold text-gray-100">Your Submissions</h3>
-                <div className="grid grid-cols-2 gap-4 mt-3">
+                <div className={'flex items-center justify-between'}>
+                  <h3 className="text-xl font-semibold text-gray-100">Your Submissions</h3>
+                  <Button
+                    onClick={() => {
+                      if (registration.competition.type === 'INDIVIDUAL') {
+                        form.setValue('userId', session.payload.id)
+                        form.setValue('teamId', undefined)
+                      } else {
+                        form.setValue('teamId', registration.teamId!)
+                        form.setValue('userId', undefined)
+                      }
+                      setCompetitionId(registration.competitionId)
+                      setIsModalOpen(true)
+                    }}
+                  >
+                    <BiPlus/>
+                    Add Submission
+                  </Button>
+                </div>
+                <div className="w-full mt-3">
                   {registration.competition.Submission.length > 0 ? (
                     registration.competition.Submission.map((submission) => (
-                      <Button
-                        key={submission.id}
-                        variant="outline"
-                        className="w-48 h-48 bg-gray-700 hover:bg-gray-600 flex items-center justify-center"
-                        onClick={() => window.open(submission.fileUrl, '_blank')}
-                      >
-                        <File className="text-gray-100"/>
-                      </Button>
+                      <div className={'flex items-start gap-4'}>
+                        <Button
+                          key={submission.id}
+                          variant="outline"
+                          className="w-48 h-48 bg-gray-700 hover:bg-gray-600"
+                          onClick={() => window.open(submission.fileUrl, '_blank')}
+                        >
+                          <File className="text-gray-100 h-48 w-48"/>
+                        </Button>
+                        <Button
+                          variant={'outline'}
+                        >
+                          <Edit/>
+                        </Button>
+                      </div>
                     ))
                   ) : (
-                    <p className="text-gray-300">No submissions yet.</p>
+                    <div>
+                      <p className="text-gray-300">No submissions yet, please submit one by clicking the button on the
+                        right side.</p>
+                    </div>
                   )}
                 </div>
               </div>
@@ -102,6 +178,46 @@ const Submissions = () => {
           <div className="text-gray-300">You have no registrations yet.</div>
         )}
       </div>
+
+      {/* dialog */}
+      {isModalOpen && competitionId && (
+        <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <DialogDescription>
+                This action cannot be undone. This will permanently delete your account
+                and remove your data from our servers.
+              </DialogDescription>
+            </DialogHeader>
+
+            <Form {...form}>
+              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="fileUrl"
+                  render={({field}) => (
+                    <div className={'space-y-3'}>
+                      <FormLabel>File URL</FormLabel>
+                      <FormControl>
+                        <Input placeholder="Enter your submission file URL" {...field} />
+                      </FormControl>
+                      <FormMessage/>
+                    </div>
+                  )}
+                />
+
+                <Button
+                  disabled={isPending}
+                  type="submit"
+                >
+                  {isPending ? 'Submitting...' : 'Submit'}
+                </Button>
+              </form>
+            </Form>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 };
