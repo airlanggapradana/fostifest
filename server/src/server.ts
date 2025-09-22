@@ -28,7 +28,7 @@ app.use(bodyParser.json());
 // pakai memory storage, jadi file masuk buffer
 const upload = multer({storage: multer.memoryStorage()});
 
-app.post("/upload", upload.single("file"), async (req: Request, res: Response, next: NextFunction) => {
+app.post("/api/upload", upload.single("file"), async (req: Request, res: Response, next: NextFunction) => {
   try {
     if (!req.file) {
       res.status(400).json({error: "No file uploaded"});
