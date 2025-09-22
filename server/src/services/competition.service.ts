@@ -367,6 +367,35 @@ export const updateFeedback = async (req: Request, res: Response, next: NextFunc
   }
 }
 
+export const updateSubmission = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {submissionId} = req.params;
+    const {teamId, fileUrl, userId}: Partial<CreateSubmissionSchema> = createSubmissionSchema.partial().parse(req.body);
+
+    const existing = await prisma.submission.findUnique({where: {id: submissionId}});
+    if (!existing) {
+      res.status(404).json({message: "Submission tidak ditemukan"});
+      return;
+    }
+
+    const updated = await prisma.submission.update({
+      where: {id: submissionId},
+      data: {
+        teamId,
+        fileUrl,
+        userId,
+      },
+    })
+    res.status(200).json({
+      message: "Submission updated successfully",
+      data: updated
+    });
+    return;
+  } catch (e) {
+    next(e)
+  }
+}
+
 export const updateCompetition = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {id} = req.params;
