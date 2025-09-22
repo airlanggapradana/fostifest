@@ -129,7 +129,7 @@ const LoginPage: React.FC = () => {
                 {isPending ? "Signing In..." : "Sign In"}
               </Button>
               <div className="text-xs sm:text-sm text-center text-muted-foreground">
-                <a href="/register" className="hover:underline">
+                <a href="/auth/register" className="hover:underline">
                   Don't have an account? Register now
                 </a>
               </div>

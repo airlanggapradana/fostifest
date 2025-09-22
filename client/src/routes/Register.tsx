@@ -65,7 +65,7 @@ const RegisterPage = () => {
         }}
       />
       <div className="min-h-svh flex items-center justify-center p-4 sm:p-6">
-        <Card className="w-full max-w-sm sm:max-w-md z-10 bg-gray-800 border-2 border-teal-400">
+        <Card className="w-[40rem] z-10 bg-gray-800 border-2 border-teal-400">
           <CardHeader className="space-y-1">
             <Button className="w-1/3 sm:w-1/4 text-sm" onClick={() => navigate(-1)}>
               <ArrowLeft/>

@@ -16,6 +16,7 @@ import ProfileMain from "@/routes/ProfileMain.tsx";
 import AdminDashboard from "@/routes/AdminDashboard.tsx";
 import UsersManagement from "@/components/UsersManagement.tsx";
 import {HelmetProvider} from "react-helmet-async";
+import Submissions from "@/routes/Submissions.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -40,6 +41,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path={'settings'} element={<div>Profile settings</div>}/>
               <Route path={'admin'} element={<AdminDashboard/>}/>
               <Route path={'users'} element={<UsersManagement/>}/>
+              <Route path={'submissions'} element={<Submissions/>}/>
             </Route>
 
             <Route path={'*'} element={<NotFoundPage/>}/>

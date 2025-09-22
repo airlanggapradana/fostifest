@@ -42,6 +42,25 @@ export interface Competition {
   categoryId: string;
   createdAt: Date;
   updatedAt: Date;
+  Submission: Submission[];
+}
+
+export interface Submission {
+  id: string;
+  competitionId: string;
+  teamId: null;
+  userId: string;
+  fileUrl: string;
+  submittedAt: Date;
+  feedbacks: Feedbacks;
+}
+
+export interface Feedbacks {
+  id: string;
+  submissionId: string;
+  adminId: string;
+  message: string;
+  createdAt: Date;
 }
 
 export interface Team {

@@ -7,13 +7,17 @@ import {AlertCircle, CheckCircle} from "lucide-react";
 import {BiUser} from "react-icons/bi";
 import {GoPeople} from "react-icons/go";
 import AdminDashboardLoading from "@/components/AdminDashboardLoading.tsx";
+import {useNavigate} from "react-router";
 
 const AdminDashboard = () => {
+  const navigate = useNavigate()
   const session = useUserSessionContext()
   const {data, isLoading, error} = useGetCompsStats()
   const {data: summary, isLoading: isLoadingSummary, error: isErrorSummary} = useGetSummaryStats()
 
-
+  if (!session || session.payload.role !== 'ADMIN') {
+    navigate('/auth/login', {replace: true})
+  }
   if (isLoading || isLoadingSummary) return <AdminDashboardLoading/>
   if (error || isErrorSummary) return <div
     className={'text-red-500'}>Error: {error?.message || isErrorSummary?.message}</div>

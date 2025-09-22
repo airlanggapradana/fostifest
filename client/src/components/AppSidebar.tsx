@@ -12,6 +12,7 @@ import {useLocation, useNavigate} from "react-router";
 import {useUserSessionContext} from "@/hooks/context.ts";
 import Cookies from "js-cookie";
 import {BiUser} from "react-icons/bi";
+import {LuNotebookPen} from "react-icons/lu";
 
 // Menu items.
 const participantItems = [
@@ -25,6 +26,11 @@ const participantItems = [
     url: "/profile/settings",
     icon: Settings,
   },
+  {
+    title: "Submissions",
+    url: "/profile/submissions",
+    icon: LuNotebookPen,
+  }
 ]
 
 const adminItems = [
@@ -108,7 +114,7 @@ export function AppSidebar() {
         <Button
           onClick={() => {
             Cookies.remove('accessToken')
-            navigate('/login', {replace: true})
+            navigate('/auth/login', {replace: true})
           }}
         >
           <LogOut className="h-6 w-6"/>
