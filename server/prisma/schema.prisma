@@ -178,6 +178,7 @@ model Submission {
   userId String? @unique
 
   fileUrl     String
+  filePath    String
   submittedAt DateTime @default(now())
 
   feedbacks Feedback?

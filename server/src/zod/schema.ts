@@ -52,7 +52,8 @@ export const createPaymentBody = z.object({
 export const createSubmissionSchema = z.object({
   teamId: z.string().min(1, 'Team id is required').optional(),
   userId: z.string().min(1, 'User id is required').optional(),
-  fileUrl: z.url('Invalid file URL').min(1, 'File URL is required'),
+  fileUrl: z.string().min(1, 'File URL is required'),
+  filePath: z.string().min(1, 'File path is required'),
 })
 
 export const createFeedbackSchema = z.object({

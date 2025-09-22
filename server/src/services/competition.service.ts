@@ -244,6 +244,7 @@ export const createSubmission = async (req: Request, res: Response, next: NextFu
       teamId,
       userId,
       fileUrl,
+      filePath
     }: CreateSubmissionSchema = createSubmissionSchema.parse(req.body);
 
     // Cek kompetisi ada atau tidak
@@ -287,6 +288,7 @@ export const createSubmission = async (req: Request, res: Response, next: NextFu
         teamId,
         userId,
         fileUrl,
+        filePath
       },
     });
 
@@ -370,7 +372,12 @@ export const updateFeedback = async (req: Request, res: Response, next: NextFunc
 export const updateSubmission = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {submissionId} = req.params;
-    const {teamId, fileUrl, userId}: Partial<CreateSubmissionSchema> = createSubmissionSchema.partial().parse(req.body);
+    const {
+      teamId,
+      fileUrl,
+      userId,
+      filePath
+    }: Partial<CreateSubmissionSchema> = createSubmissionSchema.partial().parse(req.body);
 
     const existing = await prisma.submission.findUnique({where: {id: submissionId}});
     if (!existing) {
@@ -384,6 +391,7 @@ export const updateSubmission = async (req: Request, res: Response, next: NextFu
         teamId,
         fileUrl,
         userId,
+        filePath
       },
     })
     res.status(200).json({
