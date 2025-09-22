@@ -1,4 +1,4 @@
-import express, {Application} from "express";
+import express, {Request, Response, Application, NextFunction} from "express";
 import cors from "cors";
 import userRouter from "./controllers/user.controller";
 import {errorHandler} from "./middlewares/errorHandler";
@@ -12,6 +12,8 @@ import {decodeJwtWithoutVerify} from "./middlewares/authorization.middleware";
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser';
 import {env} from "./env";
+import multer from "multer";
+import {supabase} from "./utils/supabaseClient";
 
 const app: Application = express();
 
@@ -22,6 +24,48 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(bodyParser.json());
+
+// pakai memory storage, jadi file masuk buffer
+const upload = multer({storage: multer.memoryStorage()});
+
+app.post("/upload", upload.single("file"), async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    if (!req.file) {
+      res.status(400).json({error: "No file uploaded"});
+      return;
+    }
+
+    const file = req.file;
+    const fileName = `${Date.now()}-${file.originalname}`;
+
+    // upload ke supabase storage
+    const {data, error} = await supabase.storage
+      .from("submissions") // ganti sesuai nama bucket di supabase
+      .upload(fileName, file.buffer, {
+        contentType: file.mimetype,
+        upsert: true,
+      });
+
+    if (error) {
+      res.status(500).json({error: error.message});
+      return;
+    }
+
+    // bikin public URL
+    const {data: publicUrl} = supabase.storage
+      .from("submissions")
+      .getPublicUrl(fileName);
+
+    res.status(200).json({
+      message: "File uploaded successfully",
+      path: data?.path,
+      url: publicUrl.publicUrl,
+    });
+    return;
+  } catch (err) {
+    next(err);
+  }
+});
 
 
 app.get('/', (_req, res) => {
