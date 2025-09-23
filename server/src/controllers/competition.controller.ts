@@ -1,6 +1,6 @@
 import {Router} from "express";
 import {
-  createCompetition, createFeedback, createSubmission, deleteCompetition,
+  createCompetition, createFeedback, createSubmission, deleteCompetition, deleteSubmission,
   getCompetitionById,
   getCompetitions,
   updateCompetition, updateFeedback, updateSubmission
@@ -17,5 +17,6 @@ competitionRouter.put('/:id', updateCompetition)
 competitionRouter.put('/submission/:submissionId', updateSubmission)
 competitionRouter.put('/feedback/:feedbackId', updateFeedback)
 competitionRouter.delete('/:id', deleteCompetition)
+competitionRouter.delete('/submission/delete/:submissionId', deleteSubmission)
 
 export default competitionRouter

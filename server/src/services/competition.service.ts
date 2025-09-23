@@ -7,6 +7,7 @@ import {
   createSubmissionSchema,
   CreateSubmissionSchema
 } from "../zod/schema";
+import {supabase} from "../utils/supabaseClient";
 
 export const createCompetition = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -479,5 +480,40 @@ export const deleteCompetition = async (req: Request, res: Response, next: NextF
     return
   } catch (e) {
     next(e);
+  }
+}
+
+export const deleteSubmission = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const {submissionId} = req.params;
+    // 1. Cari submission di DB
+    const submission = await prisma.submission.findUnique({
+      where: {id: submissionId},
+    });
+
+    if (!submission) {
+      res.status(404).json({error: "Submission not found"});
+      return;
+    }
+
+    // 2. Hapus file di Supabase Storage
+    const {error: storageError} = await supabase.storage
+      .from("submissions") // ganti sesuai nama bucket
+      .remove([submission.filePath]);
+
+    if (storageError) {
+      res.status(500).json({error: storageError.message});
+      return;
+    }
+
+    // 3. Hapus row metadata di DB
+    await prisma.submission.delete({
+      where: {id: submissionId},
+    });
+
+    res.status(200).json({message: "Submission deleted successfully"});
+    return;
+  } catch (err) {
+    next(err);
   }
 }
