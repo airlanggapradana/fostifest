@@ -364,7 +364,8 @@ export const updateFeedback = async (req: Request, res: Response, next: NextFunc
       },
     });
 
-    res.json(updated);
+    res.status(200).json(updated);
+    return;
   } catch (error) {
     next(error);
   }
