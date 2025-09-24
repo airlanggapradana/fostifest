@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction} from "express";
 import prisma from "../../prisma/prisma";
 import {getMonthName, mapToChartData} from "../utils/helper";
+import ExcelJS from "exceljs";
 
 export const getRegistrationsByCompetitionLastMonths = async (_req: Request, res: Response, next: NextFunction) => {
   try {
@@ -252,6 +253,160 @@ export const getUserDetails = async (req: Request, res: Response, next: NextFunc
       data: user,
     });
     return;
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const exportAsExcel = async (_req: Request, res: Response, next: NextFunction) => {
+  try {
+    const registrations = await prisma.registration.findMany({
+      include: {
+        competition: true,
+        user: true,
+        team: {
+          include: {
+            participants: true,
+            leader: true,
+          },
+        },
+        transaction: true,
+      },
+    });
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Participants");
+
+    // Header
+    worksheet.columns = [
+      {header: "No", key: "no", width: 6},
+      {header: "Competition", key: "competition", width: 25},
+      {header: "Team Name", key: "teamName", width: 25},
+      {header: "Registration Status", key: "status", width: 20},
+      {header: "Registration Date", key: "createdAt", width: 25},
+      {header: "Type", key: "type", width: 15},
+      {header: "Name", key: "name", width: 25},
+      {header: "Email", key: "email", width: 25},
+      {header: "Phone", key: "phone", width: 20},
+      {header: "Transaction ID", key: "transactionId", width: 25},
+      {header: "Order ID", key: "midtransOrderId", width: 25},
+      {header: "Amount", key: "amount", width: 15},
+      {header: "Payment Type", key: "paymentType", width: 20},
+      {header: "Transaction Status", key: "transactionStatus", width: 20},
+      {header: "Transaction Time", key: "transactionTime", width: 25},
+    ];
+
+    // Styling header
+    worksheet.getRow(1).eachCell((cell) => {
+      cell.font = {bold: true, color: {argb: "FFFFFFFF"}};
+      cell.fill = {type: "pattern", pattern: "solid", fgColor: {argb: "4F81BD"}};
+      cell.alignment = {vertical: "middle", horizontal: "center"};
+      cell.border = {
+        top: {style: "thin"},
+        left: {style: "thin"},
+        bottom: {style: "thin"},
+        right: {style: "thin"},
+      };
+    });
+
+    let counter = 1;
+
+    // Helper tambah row
+    const addRow = (
+      reg: any,
+      type: string,
+      name: string,
+      email?: string,
+      phone?: string
+    ) => {
+      const createdAt = reg.createdAt.toISOString().split("T")[0];
+      const tx = reg.transaction;
+
+      const row = worksheet.addRow({
+        no: counter++,
+        competition: reg.competition.name,
+        teamName: reg.team ? reg.team.name : "-",
+        status: reg.status,
+        createdAt,
+        type,
+        name,
+        email: email ?? "-",
+        phone: phone ?? "-",
+        transactionId: tx?.id ?? "-",
+        midtransOrderId: tx?.midtransOrderId ?? "-",
+        amount: tx?.amount ?? "-",
+        paymentType: tx?.paymentType ?? "-",
+        // paymentCode: tx?.paymentCode ?? "-",
+        transactionStatus: tx?.status ?? "-",
+        transactionTime: tx?.transactionTime
+          ? tx.transactionTime.toISOString().replace("T", " ").split(".")[0]
+          : "-",
+      });
+
+      // Border & alignment
+      row.eachCell((cell) => {
+        cell.alignment = {vertical: "middle", horizontal: "left", wrapText: true};
+        cell.border = {
+          top: {style: "thin"},
+          left: {style: "thin"},
+          bottom: {style: "thin"},
+          right: {style: "thin"},
+        };
+      });
+
+      // Warna status registrasi
+      const statusCell = row.getCell(4); // kolom ke-4 = Registration Status
+      if (reg.status === "APPROVED" || reg.status === "CONFIRMED") {
+        statusCell.fill = {type: "pattern", pattern: "solid", fgColor: {argb: "90EE90"}};
+      } else if (reg.status === "PENDING") {
+        statusCell.fill = {type: "pattern", pattern: "solid", fgColor: {argb: "FFFF99"}};
+      } else {
+        statusCell.fill = {type: "pattern", pattern: "solid", fgColor: {argb: "FF9999"}};
+      }
+
+      // Warna khusus untuk row Team Leader & Member
+      if (type === "Team Leader" || type === "Team Member") {
+        row.eachCell((cell) => {
+          cell.fill = {type: "pattern", pattern: "solid", fgColor: {argb: "D9E1F2"}};
+        });
+      }
+    };
+
+    // Tambah data sesuai tipe kompetisi
+    registrations.forEach((reg) => {
+      if (reg.competition.type === "INDIVIDUAL" && reg.user) {
+        addRow(reg, "Individual", reg.user.name, reg.user.email, reg.user.phone);
+      }
+
+      if (reg.competition.type === "TEAM" && reg.team) {
+        addRow(reg, "Team Leader", reg.team.leader.name, reg.team.leader.email, reg.team.leader.phone);
+        reg.team.participants.forEach((p) => {
+          addRow(reg, "Team Member", p.name, p.email ?? "-", p.phoneNumber ?? "-");
+        });
+      }
+    });
+
+    // Auto-fit column width
+    worksheet.columns.forEach((col) => {
+      if (!col) return;
+      let maxLength = 15;
+      // @ts-ignore
+      col.eachCell({includeEmpty: true}, (cell) => {
+        const val = cell.value ? cell.value.toString() : "";
+        if (val.length > maxLength) maxLength = val.length;
+      });
+      col.width = maxLength + 2;
+    });
+
+    // Response
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader("Content-Disposition", "attachment; filename=participants.xlsx");
+
+    await workbook.xlsx.write(res);
+    res.end();
   } catch (error) {
     next(error);
   }
