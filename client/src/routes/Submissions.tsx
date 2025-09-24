@@ -1,60 +1,121 @@
 import {useUserSessionContext} from "@/hooks/context.ts";
-import {useGetUserDetailsAdmin, useSendSubmission} from "@/utils/query.ts";
+import {useDeleteSubmission, useGetUserDetailsAdmin, useSendSubmission} from "@/utils/query.ts";
 import {Separator} from "@/components/ui/separator.tsx";
-import {Calendar, Edit, File, Trophy} from "lucide-react";
+import {Calendar, Trash, Trophy} from "lucide-react";
 import {Button} from "@/components/ui/button.tsx";
-import {useState} from "react";
-import {type SubmitHandler, useForm} from "react-hook-form";
+import {useCallback, useState} from "react";
+import {Controller, type SubmitHandler, useForm} from "react-hook-form";
 import {sendSubmissionSchema, type SendSubmissionSchema} from "@/zod/validation.schema.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {Input} from "@/components/ui/input.tsx";
-import {Form, FormControl, FormField, FormLabel, FormMessage} from "@/components/ui/form.tsx";
+import {Form} from "@/components/ui/form.tsx";
 import {BiPlus} from "react-icons/bi";
 import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from "@/components/ui/dialog.tsx";
 import {toast} from "sonner";
 import {AxiosError} from "axios";
+import {VITE_BASE_API_URL} from "@/env.ts";
+import {useDropzone} from "react-dropzone";
+import {FaFileArchive} from "react-icons/fa";
 
 const Submissions = () => {
   const session = useUserSessionContext()
   const {data: user, isLoading, error} = useGetUserDetailsAdmin(session.payload.id)
+  const {mutateAsync: handleDeleteSubmission, isPending: isPendingDelete} = useDeleteSubmission();
   const {mutateAsync: handleSendSubmission, isPending} = useSendSubmission()
   const [competitionId, setCompetitionId] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [uploading, setUploading] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [fileUrl, setFileUrl] = useState<string | null>(null);
+
 
   const form = useForm<SendSubmissionSchema>({
     defaultValues: {
-      fileUrl: '',
+      fileUrl: null,
     },
     resolver: zodResolver(sendSubmissionSchema)
   })
 
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      if (acceptedFiles.length > 0) {
+        form.setValue("fileUrl", acceptedFiles[0], {shouldValidate: true});
+      }
+    },
+    [form]
+  );
+
   const onSubmit: SubmitHandler<SendSubmissionSchema> = async (data) => {
+    if (!data.fileUrl) {
+      toast.error("File URL is required", {position: "top-center", richColors: true});
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", data.fileUrl as File);
+
+    if (!competitionId) {
+      toast.error("Competition ID is missing");
+      return;
+    }
+
     try {
-      if (!competitionId) return (
-        toast.error("Competition ID is missing")
-      );
-      const res = await handleSendSubmission({
-        data,
-        competitionId
-      })
-      if (res === 201) {
-        toast.success("Submission sent successfully", {position: "top-center", richColors: true})
-        setIsModalOpen(false)
-        form.reset()
+      setUploading(true);
+
+      // 1. Upload file
+      const res = await fetch(`${VITE_BASE_API_URL}/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const uploadResult = await res.json() as { message: string; path: string; url: string };
+
+      if (!res.ok) {
+        toast.error("Upload failed. Please try again.", {position: "top-center", richColors: true});
+        return;
+      }
+
+      // 👉 pakai uploadResult.url langsung untuk API berikutnya
+      setFileUrl(uploadResult.url); // hanya untuk preview UI
+
+      // 2. Send submission ke backend
+      const submissionRes = await handleSendSubmission({
+        data: {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-expect-error
+          fileUrl: uploadResult.url, // ✅ langsung pakai URL hasil upload
+          filePath: uploadResult.path,
+          userId: data.userId,
+          teamId: data.teamId,
+        },
+        competitionId,
+      });
+
+      if (submissionRes === 201) {
+        toast.success("Submission sent successfully", {position: "top-center", richColors: true});
+        setIsModalOpen(false);
+        form.reset();
       } else {
-        form.reset()
-        setIsModalOpen(false)
-        toast.error("Failed to send submission", {position: "top-center", richColors: true})
+        toast.error("Failed to send submission", {position: "top-center", richColors: true});
+        setIsModalOpen(false);
+        form.reset();
       }
     } catch (e) {
-      form.reset()
-      toast.error(e instanceof AxiosError ? e.response?.data.message : (e as Error).message, {
-        position: "top-center",
-        richColors: true
-      })
-      setIsModalOpen(false)
+      toast.error(
+        e instanceof AxiosError ? e.response?.data.message : (e as Error).message,
+        {position: "top-center", richColors: true}
+      );
+      setIsModalOpen(false);
+      form.reset();
+    } finally {
+      setUploading(false);
     }
-  }
+  };
+
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div className="text-red-500">Error: {error.message}</div>;
@@ -109,7 +170,7 @@ const Submissions = () => {
                         form.setValue('teamId', undefined)
                       } else {
                         form.setValue('teamId', registration.teamId!)
-                        form.setValue('userId', undefined)
+                        form.setValue('userId', session.payload.id)
                       }
                       setCompetitionId(registration.competitionId)
                       setIsModalOpen(true)
@@ -122,19 +183,38 @@ const Submissions = () => {
                 <div className="w-full mt-3">
                   {registration.competition.Submission.length > 0 ? (
                     registration.competition.Submission.map((submission) => (
-                      <div className={'flex items-start gap-4'}>
-                        <Button
-                          key={submission.id}
-                          variant="outline"
-                          className="w-48 h-48 bg-gray-700 hover:bg-gray-600"
-                          onClick={() => window.open(submission.fileUrl, '_blank')}
-                        >
-                          <File className="text-gray-100 h-48 w-48"/>
-                        </Button>
+                      <div className={'flex items-center justify-between'} key={submission.id}>
+                        <div className={'flex items-center gap-4'}>
+                          <Button
+                            variant="outline"
+                            onClick={() => window.open(submission.fileUrl, '_blank')}
+                            className={'h-12 w-12'}
+                          >
+                            <FaFileArchive className="text-gray-800"/>
+                          </Button>
+                          <a
+                            href={submission.fileUrl}
+                            target="_blank"
+                            className="text-blue-400 hover:underline break-all max-w-xl"
+                          >
+                            {submission.fileUrl}
+                          </a>
+                        </div>
+
                         <Button
                           variant={'outline'}
+                          disabled={isPendingDelete}
+                          onClick={async () => {
+                            const res = await handleDeleteSubmission(submission.id)
+                            if (res === 200) {
+                              toast.success("Submission deleted successfully", {
+                                position: "top-center",
+                                richColors: true
+                              });
+                            }
+                          }}
                         >
-                          <Edit/>
+                          <Trash/>
                         </Button>
                       </div>
                     ))
@@ -184,27 +264,43 @@ const Submissions = () => {
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Are you absolutely sure?</DialogTitle>
+              <DialogTitle>Submit your works here!</DialogTitle>
               <DialogDescription>
-                This action cannot be undone. This will permanently delete your account
-                and remove your data from our servers.
+                Please upload your submission file according to the competition requirements.
               </DialogDescription>
             </DialogHeader>
 
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
+                {/* Dropzone controlled by RHF */}
+                <Controller
                   control={form.control}
                   name="fileUrl"
-                  render={({field}) => (
-                    <div className={'space-y-3'}>
-                      <FormLabel>File URL</FormLabel>
-                      <FormControl>
-                        <Input placeholder="Enter your submission file URL" {...field} />
-                      </FormControl>
-                      <FormMessage/>
-                    </div>
-                  )}
+                  render={({field}) => {
+                    // eslint-disable-next-line react-hooks/rules-of-hooks
+                    const {getRootProps, getInputProps, isDragActive} = useDropzone({
+                      onDrop,
+                      multiple: false,
+                    });
+
+                    const file = field.value as File | null; // 👈 kasih type hint
+
+                    return (
+                      <div
+                        {...getRootProps()}
+                        className={`border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition ${
+                          isDragActive ? "bg-blue-100 border-blue-400" : "border-gray-400"
+                        }`}
+                      >
+                        <input {...getInputProps()} />
+                        {file ? (
+                          <p className="text-green-600">{file.name}</p>
+                        ) : (
+                          <p>Drag & drop a file here, or click to select</p>
+                        )}
+                      </div>
+                    );
+                  }}
                 />
 
                 <Button

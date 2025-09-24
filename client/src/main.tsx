@@ -18,6 +18,7 @@ import UsersManagement from "@/components/UsersManagement.tsx";
 import {HelmetProvider} from "react-helmet-async";
 import Submissions from "@/routes/Submissions.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx";
+import AdminSubmissions from "@/routes/AdminSubmissions.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -43,6 +44,7 @@ createRoot(document.getElementById('root')!).render(
               <Route path={'admin'} element={<AdminDashboard/>}/>
               <Route path={'users'} element={<UsersManagement/>}/>
               <Route path={'submissions'} element={<Submissions/>}/>
+              <Route path={'user-submissions'} element={<AdminSubmissions/>}/>
             </Route>
 
             <Route path={'*'} element={<NotFoundPage/>}/>

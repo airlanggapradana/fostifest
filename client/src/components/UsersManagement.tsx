@@ -36,8 +36,12 @@ import {
 import UserDetails from "@/components/UserDetails.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {useDebounce} from 'use-debounce';
+import {useUserSessionContext} from "@/hooks/context.ts";
+import {useNavigate} from "react-router";
 
 const UsersManagement = () => {
+  const session = useUserSessionContext()
+  const navigate = useNavigate()
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState<string | undefined>(undefined);
@@ -47,6 +51,10 @@ const UsersManagement = () => {
   const [userId, setUserId] = useState<string | undefined>(undefined);
 
   const {data, isLoading, error} = useGetUsersData(page, limit, debouncedSearch);
+
+  if (!session || session.payload.role !== 'ADMIN') {
+    navigate('/auth/login', {replace: true})
+  }
   if (error) return <div className="text-red-500">Error: {error.message}</div>;
   return (
     <div className="max-w-full mx-auto mt-3">
@@ -58,17 +66,17 @@ const UsersManagement = () => {
         <p className="text-gray-300">Manage all registered users here.</p>
       </div>
       <div>
-        <Card className={'bg-teal-800 border-teal-300'}>
+        <Card className={'bg-gray-800 text-gray-100 border-0'}>
           <CardHeader>
             <p className={'text-sm text-gray-100 font-medium'}>Limit items per page</p>
             <Select onValueChange={(value: string) => {
               setLimit(parseInt(value));
               setPage(1); // Reset to first page when limit changes
             }} defaultValue={limit.toString()}>
-              <SelectTrigger className="w-[180px] border-teal-400 border-2 bg-teal-700 text-white">
+              <SelectTrigger className="w-[180px] border-teal-400 border-2 bg-gray-800 text-white">
                 <SelectValue placeholder="Select items per page"/>
               </SelectTrigger>
-              <SelectContent className={'bg-teal-700 border-teal-300 text-gray-100'}>
+              <SelectContent className={'bg-gray-800 border-gray-300 text-gray-100'}>
                 <SelectItem value="5">5</SelectItem>
                 <SelectItem value="10">10</SelectItem>
                 <SelectItem value="20">20</SelectItem>
@@ -80,7 +88,7 @@ const UsersManagement = () => {
                 <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-300"/>
                 <Input
                   placeholder="Search users..."
-                  className="bg-teal-700 border-teal-400 text-white placeholder:text-gray-300 focus-visible:ring-teal-400 pl-8"
+                  className="bg-gray-800 border-teal-400 text-white placeholder:text-gray-300 focus-visible:ring-teal-400 pl-8"
                   value={search || ''}
                   onChange={(e) => {
                     setSearch(e.target.value);
@@ -155,7 +163,7 @@ const UsersManagement = () => {
               </TableBody>
               <TableFooter>
                 <TableRow>
-                  <TableCell colSpan={8} className="text-center bg-teal-800">
+                  <TableCell colSpan={8} className="text-center bg-gray-800">
                     <Pagination>
                       <PaginationContent>
                         <PaginationItem>

@@ -7,7 +7,7 @@ import type {
   PaymentSchema,
   RegisterSchema,
   RegistrationIndividualSchema,
-  RegistrationTeamSchema, SendSubmissionSchema
+  RegistrationTeamSchema, SendFeedbackSchema, SendSubmissionSchema
 } from "@/zod/validation.schema.ts";
 import type {RegisterResponse} from "@/types/register.type.ts";
 import Cookies from "js-cookie";
@@ -19,6 +19,7 @@ import type {GetCompsStatsResponse} from "@/types/get-comps-stats.type.ts";
 import type {GetSummaryStatsResponse} from "@/types/get-summary-stats.type.ts";
 import type {GetUsersDataResponse} from "@/types/get-users-data.type.ts";
 import type {GetUserDetailsResponseAdmin} from "@/types/get-users-details.type.ts";
+import type {GetSubmissionsAdmin} from "@/types/get-submission-admin.type.ts";
 
 export const useGetAllComps = () => {
   return useQuery({
@@ -249,6 +250,94 @@ export const useSendSubmission = () => {
   })
 }
 
+export const useDeleteSubmission = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (submissionId: string) => {
+      try {
+        return await axios.delete(`${VITE_BASE_API_URL}/competition/submission/delete/${submissionId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: "DELETE"
+        }).then(res => res.status);
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Failed to delete submission');
+        }
+        throw new Error('An unexpected error occurred while deleting submission');
+      }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({queryKey: ['getUserDetailsAdmin']});
+    }
+  })
+}
+
+export const useSendFeedback = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({data, submissionId, adminId}: {
+      data: SendFeedbackSchema,
+      submissionId: string,
+      adminId: string
+    }) => {
+      try {
+        return await axios.post(`${VITE_BASE_API_URL}/competition/feedback/${submissionId}`, {
+          message: data.message,
+          adminId: adminId
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: "POST"
+        }).then(res => res.status)
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Failed to send feedback');
+        }
+        throw new Error('An unexpected error occurred while sending feedback');
+      }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({queryKey: ['getSubmissions']});
+      await queryClient.invalidateQueries({queryKey: ['getUserDetailsAdmin']});
+    }
+  })
+}
+
+export const useUpdateFeedback = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({data, feedbackId, adminId}: {
+      data: Partial<SendFeedbackSchema>,
+      feedbackId: string,
+      adminId: string
+    }) => {
+      try {
+        return await axios.put(`${VITE_BASE_API_URL}/competition/feedback/${feedbackId}`, {
+          message: data.message,
+          adminId: adminId
+        }, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: "PUT"
+        }).then(res => res.status)
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Failed to send feedback');
+        }
+        throw new Error('An unexpected error occurred while sending feedback');
+      }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({queryKey: ['getSubmissions']});
+      await queryClient.invalidateQueries({queryKey: ['getUserDetailsAdmin']});
+    }
+  })
+}
+
 // admin
 export const useGetCompsStats = () => {
   const token = Cookies.get('accessToken');
@@ -269,6 +358,29 @@ export const useGetCompsStats = () => {
           throw new Error(e.response?.data.message || 'Failed to fetch competitions statistics');
         }
         throw new Error('An unexpected error occurred while fetching competitions statistics');
+      }
+    }
+  })
+}
+
+export const useGetSubmissions = (page?: number, limit?: number) => {
+  const token = Cookies.get('accessToken');
+  return useQuery({
+    queryKey: ['getSubmissions', {page, limit}],
+    queryFn: async () => {
+      try {
+        return await axios.get(`${VITE_BASE_API_URL}/admin/submissions${page && limit ? `?page=${page}&limit=${limit}` : ''}`, {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          method: "GET"
+        }).then(res => res.data as GetSubmissionsAdmin)
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Failed to fetch submissions');
+        }
+        throw new Error('An unexpected error occurred while fetching submissions');
       }
     }
   })

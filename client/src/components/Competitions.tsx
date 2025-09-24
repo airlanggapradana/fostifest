@@ -86,43 +86,44 @@ const Competitions = () => {
       description: 'Create innovative user experiences and visual designs.',
       requirements: ['Design software knowledge', 'Team of 2-4', 'Portfolio submission']
     },
-    {
-      id: data.find(c => c.category === 'Literary')?.id,
-      title: data.find(c => c.category === 'Literary')?.name,
-      category: 'Literary',
-      date: (() => {
-        const comp = data.find(c => c.category === 'Literary' && c.startDate && c.endDate);
-        if (comp) {
-          const start = new Date(comp.startDate).toLocaleDateString("en-US", {
+    // Get all Robotics competitions
+    ...data
+      .filter(c => c.category === 'Robotics')
+      .map(comp => ({
+        id: comp.id,
+        title: comp.name,
+        category: 'Robotics',
+        date: (comp.startDate && comp.endDate)
+          ? (() => {
+            const start = new Date(comp.startDate).toLocaleDateString("en-US", {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+            const end = new Date(comp.endDate).toLocaleDateString("en-US", {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric'
+            });
+            return start === end ? start : `${start} - ${end}`;
+          })()
+          : 'TBA',
+        time: comp.deadline
+          ? new Date(comp.deadline).toLocaleDateString("en-US", {
             year: 'numeric',
             month: 'long',
-            day: 'numeric'
-          });
-          const end = new Date(comp.endDate).toLocaleDateString("en-US", {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          });
-          return start === end ? start : `${start} - ${end}`;
-        }
-        return 'TBA';
-      })(),
-      time: data.find(c => c.category === 'Literary' && c.deadline)
-        ? new Date(data.find(c => c.category === 'Literary')!.deadline).toLocaleDateString("en-US", {
-          year: 'numeric',
-          month: 'long',
-          day: '2-digit',
-          hour: '2-digit',
-          minute: '2-digit'
-        })
-        : 'TBA',
-      location: 'Online',
-      participants: data.find(c => c.category === 'Literary')?.totalParticipants,
-      prize: data.find(c => c.category === 'Literary')?.prize,
-      status: data.find(c => c.category === 'Literary')?.status,
-      description: 'Present your startup idea to industry experts and investors.',
-      requirements: ['Business plan', '10-minute pitch', 'Team of 3-5']
-    },
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+          })
+          : 'TBA',
+        location: 'Offline',
+        participants: comp.totalParticipants,
+        prize: comp.prize,
+        status: comp.status,
+        description: 'Design and program robots to complete specific tasks.',
+        requirements: ['Business plan', '10-minute pitch', 'Team of 3-5']
+      })),
     {
       id: data.find(c => c.category === 'Workshops')?.id,
       title: data.find(c => c.category === 'Workshops')?.name,
@@ -162,7 +163,7 @@ const Competitions = () => {
     },
   ];
 
-  const filters = ['All', 'Programming', 'Design', 'Literary', 'Workshops'];
+  const filters = ['All', 'Programming', 'Design', 'Robotics', 'Workshops'];
 
   const filteredCompetitions = activeFilter === 'All'
     ? competitions

@@ -44,6 +44,11 @@ const adminItems = [
     url: "/profile/users",
     icon: BiUser,
   },
+  {
+    title: "Submissions Management",
+    url: "/profile/user-submissions",
+    icon: LuNotebookPen,
+  },
 ]
 
 export function AppSidebar() {

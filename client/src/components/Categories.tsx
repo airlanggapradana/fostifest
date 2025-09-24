@@ -21,15 +21,15 @@ const Categories = () => {
       description: 'UI/UX Web design and digital art competitions',
       color: 'from-pink-500 to-rose-600',
       participants: data.find(c => c.category === 'Design')?.totalParticipants,
-      prizes: data.find(c => c.category === 'Programming')?.prize
+      prizes: data.find(c => c.category === 'Design')?.prize
     },
     {
       icon: Lightbulb,
-      name: 'Literary',
-      description: 'Scientific papers and academic research competitions',
+      name: 'Robotics & Research',
+      description: 'Innovative solutions in robotics and research',
       color: 'from-yellow-500 to-orange-600',
-      participants: data.find(c => c.category === 'Literary')?.totalParticipants,
-      prizes: data.find(c => c.category === 'Literary')?.prize
+      participants: data.find(c => c.category === 'Robotics')?.totalParticipants,
+      prizes: data.find(c => c.category === 'Robotics')?.prize
     },
   ];
 
