@@ -34,7 +34,7 @@ model User {
 
   // Relasi ke pendaftaran individu tetap ada, jika user mendaftar lomba individu
   registrations Registration[]
-  Submission    Submission?
+  Submission    Submission[]
   Feedback      Feedback[]
 }
 
@@ -113,7 +113,7 @@ model Team {
 
   // Relasi ke pendaftaran
   registration Registration?
-  Submission   Submission?
+  Submission   Submission[]
 
   @@unique([name, competitionId])
 }
@@ -173,10 +173,10 @@ model Submission {
   competitionId String
 
   team   Team?   @relation(fields: [teamId], references: [id])
-  teamId String? @unique
+  teamId String?
 
   user   User?   @relation(fields: [userId], references: [id])
-  userId String? @unique
+  userId String?
 
   fileUrl     String
   filePath    String
