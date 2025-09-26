@@ -45,6 +45,14 @@ export const sendFeedbackSchema = z.object({
   message: z.string().min(1, 'Feedback message is required'),
 })
 
+export const updateProfileSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  email: z.email('Invalid email address').min(1, 'Email is required'),
+  phone: z.string().min(1, 'Phone number is required').regex(/^\+?\d{10,15}$/, 'Invalid phone number format'),
+  institusi: z.string().min(1, 'Institution is required'),
+})
+
+export type UpdateProfileSchema = z.infer<typeof updateProfileSchema>;
 export type SendFeedbackSchema = z.infer<typeof sendFeedbackSchema>;
 export type SendSubmissionSchema = z.infer<typeof sendSubmissionSchema>;
 export type PaymentSchema = z.infer<typeof paymentSchema>;

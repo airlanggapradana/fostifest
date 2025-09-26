@@ -19,6 +19,7 @@ import {HelmetProvider} from "react-helmet-async";
 import Submissions from "@/routes/Submissions.tsx";
 import {Toaster} from "@/components/ui/sonner.tsx";
 import AdminSubmissions from "@/routes/AdminSubmissions.tsx";
+import ProfileSettings from "@/components/ProfileSettings.tsx";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -40,7 +41,7 @@ createRoot(document.getElementById('root')!).render(
 
             <Route path={'profile'} element={<ProfileLayout/>}>
               <Route index element={<ProfileMain/>}/>
-              <Route path={'settings'} element={<div>Profile settings</div>}/>
+              <Route path={'settings'} element={<ProfileSettings/>}/>
               <Route path={'admin'} element={<AdminDashboard/>}/>
               <Route path={'users'} element={<UsersManagement/>}/>
               <Route path={'submissions'} element={<Submissions/>}/>

@@ -22,6 +22,7 @@ export interface Data {
   id: string;
   name: string;
   email: string;
+  institusi: string;
   phone: string;
   registrations?: Registration[];
 }

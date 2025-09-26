@@ -115,6 +115,7 @@ export async function getUserDetails(req: Request, res: Response, next: NextFunc
       name: user.name,
       email: user.email,
       phone: user.phone,
+      institusi: user.institusi,
       registrations: user.registrations.map((r) => ({
         registrationId: r.id,
         status: r.status,
