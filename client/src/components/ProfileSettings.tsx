@@ -1,20 +1,24 @@
 import {Badge} from "@/components/ui/badge.tsx";
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card.tsx";
-import {Save} from "lucide-react";
+import {Camera, Save} from "lucide-react";
 import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {AiFillX} from "react-icons/ai";
-import {useGetUserDetails} from "@/utils/query.ts";
+import {useGetUserDetails, useUpdateProfile} from "@/utils/query.ts";
 import {useUserSessionContext} from "@/hooks/context.ts";
 import {type SubmitHandler, useForm} from "react-hook-form";
 import {updateProfileSchema, type UpdateProfileSchema} from "@/zod/validation.schema.ts";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormLabel, FormMessage} from "@/components/ui/form.tsx";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import {Avatar, AvatarFallback} from "@/components/ui/avatar.tsx";
+import {toast} from "sonner"
+import {Switch} from "@/components/ui/switch"
 
 const ProfileSettings = () => {
   const session = useUserSessionContext()
   const {data: user, isLoading, error} = useGetUserDetails(session.payload.id);
+  const [onEdit, setOnEdit] = useState(true);
 
   const form = useForm<UpdateProfileSchema>({
     defaultValues: user ? {
@@ -42,8 +46,21 @@ const ProfileSettings = () => {
     }
   }, [form, user]);
 
+  const {mutateAsync: handleUpdateProfile, isPending} = useUpdateProfile();
+
   const onSubmit: SubmitHandler<UpdateProfileSchema> = async (data) => {
-    console.log("Form submitted with data:", data);
+    try {
+      const res = await handleUpdateProfile({
+        data,
+        userId: session.payload.id
+      });
+      if (res === 200) {
+        toast.success("Profile updated successfully.", {position: "top-center", richColors: true});
+        form.reset()
+      }
+    } catch (e) {
+      toast.error(e instanceof Error ? e.message : "Something went wrong", {position: "top-center", richColors: true});
+    }
   }
   return (
     <div className="min-h-screen py-6">
@@ -70,15 +87,39 @@ const ProfileSettings = () => {
           </div>
 
           <div className="grid gap-6 md:grid-cols-3">
+            <Card className="md:col-span-1">
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Camera className="h-5 w-5"/>
+                  Profile Picture
+                </CardTitle>
+                <CardDescription>
+                  profile picture cannot be changed at the moment
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="flex flex-col items-center space-y-4">
+                <Avatar className="h-48 w-48 border-4 border-white shadow-lg">
+                  <AvatarFallback className="text-2xl">
+                    {user?.name.split(' ').map(n => n[0]).join('')}
+                  </AvatarFallback>
+                </Avatar>
+              </CardContent>
+            </Card>
             {/* Main Form */}
             <div className="md:col-span-2 space-y-6">
               {/* Personal Information */}
               <Card>
-                <CardHeader>
-                  <CardTitle>Personal Information</CardTitle>
-                  <CardDescription>
-                    Your basic profile information
-                  </CardDescription>
+                <CardHeader className={'flex items-center justify-between'}>
+                  <div>
+                    <CardTitle>Personal Information</CardTitle>
+                    <CardDescription>
+                      Your basic profile information
+                    </CardDescription>
+                  </div>
+                  <Switch
+                    checked={onEdit}
+                    onCheckedChange={setOnEdit}
+                  />
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <Form {...form}>
@@ -93,6 +134,7 @@ const ProfileSettings = () => {
                               <Input
                                 type={'text'}
                                 {...field}
+                                disabled={onEdit}
                                 placeholder="Enter your name"
                               />
                             </FormControl>
@@ -110,6 +152,7 @@ const ProfileSettings = () => {
                               <Input
                                 type={'email'}
                                 {...field}
+                                disabled={onEdit}
                                 placeholder="Enter your email"
                               />
                             </FormControl>
@@ -127,6 +170,7 @@ const ProfileSettings = () => {
                               <Input
                                 type={'tel'}
                                 {...field}
+                                disabled={onEdit}
                                 placeholder="Enter your phone number"
                               />
                             </FormControl>
@@ -144,6 +188,7 @@ const ProfileSettings = () => {
                               <Input
                                 type={'text'}
                                 {...field}
+                                disabled={onEdit}
                                 placeholder="Enter your phone insititusi"
                               />
                             </FormControl>
@@ -152,7 +197,7 @@ const ProfileSettings = () => {
                         )}
                       />
 
-                      <Button type="submit" className="w-full" variant="default">
+                      <Button type="submit" disabled={isPending} className="w-full" variant="default">
                         <Save className="mr-2 h-4 w-4"/>
                         Save Changes
                       </Button>

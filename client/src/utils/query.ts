@@ -7,7 +7,7 @@ import type {
   PaymentSchema,
   RegisterSchema,
   RegistrationIndividualSchema,
-  RegistrationTeamSchema, SendFeedbackSchema, SendSubmissionSchema
+  RegistrationTeamSchema, SendFeedbackSchema, SendSubmissionSchema, UpdateProfileSchema
 } from "@/zod/validation.schema.ts";
 import type {RegisterResponse} from "@/types/register.type.ts";
 import Cookies from "js-cookie";
@@ -334,6 +334,30 @@ export const useUpdateFeedback = () => {
     onSuccess: async () => {
       await queryClient.invalidateQueries({queryKey: ['getSubmissions']});
       await queryClient.invalidateQueries({queryKey: ['getUserDetailsAdmin']});
+    }
+  })
+}
+
+export const useUpdateProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({data, userId}: { data: UpdateProfileSchema, userId: string }) => {
+      try {
+        return await axios.put(`${VITE_BASE_API_URL}/user/${userId}`, data, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: "PUT"
+        }).then(res => res.status)
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Failed to update profile');
+        }
+        throw new Error('An unexpected error occurred while updating profile');
+      }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({queryKey: ['getUserDetails']});
     }
   })
 }

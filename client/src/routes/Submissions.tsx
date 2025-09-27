@@ -281,7 +281,28 @@ const Submissions = () => {
                     const {getRootProps, getInputProps, isDragActive} = useDropzone({
                       onDrop,
                       multiple: false,
+                      accept: {"application/pdf": [".pdf"]}, // hanya PDF
+                      maxSize: 10 * 1024 * 1024, // 10MB
+                      onDropRejected: (fileRejections) => {
+                        fileRejections.forEach((rej) => {
+                          rej.errors.forEach((err) => {
+                            if (err.code === "file-too-large") {
+                              toast.error("File size must be less than 10MB", {
+                                position: "top-center",
+                                richColors: true,
+                              });
+                            }
+                            if (err.code === "file-invalid-type") {
+                              toast.error("Only PDF files are allowed", {
+                                position: "top-center",
+                                richColors: true,
+                              });
+                            }
+                          });
+                        });
+                      },
                     });
+
 
                     const file = field.value as File | null; // 👈 kasih type hint
 
