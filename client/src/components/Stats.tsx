@@ -30,7 +30,7 @@ const Stats = () => {
       icon: <Trophy className="w-6 h-6 text-white"/>,
       bg: "bg-gradient-to-br from-orange-700 to-teal-800",
       border: "border-orange-800 hover:border-orange-600",
-      value: "Rp2,5M",
+      value: "Rp10.800.000,00",
       label: "Total Prize Pool",
       duration: 1.5,
     },
@@ -48,7 +48,7 @@ const Stats = () => {
         </p>
       </div>
       <div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-4xl mx-auto py-10 sm:py-16 md:py-20 px-4">
+        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto py-10 sm:py-16 md:py-20 px-4">
         {stats.map((stat) => (
           <AnimatedContent
             key={stat.label}

@@ -13,7 +13,7 @@ const Hero = () => {
       className="min-h-screen bg-black relative overflow-hidden"
     >
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-50 pointer-events-none select-none">
+      <div className="absolute inset-0 opacity-40 pointer-events-none select-none">
         <video
           src={vid}
           autoPlay

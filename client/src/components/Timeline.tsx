@@ -25,8 +25,8 @@ const timelineData: TimelineItem[] = [
     phase: 'Phase 1',
     title: 'Registration Opens',
     description: 'Participants can register for the competition and submit their entries.',
-    date: 'March 1, 2025',
-    time: '00:00 UTC',
+    date: '15 - 20 November 2025',
+    time: '',
     status: 'current',
     icon: <Calendar className="w-6 h-6"/>,
     color: 'text-teal-300',
@@ -41,39 +41,54 @@ const timelineData: TimelineItem[] = [
   {
     id: '2',
     phase: 'Phase 2',
-    title: 'Competition D-Day',
-    description: 'The main competition event where all registered participants compete.',
-    date: 'April 15, 2025',
-    time: '09:00 - 18:00 UTC',
-    location: 'Convention Center, Downtown',
+    title: 'Judging Days',
+    description: 'Judging sessions and evaluation of submissions by the panel of judges.',
+    date: '3 - 5 November 2025',
+    time: '',
+    // location: 'Convention Center, Downtown',
     status: 'upcoming',
     icon: <Trophy className="w-6 h-6"/>,
     color: 'text-teal-300',
     bgColor: 'bg-teal-700 border-teal-200',
     details: [
-      'Opening ceremony at 09:00',
-      'Main competition rounds',
-      'Live judging sessions',
-      'Networking lunch break'
+      'Preliminary judging',
+      'Final judging rounds',
     ]
   },
   {
     id: '3',
     phase: 'Phase 3',
-    title: 'Awards Ceremony',
-    description: 'Winners announcement and prize distribution ceremony.',
-    date: 'April 15, 2025',
-    time: '19:00 - 21:00 UTC',
-    location: 'Grand Ballroom, Convention Center',
+    title: 'Technical Meeting',
+    description: 'A briefing session for all selected candidates to compete in the final round.',
+    date: '8 - 23 November 2025',
+    time: '',
+    // location: 'Grand Ballroom, Convention Center',
     status: 'upcoming',
     icon: <Award className="w-6 h-6"/>,
     color: 'text-teal-300',
     bgColor: 'bg-teal-700 border-teal-200',
     details: [
-      'Results announcement',
-      'Winner recognition ceremony',
-      'Prize distribution',
-      'Closing celebration'
+      'Final Competition rules briefing',
+      'Technical Meeting Finalists UI/UX: 8 November 2025',
+      'Technical Meeting Finalis Software Dev: 9 November 2025',
+      'Technical Meeting Line Follower: 22 November 2025',
+      'Technical Meeting Sumobot: 23 November 2025'
+    ]
+  },
+  {
+    id: '4',
+    phase: 'Phase 4',
+    title: 'Final Competition D-Day',
+    description: 'The grand finale where finalists compete for the top prizes.',
+    date: '30 November 2025',
+    time: '',
+    // location: 'Grand Ballroom, Convention Center',
+    status: 'upcoming',
+    icon: <Award className="w-6 h-6"/>,
+    color: 'text-teal-300',
+    bgColor: 'bg-teal-700 border-teal-200',
+    details: [
+      'Final Competition UI/UX, Software Dev, Line Follower, and Sumobot'
     ]
   }
 ];

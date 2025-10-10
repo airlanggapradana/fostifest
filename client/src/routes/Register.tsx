@@ -64,10 +64,11 @@ const RegisterPage = () => {
           "description": "Registration page for FOSTIFEST 2025 by FOSTI UMS."
         }}
       />
-      <div className="min-h-svh flex items-center justify-center p-4 sm:p-6">
-        <Card className="w-[40rem] z-10 bg-gray-800 border-2 border-teal-400">
+      <div className="min-h-full flex items-center justify-center p-2 sm:p-6">
+        <Card
+          className="w-full overflow-auto max-h-[40rem] max-w-md sm:max-w-2xl z-10 bg-gray-800 border-2 border-teal-400">
           <CardHeader className="space-y-1">
-            <Button className="w-1/3 sm:w-1/4 text-sm" onClick={() => navigate(-1)}>
+            <Button className=" text-sm" onClick={() => navigate(-1)}>
               <ArrowLeft/>
               Back
             </Button>
@@ -80,8 +81,8 @@ const RegisterPage = () => {
           </CardHeader>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <CardContent className="grid grid-cols-2 gap-4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 sm:space-y-4">
+              <CardContent className="grid grid-cols-2 gap-4 sm:grid-cols-2 sm:gap-6 px-4 sm:px-8">
                 {form.formState.errors.root && (
                   <div className="col-span-2 p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
                     {form.formState.errors.root.message}
@@ -93,7 +94,7 @@ const RegisterPage = () => {
                   name="email"
                   render={({field}) => (
                     <div className="space-y-2 col-span-2">
-                      <FormLabel className="text-gray-100">Email</FormLabel>
+                      <FormLabel className="text-gray-100 text-sm sm:text-base">Email</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
@@ -120,7 +121,7 @@ const RegisterPage = () => {
                   name="name"
                   render={({field}) => (
                     <div className="space-y-2">
-                      <FormLabel className="text-gray-100">Fullname</FormLabel>
+                      <FormLabel className="text-gray-100 text-sm sm:text-base">Fullname</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
@@ -144,7 +145,7 @@ const RegisterPage = () => {
                   name="phone"
                   render={({field}) => (
                     <div className="space-y-2">
-                      <FormLabel className="text-gray-100">Phone</FormLabel>
+                      <FormLabel className="text-gray-100 text-sm sm:text-base">Phone</FormLabel>
                       <FormControl>
                         <Input
                           type="tel"
@@ -169,7 +170,7 @@ const RegisterPage = () => {
                   name="password"
                   render={({field}) => (
                     <div className="space-y-2">
-                      <FormLabel className="text-gray-100">Password</FormLabel>
+                      <FormLabel className="text-gray-100 text-sm sm:text-base">Password</FormLabel>
                       <FormControl>
                         <Input
                           type="password"
@@ -193,7 +194,7 @@ const RegisterPage = () => {
                   name="confirmPassword"
                   render={({field}) => (
                     <div className="space-y-2">
-                      <FormLabel className="text-gray-100">Confirm Password</FormLabel>
+                      <FormLabel className="text-gray-100 text-sm sm:text-base">Confirm Password</FormLabel>
                       <FormControl>
                         <Input
                           type="password"
@@ -217,7 +218,7 @@ const RegisterPage = () => {
                   name="institusi"
                   render={({field}) => (
                     <div className="space-y-2 col-span-2">
-                      <FormLabel className="text-gray-100">Institution</FormLabel>
+                      <FormLabel className="text-gray-100 text-sm sm:text-base">Institution</FormLabel>
                       <FormControl>
                         <Input
                           type="text"
@@ -237,13 +238,13 @@ const RegisterPage = () => {
                 />
               </CardContent>
 
-              <CardFooter className="grid grid-cols-2 gap-4">
-                <Button type="submit" className="col-span-2 w-full h-11 sm:h-10 text-sm sm:text-base"
+              <CardFooter className="grid grid-cols-1 gap-3 px-3 sm:px-6">
+                <Button type="submit" className="w-full h-11 sm:h-10 text-sm sm:text-base"
                         disabled={isPending}>
                   {isPending ? "Creating account..." : "Create Account"}
                 </Button>
-                <div className="col-span-2 text-sm text-center text-muted-foreground">
-                  <a href="/auth/login" className="hover:underline">
+                <div className="text-xs sm:text-sm text-center text-muted-foreground">
+                  <a href="/auth/login" className="hover:underline text-teal-400">
                     Already have an account? Sign In
                   </a>
                 </div>
