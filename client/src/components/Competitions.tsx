@@ -122,7 +122,7 @@ const Competitions = () => {
         prize: comp.prize,
         status: comp.status,
         description: 'Design and program robots to complete specific tasks.',
-        requirements: ['Business plan', '10-minute pitch', 'Team of 3-5']
+        requirements: ['Peserta terdiri dari 1–3 orang per tim (boleh dari SMA/SMK atau mahasiswa, sesuai kategori).', 'Tiap tim hanya boleh mengirim 1 robot.', 'Robot harus dibuat sendiri oleh tim (tidak boleh beli robot jadi).', 'Wajib membawa source code, diagram rangkaian, dan dokumentasi robot saat verifikasi.']
       })),
     {
       id: data.find(c => c.category === 'Workshops')?.id,
@@ -159,7 +159,7 @@ const Competitions = () => {
       prize: data.find(c => c.category === 'Workshops')?.prize,
       status: data.find(c => c.category === 'Workshops')?.status,
       description: 'Build your own scalable web applications from scratch.',
-      requirements: ['Basic understanding of Express, React, and Database relations', 'Has ever been used React', 'Laptop required']
+      requirements: ['Paham apa itu “agent” dalam konteks AI (entitas yang bisa membuat keputusan berdasarkan tujuan & konteks).', 'Mengerti konsep system prompt, context window, tools, dan chain of thought (tanpa akses reasoning internal)', 'Laptop required']
     },
   ];
 
