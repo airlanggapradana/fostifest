@@ -103,7 +103,7 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
         item_details: [
           {
             id: competition.id,
-            name: competition.name,
+            name: competition.name.slice(0, 50),
             price: amount,
             quantity: 1,
           },
