@@ -39,7 +39,7 @@ const Hero = () => {
             className="inline-flex items-center px-3 py-1.5 sm:px-4 sm:py-2 bg-teal-600 text-white font-semibold mb-6 sm:mb-8 text-xs sm:text-base"
           >
             <Calendar className="w-4 h-4 mr-2"/>
-            Registration Open Until March 2025
+            Registration Open Until November 2025
           </Badge>
 
           <h3

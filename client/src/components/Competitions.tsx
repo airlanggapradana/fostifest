@@ -301,8 +301,9 @@ const Competitions = () => {
                   <Button
                     className="w-full bg-gradient-to-r from-emerald-600 to-teal-700 text-white py-2 sm:py-3 rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-800 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
                     onClick={() => navigate(`/register-competition/${competition.id}`)}
+                    disabled={competition.status !== 'ONGOING'}
                   >
-                    Register Now
+                    {competition.status === 'ONGOING' ? 'Register Now' : 'Registration Closed'}
                   </Button>
                 </div>
               </CardContent>

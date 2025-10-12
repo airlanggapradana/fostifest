@@ -15,6 +15,7 @@ import About from "@/components/About.tsx";
 import SEO from "@/hooks/SEO.tsx";
 import {VITE_BASE_URL} from "@/env.ts";
 import home from "@/assets/home.png"
+import Workshop from "@/components/Workshop.tsx";
 
 function App() {
   const {data, isLoading, error} = useGetAllComps();
@@ -56,6 +57,7 @@ function App() {
         <Stats/>
         <Categories/>
         <About/>
+        <Workshop/>
         <Competitions/>
         <Timeline/>
         <FAQ/>
