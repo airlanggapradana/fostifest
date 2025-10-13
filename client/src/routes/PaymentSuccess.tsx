@@ -23,11 +23,11 @@ const PaymentSuccessPage = () => {
           </div>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-bold text-slate-900 mb-4 animate-fadeInUp animation-delay-200">
+        <h1 className="text-3xl sm:text-4xl font-bold text-slate-100 mb-4 animate-fadeInUp animation-delay-200">
           Payment Successful!
         </h1>
         <p className="text-lg text-slate-300 max-w-2xl mx-auto animate-fadeInUp animation-delay-300">
-          Thank you for your purchase. Your order has been confirmed and you'll receive a confirmation email shortly.
+          Thank you for your purchase. Your order has been confirmed.
         </p>
       </div>
 
@@ -45,23 +45,18 @@ const PaymentSuccessPage = () => {
           variant="outline"
           size="lg"
           className="hover:bg-slate-50 hover:scale-[1.05] transition-all duration-200"
-          onClick={() => navigate('/', {replace: true})}
+          onClick={() => navigate('/profile', {replace: true})}
         >
-          Continue Shopping
+          Continue
         </Button>
       </div>
 
       {/* Support Note */}
       <div className="mt-12 text-center animate-fadeInUp animation-delay-900">
         <p className="text-sm text-gray-300">
-          Need help? Contact our support team at{' '}
-          <a href="mailto:support@example.com"
-             className="text-blue-300 hover:text-blue-400 underline transition-colors">
-            support@example.com
-          </a>{' '}
-          or call{' '}
-          <a href="tel:+1234567890" className="text-blue-300 hover:text-blue-400 underline transition-colors">
-            (123) 456-7890
+          Need help? Contact our support team by sending messages to{' '}
+          <a href="https://wa.me/81227151326" className="text-blue-300 hover:text-blue-400 underline transition-colors">
+            Rangga
           </a>
         </p>
       </div>
