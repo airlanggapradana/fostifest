@@ -30,7 +30,7 @@ const Stats = () => {
       icon: <Trophy className="w-6 h-6 text-white"/>,
       bg: "bg-gradient-to-br from-orange-700 to-teal-800",
       border: "border-orange-800 hover:border-orange-600",
-      value: "Rp10.800.000,00",
+      value: "Rp10Jt+",
       label: "Total Prize Pool",
       duration: 1.5,
     },

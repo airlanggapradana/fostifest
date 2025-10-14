@@ -4,6 +4,7 @@ import {
 } from "lucide-react";
 import {Button} from "@/components/ui/button.tsx";
 import {useNavigate} from "react-router";
+import {FaWhatsapp} from "react-icons/fa";
 
 const PaymentSuccessPage = () => {
   const navigate = useNavigate();
@@ -27,8 +28,42 @@ const PaymentSuccessPage = () => {
           Payment Successful!
         </h1>
         <p className="text-lg text-slate-300 max-w-2xl mx-auto animate-fadeInUp animation-delay-300">
-          Thank you for your purchase. Your order has been confirmed.
+          Terimakasih telah melakukan pembayaran. Silakan lanjut join ke grub di bawah sesuai dengan cabang lomba yg
+          kamu ikuti.
         </p>
+
+        <div className="mt-6 space-y-4 animate-fadeInUp animation-delay-400">
+          <div className={'flex items-center justify-center gap-5'}>
+            <Button
+              variant={'secondary'}
+              onClick={() => window.open('https://chat.whatsapp.com/EnwwlJp7ayQ345PBZL9LqM?mode=ems_copy_t', '_blank')}
+            >
+              <FaWhatsapp/>
+              Software Development
+            </Button>
+            <Button
+              variant={'secondary'}
+              onClick={() => window.open('https://chat.whatsapp.com/JWNHx2BcWQsLTkcT6uc1K7?mode=ems_copy_t', '_blank')}
+            >
+              <FaWhatsapp/>
+              UI/UX Design
+            </Button>
+            <Button
+              variant={'secondary'}
+              onClick={() => window.open('https://chat.whatsapp.com/Fr3LIVESzUs7I8D9Inx3UG?mode=ems_copy_t', '_blank')}
+            >
+              <FaWhatsapp/>
+              Sumo Bot
+            </Button>
+            <Button
+              variant={'secondary'}
+              onClick={() => window.open('https://chat.whatsapp.com/FwyUSBa3z676mlenmN8onW?mode=ems_copy_t', '_blank')}
+            >
+              <FaWhatsapp/>
+              Line Follower
+            </Button>
+          </div>
+        </div>
       </div>
 
       {/* Action Buttons */}
