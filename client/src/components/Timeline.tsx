@@ -19,15 +19,71 @@ interface TimelineItem {
   details: string[];
 }
 
+const getTimelineStatus = (start: Date, end: Date, now: Date): 'completed' | 'current' | 'upcoming' => {
+  if (now > end) return 'completed';
+  if (now >= start && now <= end) return 'current';
+  return 'upcoming';
+};
+
+const parseDateRange = (dateRange: string): [Date, Date] => {
+  // Example: '18 Oktober - 25 November 2025'
+  // or '3 - 5 November 2025'
+  // or '30 November 2025'
+  const months: { [key: string]: number } = {
+    'Januari': 0, 'Februari': 1, 'Maret': 2, 'April': 3, 'Mei': 4, 'Juni': 5,
+    'Juli': 6, 'Agustus': 7, 'September': 8, 'Oktober': 9, 'November': 10, 'Desember': 11
+  };
+  const yearMatch = dateRange.match(/(\d{4})$/);
+  const year = yearMatch ? parseInt(yearMatch[1], 10) : new Date().getFullYear();
+  const parts = dateRange.replace(year.toString(), '').trim().split('-').map(s => s.trim());
+
+  const parsePart = (part: string): Date => {
+    const [day, month] = part.split(' ');
+    if (month && months[month]) {
+      return new Date(year, months[month], parseInt(day, 10));
+    }
+    // If only day is present, use the month from the other part
+    return null as never;
+  };
+
+  if (parts.length === 2) {
+    // Both parts may have day and month, or only day in the first part
+    const [startPart, endPart] = parts;
+    let startDate: Date;
+    let endDate: Date;
+    if (startPart.match(/[A-Za-z]/)) {
+      startDate = parsePart(startPart);
+    } else {
+      // Only day, get month from endPart
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-expect-error
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const [endDay, endMonth] = endPart.split(' ');
+      startDate = new Date(year, months[endMonth], parseInt(startPart, 10));
+    }
+    // eslint-disable-next-line prefer-const
+    endDate = parsePart(endPart);
+    return [startDate, endDate];
+  } else if (parts.length === 1) {
+    // Single date
+    const [day, month] = parts[0].split(' ');
+    return [new Date(year, months[month], parseInt(day, 10)), new Date(year, months[month], parseInt(day, 10))];
+  }
+  // fallback
+  return [new Date(), new Date()];
+};
+
+const now = new Date();
+
 const timelineData: TimelineItem[] = [
   {
     id: '1',
     phase: 'Phase 1',
     title: 'Registration Opens',
     description: 'Participants can register for the competition and submit their entries.',
-    date: '15 - 20 November 2025',
+    date: '18 Oktober - 25 November 2025',
     time: '',
-    status: 'current',
+    status: getTimelineStatus(...parseDateRange('18 Oktober - 25 November 2025'), now),
     icon: <Calendar className="w-6 h-6"/>,
     color: 'text-teal-300',
     bgColor: 'bg-teal-700 border-teal-200',
@@ -46,7 +102,7 @@ const timelineData: TimelineItem[] = [
     date: '3 - 5 November 2025',
     time: '',
     // location: 'Convention Center, Downtown',
-    status: 'upcoming',
+    status: getTimelineStatus(...parseDateRange('3 - 5 November 2025'), now),
     icon: <Trophy className="w-6 h-6"/>,
     color: 'text-teal-300',
     bgColor: 'bg-teal-700 border-teal-200',
@@ -63,7 +119,7 @@ const timelineData: TimelineItem[] = [
     date: '8 - 23 November 2025',
     time: '',
     // location: 'Grand Ballroom, Convention Center',
-    status: 'upcoming',
+    status: getTimelineStatus(...parseDateRange('8 - 23 November 2025'), now),
     icon: <Award className="w-6 h-6"/>,
     color: 'text-teal-300',
     bgColor: 'bg-teal-700 border-teal-200',
@@ -83,7 +139,7 @@ const timelineData: TimelineItem[] = [
     date: '30 November 2025',
     time: '',
     // location: 'Grand Ballroom, Convention Center',
-    status: 'upcoming',
+    status: getTimelineStatus(...parseDateRange('30 November 2025'), now),
     icon: <Award className="w-6 h-6"/>,
     color: 'text-teal-300',
     bgColor: 'bg-teal-700 border-teal-200',

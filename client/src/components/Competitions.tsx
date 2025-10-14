@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import {Calendar, Clock, Users, MapPin, Filter, DollarSign} from 'lucide-react';
+import {Calendar, Clock, Users, MapPin, Filter, DollarSign, Book} from 'lucide-react';
 import {Button} from './ui/button';
 import {Card, CardContent, CardDescription, CardTitle} from './ui/card';
 import {Badge} from './ui/badge';
@@ -47,7 +47,8 @@ const Competitions = () => {
       prize: data.find(c => c.category === 'Programming')?.prize,
       status: data.find(c => c.category === 'Programming')?.status,
       description: 'Test your algorithmic skills in this intensive programming competition.',
-      requirements: ['Laptop required', 'Any programming language', 'Up-to 3 members per team']
+      requirements: ['Laptop required', 'Any programming language', 'Up-to 3 members per team'],
+      guidebook: 'https://docs.google.com/document/d/1uDzIMsJ9FZW_VHSdi6eVg6QIi402zrUs3MDmsMdUyLs/edit?usp=drive_link'
     },
     {
       id: data.find(c => c.category === 'Design')?.id,
@@ -84,46 +85,101 @@ const Competitions = () => {
       prize: data.find(c => c.category === 'Design')?.prize,
       status: data.find(c => c.category === 'Design')?.status,
       description: 'Create innovative user experiences and visual designs.',
-      requirements: ['Design software knowledge', 'Team of 2-4', 'Portfolio submission']
+      requirements: ['Design software knowledge', 'Team of 2-4', 'Portfolio submission'],
+      guidebook: 'https://docs.google.com/document/d/1pdFQDHAEygrXelbC8xP_Zd4N-n6zf5zG_1PESpn9wKk/edit?usp=drive_link'
     },
-    // Get all Robotics competitions
-    ...data
-      .filter(c => c.category === 'Robotics')
-      .map(comp => ({
-        id: comp.id,
-        title: comp.name,
-        category: 'Robotics',
-        date: (comp.startDate && comp.endDate)
-          ? (() => {
-            const start = new Date(comp.startDate).toLocaleDateString("en-US", {
+    {
+      ...(() => {
+        const comp = data.find(c => c.name === 'Sumobot');
+        return {
+          id: comp?.id,
+          title: comp?.name,
+          category: 'Robotics',
+          date: comp?.startDate && comp?.endDate
+            ? (() => {
+              const start = new Date(comp.startDate).toLocaleDateString("en-US", {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              });
+              const end = new Date(comp.endDate).toLocaleDateString("en-US", {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              });
+              return start === end ? start : `${start} - ${end}`;
+            })()
+            : 'TBA',
+          time: comp?.deadline
+            ? new Date(comp.deadline).toLocaleDateString("en-US", {
               year: 'numeric',
               month: 'long',
-              day: 'numeric'
-            });
-            const end = new Date(comp.endDate).toLocaleDateString("en-US", {
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit'
+            })
+            : 'TBA',
+          location: 'Offline',
+          participants: comp?.totalParticipants,
+          prize: comp?.prize,
+          status: comp?.status,
+          description: 'Design and program robots to complete specific tasks.',
+          requirements: [
+            'Peserta terdiri dari 1–3 orang per tim (boleh dari SMA/SMK atau mahasiswa, sesuai kategori).',
+            'Tiap tim hanya boleh mengirim 1 robot.',
+            'Robot boleh menggunakan KIT atau buatan sendiri',
+            'Wajib membawa source code, diagram rangkaian, dan dokumentasi robot saat verifikasi.'
+          ],
+          guidebook: 'https://docs.google.com/document/d/1LEDg899oLs4OqBRiBdG-OqtAJ2_UjP5AR3PARwikQ0k/edit?usp=drive_link'
+        };
+      })()
+    },
+    {
+      ...(() => {
+        const comp = data.find(c => c.name === 'Robot Line Follower');
+        return {
+          id: comp?.id,
+          title: comp?.name,
+          category: 'Robotics',
+          date: comp?.startDate && comp?.endDate
+            ? (() => {
+              const start = new Date(comp.startDate).toLocaleDateString("en-US", {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              });
+              const end = new Date(comp.endDate).toLocaleDateString("en-US", {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              });
+              return start === end ? start : `${start} - ${end}`;
+            })()
+            : 'TBA',
+          time: comp?.deadline
+            ? new Date(comp.deadline).toLocaleDateString("en-US", {
               year: 'numeric',
               month: 'long',
-              day: 'numeric'
-            });
-            return start === end ? start : `${start} - ${end}`;
-          })()
-          : 'TBA',
-        time: comp.deadline
-          ? new Date(comp.deadline).toLocaleDateString("en-US", {
-            year: 'numeric',
-            month: 'long',
-            day: '2-digit',
-            hour: '2-digit',
-            minute: '2-digit'
-          })
-          : 'TBA',
-        location: 'Offline',
-        participants: comp.totalParticipants,
-        prize: comp.prize,
-        status: comp.status,
-        description: 'Design and program robots to complete specific tasks.',
-        requirements: ['Peserta terdiri dari 1–3 orang per tim (boleh dari SMA/SMK atau mahasiswa, sesuai kategori).', 'Tiap tim hanya boleh mengirim 1 robot.', 'Robot boleh menggunakan KIT atau buatan sendiri', 'Wajib membawa source code, diagram rangkaian, dan dokumentasi robot saat verifikasi.']
-      })),
+              day: '2-digit',
+              hour: '2-digit',
+              minute: '2-digit'
+            })
+            : 'TBA',
+          location: 'Offline',
+          participants: comp?.totalParticipants,
+          prize: comp?.prize,
+          status: comp?.status,
+          description: 'Design and program robots to complete specific tasks.',
+          requirements: [
+            'Peserta terdiri dari 1–3 orang per tim (boleh dari SMA/SMK atau mahasiswa, sesuai kategori).',
+            'Tiap tim hanya boleh mengirim 1 robot.',
+            'Robot boleh menggunakan KIT atau buatan sendiri',
+            'Wajib membawa source code, diagram rangkaian, dan dokumentasi robot saat verifikasi.'
+          ],
+          guidebook: 'https://docs.google.com/document/d/1lwSBTcpFRRrfjI8RV6zv1Cy6zDSuVYTWpZ80G3J78rQ/edit?usp=drive_link'
+        };
+      })()
+    },
     {
       id: data.find(c => c.category === 'Workshops')?.id,
       title: data.find(c => c.category === 'Workshops')?.name,
@@ -159,7 +215,8 @@ const Competitions = () => {
       prize: data.find(c => c.category === 'Workshops')?.prize,
       status: data.find(c => c.category === 'Workshops')?.status,
       description: 'Build your own scalable web applications from scratch.',
-      requirements: ['Paham apa itu “agent” dalam konteks AI (entitas yang bisa membuat keputusan berdasarkan tujuan & konteks).', 'Mengerti konsep system prompt, context window, tools, dan chain of thought (tanpa akses reasoning internal)', 'Laptop required']
+      requirements: ['Paham apa itu “agent” dalam konteks AI (entitas yang bisa membuat keputusan berdasarkan tujuan & konteks).', 'Mengerti konsep system prompt, context window, tools, dan chain of thought (tanpa akses reasoning internal)', 'Laptop required'],
+      guidebook: null
     },
   ];
 
@@ -186,7 +243,7 @@ const Competitions = () => {
 
   return (
     <section id="competitions" className="py-14 sm:py-20 bg-gradient-to-b from-gray-900 to-emerald-950">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[95rem] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-10 sm:mb-16">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-100 mb-4 sm:mb-6">
             Upcoming <span
@@ -221,7 +278,7 @@ const Competitions = () => {
           {filteredCompetitions.map((competition, index) => (
             <Card
               key={competition.id}
-              className="hover:border-teal-700 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 bg-gray-950 border-gray-800"
+              className="hover:border-teal-700 hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-1 bg-gray-950 border-gray-800 sm:max-w-7xl"
               style={{animationDelay: `${index * 150}ms`}}
             >
               <CardContent className="p-5 sm:p-8">
@@ -298,13 +355,25 @@ const Competitions = () => {
                     </ul>
                   </div>
 
-                  <Button
-                    className="w-full bg-gradient-to-r from-emerald-600 to-teal-700 text-white py-2 sm:py-3 rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-800 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
-                    onClick={() => navigate(`/register-competition/${competition.id}`)}
-                    disabled={competition.status !== 'ONGOING'}
-                  >
-                    {competition.status === 'ONGOING' ? 'Register Now' : 'Registration Closed'}
-                  </Button>
+                  <div className={'space-y-5'}>
+                    <Button
+                      className="w-full bg-gradient-to-r from-emerald-600 to-teal-700 text-white py-2 sm:py-3 rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-800 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
+                      onClick={() => navigate(`/register-competition/${competition.id}`)}
+                      disabled={competition.status !== 'ONGOING'}
+                    >
+                      {competition.status === 'ONGOING' ? 'Register Now' : 'Registration Closed'}
+                    </Button>
+
+                    {competition.guidebook && (
+                      <Button
+                        className="w-full bg-gradient-to-r from-emerald-600 to-teal-700 text-white py-2 sm:py-3 rounded-xl font-semibold hover:from-emerald-700 hover:to-teal-800 transition-all duration-300 transform hover:scale-105 text-sm sm:text-base"
+                        onClick={() => window.open(competition.guidebook as string, '_blank')}
+                      >
+                        <Book/>
+                        Guidebook
+                      </Button>
+                    )}
+                  </div>
                 </div>
               </CardContent>
             </Card>
