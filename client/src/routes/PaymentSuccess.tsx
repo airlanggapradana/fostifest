@@ -27,9 +27,18 @@ const PaymentSuccessPage = () => {
         <h1 className="text-3xl sm:text-4xl font-bold text-slate-100 mb-4 animate-fadeInUp animation-delay-200">
           Payment Successful!
         </h1>
-        <p className="text-lg text-slate-300 max-w-2xl mx-auto animate-fadeInUp animation-delay-300">
+        <p className="text-lg text-slate-300 max-w-3xl mx-auto animate-fadeInUp animation-delay-300">
           Terimakasih telah melakukan pembayaran. Silakan lanjut join ke grub di bawah sesuai dengan cabang lomba yg
-          kamu ikuti.
+          kamu ikuti dan harap untuk konfirmasi ke contact person berikut <span>
+            <a href="https://wa.me/082137748602"
+               className="text-blue-300 hover:text-blue-400 underline transition-colors mr-2">
+              Najla
+            </a>
+          <a href="https://wa.me/085713041829"
+             className="text-blue-300 hover:text-blue-400 underline transition-colors">
+              Paramesti
+            </a>
+        </span>
         </p>
 
         <div className="mt-6 space-y-4 animate-fadeInUp animation-delay-400">
