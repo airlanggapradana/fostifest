@@ -54,8 +54,9 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
       if (!reg) throw new Error('Registration not found');
 
       const competition = reg.competition;
-      const amount = competition.registrationFee;
+      const basePrice = competition.registrationFee;
       const orderId = `FF-${crypto.randomUUID().slice(0, 3).toUpperCase()}`;
+      const feeTotal = basePrice * 0.007
 
       // tentukan customer details
       let customer = {
@@ -87,7 +88,7 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
         data: {
           id: `FF-${crypto.randomUUID()}`,
           midtransOrderId: orderId,
-          amount,
+          amount: feeTotal,
           status: 'PENDING',
           registrationId: body.registrationId,
         },
@@ -97,14 +98,14 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
       const param = {
         transaction_details: {
           order_id: orderId,
-          gross_amount: amount,
+          gross_amount: feeTotal,
         },
         customer_details: customer,
         item_details: [
           {
             id: competition.id,
             name: competition.name.slice(0, 50),
-            price: amount,
+            price: feeTotal,
             quantity: 1,
           },
         ],
