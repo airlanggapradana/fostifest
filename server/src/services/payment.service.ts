@@ -56,7 +56,7 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
       const competition = reg.competition;
       const basePrice = competition.registrationFee;
       const orderId = `FF-${crypto.randomUUID().slice(0, 3).toUpperCase()}`;
-      const feeTotal = basePrice * 0.007
+      const tax = basePrice * 0.007
 
       // tentukan customer details
       let customer = {
@@ -88,7 +88,7 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
         data: {
           id: `FF-${crypto.randomUUID()}`,
           midtransOrderId: orderId,
-          amount: feeTotal,
+          amount: basePrice + tax,
           status: 'PENDING',
           registrationId: body.registrationId,
         },
@@ -98,14 +98,14 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
       const param = {
         transaction_details: {
           order_id: orderId,
-          gross_amount: feeTotal,
+          gross_amount: basePrice + tax,
         },
         customer_details: customer,
         item_details: [
           {
             id: competition.id,
             name: competition.name.slice(0, 50),
-            price: feeTotal,
+            price: basePrice,
             quantity: 1,
           },
         ],
