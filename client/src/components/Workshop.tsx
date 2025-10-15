@@ -1,4 +1,5 @@
 import {TrainerCard} from "@/components/TrainerCard.tsx";
+import pemateri from '@/assets/pemateri.webp'
 
 const Workshop = () => {
   return (
@@ -20,7 +21,7 @@ const Workshop = () => {
           role="Software and DevOps Engineer"
           bio="an AI Engineer, tech entrepreneur, and speaker passionate about building human-centered innovations.
 She is the Founder and CEO of Neutrack AI Glove, a multi-award-winning startup transforming assistive technology for visual impairments through AI and IoT."
-          imageUrl="https://github.com/shadcn.png"
+          imageUrl={pemateri}
           expertise={["Artificial Intelligence", "Software Engineering & DevOps", "IoT & Embedded Systems", "Tech Entrepreneurship", "UI/UX & Design Thinking"]}
         />
       </div>
