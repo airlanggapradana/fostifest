@@ -109,6 +109,7 @@ export async function createPayment(req: Request, res: Response, next: NextFunct
             quantity: 1,
           },
         ],
+        custom_field1: `Admin Fee: Rp${tax}`,
       };
 
       const snapTx = await snap.createTransaction(param);
