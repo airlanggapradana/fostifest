@@ -42,7 +42,7 @@ const RegisterCompetition = () => {
       const decoded = decodeJwt(t);
       setDecodedToken(decoded);
     } else {
-      navigate("/login");
+      navigate("/auth/login");
     }
   }, [navigate]);
 

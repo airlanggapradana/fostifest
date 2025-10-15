@@ -10,7 +10,7 @@ function NotFoundPage() {
   };
 
   const handleGoBack = () => {
-    navigate(-1);
+    navigate('/');
   };
 
   return (
