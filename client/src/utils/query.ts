@@ -363,6 +363,30 @@ export const useUpdateProfile = () => {
 }
 
 // admin
+export const useDeleteUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (userId: string) => {
+      try {
+        return await axios.delete(`${VITE_BASE_API_URL}/user/${userId}`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          method: "DELETE"
+        }).then(res => res.status)
+      } catch (e) {
+        if (e instanceof AxiosError) {
+          throw new Error(e.response?.data.message || 'Failed to delete user');
+        }
+        throw new Error('An unexpected error occurred while deleting user');
+      }
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({queryKey: ['getUsersData']});
+    }
+  })
+}
+
 export const useGetCompsStats = () => {
   const token = Cookies.get('accessToken');
   return useQuery({

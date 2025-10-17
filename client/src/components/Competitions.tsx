@@ -85,7 +85,7 @@ const Competitions = () => {
       prize: data.find(c => c.category === 'Design')?.prize,
       status: data.find(c => c.category === 'Design')?.status,
       description: 'Create innovative user experiences and visual designs.',
-      requirements: ['Design software knowledge', 'Team of 2-4', 'Portfolio submission'],
+      requirements: ['Design software knowledge', 'Team of 3'],
       guidebook: 'https://docs.google.com/document/d/1pdFQDHAEygrXelbC8xP_Zd4N-n6zf5zG_1PESpn9wKk/edit?usp=drive_link'
     },
     {

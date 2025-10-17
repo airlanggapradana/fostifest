@@ -1,4 +1,4 @@
-import {useGetUsersData} from "@/utils/query.ts";
+import {useDeleteUser, useGetUsersData} from "@/utils/query.ts";
 import {
   Table,
   TableBody,
@@ -25,7 +25,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {Edit, Eye, Search, Trash} from "lucide-react";
+import {Eye, Search, Trash} from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -51,6 +51,7 @@ const UsersManagement = () => {
   const [userId, setUserId] = useState<string | undefined>(undefined);
 
   const {data, isLoading, error} = useGetUsersData(page, limit, debouncedSearch);
+  const {mutateAsync: handleDeleteUser, isPending: isPendingDelete} = useDeleteUser();
 
   if (!session || session.payload.role !== 'ADMIN') {
     navigate('/auth/login', {replace: true})
@@ -138,10 +139,8 @@ const UsersManagement = () => {
                         >
                           <Eye/>
                         </Button>
-                        <Button variant="secondary" size="sm">
-                          <Edit/>
-                        </Button>
-                        <Button variant="destructive" size="sm">
+                        <Button variant="destructive" size="sm" onClick={() => handleDeleteUser(user.id)}
+                                disabled={isPendingDelete}>
                           <Trash/>
                         </Button>
                       </TableCell>

@@ -144,15 +144,15 @@ model Registration {
 
   // Relasi ke Kompetisi
   competitionId String
-  competition   Competition @relation(fields: [competitionId], references: [id])
+  competition   Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
 
   // Pendaftaran bisa untuk perorangan (userId) ATAU tim (teamId)
   // Salah satunya harus ada, namun tidak keduanya. Logika ini diimplementasikan di level aplikasi.
   userId String? // Opsional: diisi jika lomba perorangan
-  user   User?   @relation(fields: [userId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   teamId String? @unique // Opsional & Unik: diisi jika lomba tim
-  team   Team?   @relation(fields: [teamId], references: [id])
+  team   Team?   @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
   // Relasi ke entitas lain
   transaction Transaction? // Setiap pendaftaran memiliki satu transaksi
@@ -169,13 +169,13 @@ enum RegistrationStatus {
 
 model Submission {
   id            String      @id @default(uuid())
-  competition   Competition @relation(fields: [competitionId], references: [id])
+  competition   Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
   competitionId String
 
-  team   Team?   @relation(fields: [teamId], references: [id])
+  team   Team?   @relation(fields: [teamId], references: [id], onDelete: Cascade)
   teamId String?
 
-  user   User?   @relation(fields: [userId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String?
 
   fileUrl     String
@@ -187,7 +187,7 @@ model Submission {
 
 model Feedback {
   id           String     @id @default(uuid())
-  submission   Submission @relation(fields: [submissionId], references: [id])
+  submission   Submission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
   submissionId String     @unique
 
   admin   User   @relation(fields: [adminId], references: [id])
@@ -215,7 +215,7 @@ model Transaction {
 
   // Relasi
   registrationId String       @unique
-  registration   Registration @relation(fields: [registrationId], references: [id])
+  registration   Registration @relation(fields: [registrationId], references: [id], onDelete: Cascade)
 
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
