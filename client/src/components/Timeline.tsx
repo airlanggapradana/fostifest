@@ -116,7 +116,7 @@ const timelineData: TimelineItem[] = [
     phase: 'Phase 3',
     title: 'Technical Meeting',
     description: 'A briefing session for all selected candidates to compete in the final round.',
-    date: '8 - 23 November 2025',
+    date: '8 - 11 November 2025',
     time: '',
     // location: 'Grand Ballroom, Convention Center',
     status: getTimelineStatus(...parseDateRange('8 - 23 November 2025'), now),
