@@ -127,8 +127,8 @@ const timelineData: TimelineItem[] = [
       'Final Competition rules briefing',
       'Technical Meeting Finalists UI/UX: 8 November 2025',
       'Technical Meeting Finalis Software Dev: 9 November 2025',
-      'Technical Meeting Line Follower: 22 November 2025',
-      'Technical Meeting Sumobot: 23 November 2025'
+      'Technical Meeting Line Follower: 10 November 2025',
+      'Technical Meeting Sumobot: 11 November 2025'
     ]
   },
   {
