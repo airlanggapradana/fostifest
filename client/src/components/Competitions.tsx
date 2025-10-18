@@ -48,7 +48,7 @@ const Competitions = () => {
       status: data.find(c => c.category === 'Programming')?.status,
       description: 'Test your algorithmic skills in this intensive programming competition.',
       requirements: ['Laptop required', 'Any programming language', 'Up-to 3 members per team'],
-      guidebook: 'https://docs.google.com/document/d/1uDzIMsJ9FZW_VHSdi6eVg6QIi402zrUs3MDmsMdUyLs/edit?usp=drive_link'
+      guidebook: 'https://drive.google.com/file/d/1_VzJqqst2pd3oQEdZXEOg7WYKAWVDu1d/view?usp=drive_link'
     },
     {
       id: data.find(c => c.category === 'Design')?.id,
@@ -86,7 +86,7 @@ const Competitions = () => {
       status: data.find(c => c.category === 'Design')?.status,
       description: 'Create innovative user experiences and visual designs.',
       requirements: ['Design software knowledge', 'Team of 3'],
-      guidebook: 'https://docs.google.com/document/d/1pdFQDHAEygrXelbC8xP_Zd4N-n6zf5zG_1PESpn9wKk/edit?usp=drive_link'
+      guidebook: 'https://drive.google.com/file/d/1Q_VLhKckljStu5QOzbemRoGHHhvC_wBj/view?usp=drive_link'
     },
     {
       ...(() => {
@@ -130,7 +130,7 @@ const Competitions = () => {
             'Robot boleh menggunakan KIT atau buatan sendiri',
             'Wajib membawa source code, diagram rangkaian, dan dokumentasi robot saat verifikasi.'
           ],
-          guidebook: 'https://docs.google.com/document/d/1LEDg899oLs4OqBRiBdG-OqtAJ2_UjP5AR3PARwikQ0k/edit?usp=drive_link'
+          guidebook: 'https://drive.google.com/file/d/1a9B_zE2ucMkFOUpZN1osoweoDRR9JnBW/view?usp=drive_link'
         };
       })()
     },
@@ -176,7 +176,7 @@ const Competitions = () => {
             'Robot boleh menggunakan KIT atau buatan sendiri',
             'Wajib membawa source code, diagram rangkaian, dan dokumentasi robot saat verifikasi.'
           ],
-          guidebook: 'https://docs.google.com/document/d/1lwSBTcpFRRrfjI8RV6zv1Cy6zDSuVYTWpZ80G3J78rQ/edit?usp=drive_link'
+          guidebook: 'https://drive.google.com/file/d/1fh8ns1kWU2K6b2B1Ag-fPyn7kd_8wbAn/view?usp=drive_link'
         };
       })()
     },
