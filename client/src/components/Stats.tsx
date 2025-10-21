@@ -1,23 +1,9 @@
 import {Card} from "@/components/ui/card.tsx";
-import {Award, Trophy, Users} from "lucide-react";
+import {Award, Trophy} from "lucide-react";
 import AnimatedContent from './ui/AnimatedContent/AnimatedContent';
-import {useCompetitionContext} from "@/hooks/context.ts";
 
 const Stats = () => {
-  const data = useCompetitionContext();
-
-  const totalParticipants = data.reduce((sum, c) => sum + (Number(c.totalParticipants) || 0), 0);
-  const formattedTotalParticipants = new Intl.NumberFormat("en-US").format(totalParticipants);
-
   const stats = [
-    {
-      icon: <Users className="w-6 h-6 text-orange-400"/>,
-      bg: "bg-orange-900",
-      border: "border-orange-800 hover:border-orange-600",
-      value: formattedTotalParticipants,
-      label: "Registered Participants",
-      duration: 1,
-    },
     {
       icon: <Award className="w-6 h-6 text-teal-300"/>,
       bg: "bg-teal-900",
@@ -48,7 +34,7 @@ const Stats = () => {
         </p>
       </div>
       <div
-        className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 max-w-6xl mx-auto py-10 sm:py-16 md:py-20 px-4">
+        className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 max-w-6xl mx-auto py-10 sm:py-16 md:py-20 px-4">
         {stats.map((stat) => (
           <AnimatedContent
             key={stat.label}
