@@ -28,7 +28,7 @@ const Categories = () => {
       name: 'Robotics & Research',
       description: 'Innovative solutions in robotics and research',
       color: 'from-yellow-500 to-orange-600',
-      participants: data.find(c => c.category === 'Robotics')?.totalParticipants,
+      participants: data?.filter(c => c.category === 'Robotics').reduce((sum, c) => sum + (c.totalParticipants ?? 0), 0),
       prizes: data.find(c => c.category === 'Robotics')?.prize
     },
   ];
