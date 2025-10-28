@@ -48,7 +48,7 @@ const Competitions = () => {
       status: data.find(c => c.category === 'Programming')?.status,
       description: 'Test your algorithmic skills in this intensive programming competition.',
       requirements: ['Laptop required', 'Any programming language', 'Up-to 3 members per team'],
-      guidebook: 'https://drive.google.com/file/d/1fsX3wsNDyuj8t7_a9ueu1_kuIydtj7eR/view?usp=drive_link'
+      guidebook: 'https://drive.google.com/file/d/1HvpAYWfcAyvINbQJ6OpCMhPq9-685Ajw/view?usp=drive_link'
     },
     {
       id: data.find(c => c.category === 'Design')?.id,
@@ -86,7 +86,7 @@ const Competitions = () => {
       status: data.find(c => c.category === 'Design')?.status,
       description: 'Create innovative user experiences and visual designs.',
       requirements: ['Design software knowledge', 'Team of 3'],
-      guidebook: 'https://drive.google.com/file/d/1hKLka6ZsenlTrxJ9SndFzGsgvOoFHOim/view?usp=drive_link'
+      guidebook: 'https://drive.google.com/file/d/1xy7hImkv-1eCQAt-c2sqGvd8xRbnSaDj/view?usp=drive_link'
     },
     {
       ...(() => {
@@ -130,7 +130,7 @@ const Competitions = () => {
             'Robot boleh menggunakan KIT atau buatan sendiri',
             'Wajib membawa source code, diagram rangkaian, dan dokumentasi robot saat verifikasi.'
           ],
-          guidebook: 'https://drive.google.com/file/d/1qDMlu6lwRUpVDPRqX6JHtuU3m_5OIYvR/view?usp=drive_link'
+          guidebook: 'https://drive.google.com/file/d/1o-h7tmauo9vQa1NFZu7ZpSKduRBenKaH/view?usp=drive_link'
         };
       })()
     },
@@ -176,7 +176,7 @@ const Competitions = () => {
             'Robot boleh menggunakan KIT atau buatan sendiri',
             'Wajib membawa source code, diagram rangkaian, dan dokumentasi robot saat verifikasi.'
           ],
-          guidebook: 'https://drive.google.com/file/d/1rHfpc87W6d122X6ls6V0J54AOMc_lmbF/view?usp=drive_link'
+          guidebook: 'https://drive.google.com/file/d/1w28NaOCOhBz5NpAcE6Eq0wt5to5rma1-/view?usp=drive_link'
         };
       })()
     },
