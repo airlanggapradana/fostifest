@@ -30,7 +30,7 @@ app.use(bodyParser.json());
 app.use("/cron", cronRouter);
 
 // Jalankan tiap 15 menit
-cron.schedule("* 15 * * * *", async () => {
+cron.schedule("*/15 * * * *", async () => {
   console.log("[CRON] Running registration cleanup...");
   await cleanupUnconfirmedRegistrations();
 });
