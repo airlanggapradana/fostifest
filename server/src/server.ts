@@ -15,7 +15,6 @@ import cron from "node-cron";
 import {env} from "./env";
 import multer from "multer";
 import {supabase} from "./utils/supabaseClient";
-import cronRouter from "./controllers/cron.controller";
 import {cleanupUnconfirmedRegistrations} from "./jobs/registrationCleanup";
 
 const app: Application = express();
@@ -27,7 +26,6 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use("/cron", cronRouter);
 
 // Jalankan tiap 15 menit
 cron.schedule("*/15 * * * *", async () => {
