@@ -27,11 +27,13 @@ app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-// Jalankan tiap 15 menit
-cron.schedule("*/15 * * * *", async () => {
-  console.log("[CRON] Running registration cleanup...");
-  await cleanupUnconfirmedRegistrations();
-});
+app.use('/api/cron', async () => {
+  // Jalankan tiap 15 menit
+  cron.schedule("*/15 * * * *", async () => {
+    console.log("[CRON] Running registration cleanup...");
+    await cleanupUnconfirmedRegistrations();
+  });
+})
 
 // pakai memory storage, jadi file masuk buffer
 const upload = multer({storage: multer.memoryStorage()});
