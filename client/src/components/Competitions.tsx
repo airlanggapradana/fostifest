@@ -128,7 +128,6 @@ const Competitions = () => {
             'Peserta terdiri dari 1–3 orang per tim (boleh dari SMA/SMK atau mahasiswa, sesuai kategori).',
             'Tiap tim hanya boleh mengirim 1 robot.',
             'Robot boleh menggunakan KIT atau buatan sendiri',
-            'Wajib membawa source code, diagram rangkaian, dan dokumentasi robot saat verifikasi.'
           ],
           guidebook: 'https://drive.google.com/file/d/1o-h7tmauo9vQa1NFZu7ZpSKduRBenKaH/view?usp=drive_link'
         };
@@ -174,7 +173,6 @@ const Competitions = () => {
             'Peserta terdiri dari 1–3 orang per tim (boleh dari SMA/SMK atau mahasiswa, sesuai kategori).',
             'Tiap tim hanya boleh mengirim 1 robot.',
             'Robot boleh menggunakan KIT atau buatan sendiri',
-            'Wajib membawa source code, diagram rangkaian, dan dokumentasi robot saat verifikasi.'
           ],
           guidebook: 'https://drive.google.com/file/d/1w28NaOCOhBz5NpAcE6Eq0wt5to5rma1-/view?usp=drive_link'
         };

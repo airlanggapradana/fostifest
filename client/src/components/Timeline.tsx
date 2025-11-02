@@ -103,7 +103,7 @@ const timelineData: TimelineItem[] = [
     date: '11 - 13 November 2025',
     time: '',
     // location: 'Convention Center, Downtown',
-    status: getTimelineStatus(...parseDateRange('3 - 5 November 2025'), now),
+    status: getTimelineStatus(...parseDateRange('11 - 13 November 2025'), now),
     icon: <Trophy className="w-6 h-6"/>,
     color: 'text-teal-300',
     bgColor: 'bg-teal-700 border-teal-200',
@@ -118,7 +118,7 @@ const timelineData: TimelineItem[] = [
     phase: 'Phase 3',
     title: 'Technical Meeting',
     description: 'A briefing session for all selected candidates to compete in the final round.',
-    date: '11 - 15 November 2025',
+    date: '11 - 28 November 2025',
     time: '',
     // location: 'Grand Ballroom, Convention Center',
     status: getTimelineStatus(...parseDateRange('8 - 23 November 2025'), now),
@@ -129,8 +129,8 @@ const timelineData: TimelineItem[] = [
       'Final Competition rules briefing',
       'Technical Meeting Finalists UI/UX: 15 November 2025',
       'Technical Meeting Finalis Software Dev: 15 November 2025',
-      'Technical Meeting Line Follower: 10 November 2025',
-      'Technical Meeting Sumobot: 11 November 2025',
+      'Technical Meeting Line Follower: 28 November 2025',
+      'Technical Meeting Sumobot: 28 November 2025',
       '14 November: Pengumuman finalis'
     ]
   },
