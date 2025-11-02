@@ -91,7 +91,8 @@ const timelineData: TimelineItem[] = [
       'Online registration form available',
       'Team formation period',
       'Entry fee payment deadline',
-      'Initial documentation required'
+      'Initial documentation required',
+      '10 November: Batas pengumpulan karya UI/UX dan Software Development',
     ]
   },
   {
@@ -99,7 +100,7 @@ const timelineData: TimelineItem[] = [
     phase: 'Phase 2',
     title: 'Judging Days',
     description: 'Judging sessions and evaluation of submissions by the panel of judges.',
-    date: '3 - 5 November 2025',
+    date: '11 - 13 November 2025',
     time: '',
     // location: 'Convention Center, Downtown',
     status: getTimelineStatus(...parseDateRange('3 - 5 November 2025'), now),
@@ -109,6 +110,7 @@ const timelineData: TimelineItem[] = [
     details: [
       'Preliminary judging',
       'Final judging rounds',
+      '11-13 November: Penjurian'
     ]
   },
   {
@@ -116,7 +118,7 @@ const timelineData: TimelineItem[] = [
     phase: 'Phase 3',
     title: 'Technical Meeting',
     description: 'A briefing session for all selected candidates to compete in the final round.',
-    date: '8 - 11 November 2025',
+    date: '11 - 15 November 2025',
     time: '',
     // location: 'Grand Ballroom, Convention Center',
     status: getTimelineStatus(...parseDateRange('8 - 23 November 2025'), now),
@@ -125,10 +127,11 @@ const timelineData: TimelineItem[] = [
     bgColor: 'bg-teal-700 border-teal-200',
     details: [
       'Final Competition rules briefing',
-      'Technical Meeting Finalists UI/UX: 8 November 2025',
-      'Technical Meeting Finalis Software Dev: 9 November 2025',
+      'Technical Meeting Finalists UI/UX: 15 November 2025',
+      'Technical Meeting Finalis Software Dev: 15 November 2025',
       'Technical Meeting Line Follower: 10 November 2025',
-      'Technical Meeting Sumobot: 11 November 2025'
+      'Technical Meeting Sumobot: 11 November 2025',
+      '14 November: Pengumuman finalis'
     ]
   },
   {

@@ -48,7 +48,7 @@ const Competitions = () => {
       status: data.find(c => c.category === 'Programming')?.status,
       description: 'Test your algorithmic skills in this intensive programming competition.',
       requirements: ['Laptop required', 'Any programming language', 'Up-to 3 members per team'],
-      guidebook: 'https://drive.google.com/file/d/1HvpAYWfcAyvINbQJ6OpCMhPq9-685Ajw/view?usp=drive_link'
+      guidebook: 'https://drive.google.com/file/d/1i-Q23dau_U8XykU-oGBZBdQ7km6xgcoW/view?usp=drive_link'
     },
     {
       id: data.find(c => c.category === 'Design')?.id,
@@ -86,7 +86,7 @@ const Competitions = () => {
       status: data.find(c => c.category === 'Design')?.status,
       description: 'Create innovative user experiences and visual designs.',
       requirements: ['Design software knowledge', 'Team of 3'],
-      guidebook: 'https://drive.google.com/file/d/1xy7hImkv-1eCQAt-c2sqGvd8xRbnSaDj/view?usp=drive_link'
+      guidebook: 'https://drive.google.com/file/d/1W44uBmJlGZbdlXLMemnrmoGDvfzA05Om/view?usp=drive_link'
     },
     {
       ...(() => {

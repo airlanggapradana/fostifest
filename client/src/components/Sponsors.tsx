@@ -1,8 +1,15 @@
 import {Card, CardContent, CardDescription, CardTitle} from './ui/card';
 import {Button} from './ui/button';
 import {FaWhatsapp} from "react-icons/fa";
+import sponsor1 from "@/assets/grosir_boyolali.webp"
 
 const Sponsors = () => {
+  const imageSponsors: { src: string; type: 'bronze' | 'silver' | 'gold' | 'platinum' }[] = [
+    {
+      src: sponsor1,
+      type: 'bronze',
+    },
+  ];
   return (
     <section id="sponsors" className="py-14 sm:py-20 bg-gray-950">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,6 +21,26 @@ const Sponsors = () => {
           <p className="text-base sm:text-xl text-gray-400 max-w-3xl mx-auto">
             We're grateful to our amazing sponsors who make these competitions possible and support student innovation
           </p>
+        </div>
+
+        {/* Sponsors grid */}
+        <div
+          className={`max-w-5xl mx-auto mb-10 ${imageSponsors.length === 1 ? 'grid grid-cols-1 place-items-center' : 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 items-center'}`}>
+          {imageSponsors.map((s, i) => {
+            const sizeClasses = {
+              bronze: 'max-h-16 sm:max-h-20',
+              silver: 'max-h-20 sm:max-h-24',
+              gold: 'max-h-24 sm:max-h-28',
+              platinum: 'max-h-28 sm:max-h-32',
+            }[s.type];
+
+            return (
+              <div key={i} className="flex flex-col items-center">
+                <img src={s.src} alt={`${s.type}-sponsor-${i}`} className={`${sizeClasses} object-contain`}/>
+                <span className="mt-2 text-sm text-gray-400 capitalize">{s.type}</span>
+              </div>
+            );
+          })}
         </div>
 
         {/* Call to Action */}

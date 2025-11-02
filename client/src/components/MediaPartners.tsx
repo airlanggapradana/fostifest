@@ -2,48 +2,44 @@ import {Card, CardContent, CardDescription, CardTitle} from './ui/card';
 import {Button} from './ui/button';
 import {FaWhatsapp} from "react-icons/fa";
 import LogoLoop from "@/components/ui/LogoLoop/LogoLoop.tsx";
+import himatif from "@/assets/logoHimatifHitam.webp"
+import rapma from "@/assets/WhatsApp Image 2025-10-30 at 17.34.17_674406f2.webp"
+import medpart3 from "@/assets/Jika Poster HITAM - Logo 1600 pixel.webp"
+import medpart4 from "@/assets/WhatsApp Image 2025-10-30 at 17.34.17_61535368.webp"
+import medpart5 from "@/assets/WhatsApp Image 2025-10-30 at 17.34.17_bfa370d4.webp"
+import medpart6 from "@/assets/WhatsApp Image 2025-10-30 at 17.34.17_fc83aa9f.webp"
 
 const MediaPartners = () => {
   const imageLogos = [
     {
-      src: "https://fostifest.fostiums.org/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhimatif.f7733764.png&w=96&q=75",
+      src: himatif,
       alt: "Company 1",
-      href: "https://company1.com"
+      href: "#"
     },
     {
-      src: "https://fostifest.fostiums.org/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fradik.1b8977ab.png&w=96&q=75",
+      src: rapma,
       alt: "Company 2",
-      href: "https://company2.com"
+      href: "#"
     },
     {
-      src: "https://fostifest.fostiums.org/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhimakom.33bb8fef.png&w=96&q=75",
+      src: medpart3,
       alt: "Company 3",
-      href: "https://company3.com"
+      href: "#"
     },
     {
-      src: "https://fostifest.fostiums.org/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Ffinic.7e41a0c4.png&w=96&q=75",
+      src: medpart4,
       alt: "Company 4",
-      href: "https://company3.com"
+      href: "#"
     },
     {
-      src: "https://fostifest.fostiums.org/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fhima-telkom.af40e372.webp&w=96&q=75",
+      src: medpart5,
       alt: "Company 5",
-      href: "https://company3.com"
+      href: "#"
     },
     {
-      src: "https://fostifest.fostiums.org/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Finfo-event.d6d313ed.png&w=96&q=75",
+      src: medpart6,
       alt: "Company 6",
-      href: "https://company3.com"
-    },
-    {
-      src: "https://fostifest.fostiums.org/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Frapma.64a98bb0.png&w=96&q=75",
-      alt: "Company 7",
-      href: "https://company3.com"
-    },
-    {
-      src: "https://fostifest.fostiums.org/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fkine.a4c649e6.png&w=96&q=75",
-      alt: "Company 8",
-      href: "https://company3.com"
+      href: "#"
     },
   ];
 
@@ -68,7 +64,7 @@ const MediaPartners = () => {
             speed={75}
             direction="left"
             logoHeight={36}
-            gap={24}
+            gap={48}
             pauseOnHover
             scaleOnHover
             fadeOut
@@ -89,6 +85,7 @@ const MediaPartners = () => {
               <Button
                 size="lg"
                 className="flex mx-auto items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-xl font-semibold hover:from-teal-600 hover:to-teal-700 transition-all duration-300 transform hover:scale-105 text-base sm:text-lg"
+                onClick={() => window.open("https://wa.me/+6285727689878")}
               >
                 <FaWhatsapp className="w-5 h-5 sm:w-6 sm:h-6"/>
                 Partner With Us
