@@ -32,11 +32,11 @@ const PaymentSuccessPage = () => {
           Terimakasih telah melakukan pembayaran. Silakan lanjut join ke grub di bawah sesuai dengan cabang lomba yg
           kamu ikuti dan harap untuk konfirmasi ke contact person berikut <span
           className="block sm:inline mt-2 sm:mt-0">
-                        <a href="https://wa.me/082137748602"
+                        <a href="https://wa.me/+6282137748602"
                            className="text-blue-300 hover:text-blue-400 underline transition-colors mr-2">
                           Najla
                         </a>
-                        <a href="https://wa.me/085713041829"
+                        <a href="https://wa.me/+6285713041829"
                            className="text-blue-300 hover:text-blue-400 underline transition-colors">
                           Paramesti
                         </a>

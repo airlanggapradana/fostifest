@@ -8,6 +8,10 @@ import medpart3 from "@/assets/Jika Poster HITAM - Logo 1600 pixel.webp"
 import medpart4 from "@/assets/WhatsApp Image 2025-10-30 at 17.34.17_61535368.webp"
 import medpart5 from "@/assets/WhatsApp Image 2025-10-30 at 17.34.17_bfa370d4.webp"
 import medpart6 from "@/assets/WhatsApp Image 2025-10-30 at 17.34.17_fc83aa9f.webp"
+import medpart7 from "@/assets/WhatsApp Image 2025-11-05 at 16.07.15_75e267e6.webp"
+import medpart8 from "@/assets/WhatsApp Image 2025-11-05 at 16.07.16_7c755f2a.webp"
+import medpart9 from "@/assets/WhatsApp Image 2025-11-05 at 16.07.16_262a6f77.webp"
+import medpart10 from "@/assets/WhatsApp Image 2025-11-05 at 16.07.17_8927b40b.webp"
 
 const MediaPartners = () => {
   const imageLogos = [
@@ -39,6 +43,26 @@ const MediaPartners = () => {
     {
       src: medpart6,
       alt: "Company 6",
+      href: "#"
+    },
+    {
+      src: medpart7,
+      alt: "Company 7",
+      href: "#"
+    },
+    {
+      src: medpart8,
+      alt: "Company 8",
+      href: "#"
+    },
+    {
+      src: medpart9,
+      alt: "Company 9",
+      href: "#"
+    },
+    {
+      src: medpart10,
+      alt: "Company 10",
       href: "#"
     },
   ];
