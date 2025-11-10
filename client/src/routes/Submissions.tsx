@@ -181,8 +181,8 @@ const Submissions = () => {
                   </Button>
                 </div>
                 <div className="w-full mt-3">
-                  {registration.competition.Submission.length > 0 ? (
-                    registration.competition.Submission.map((submission) => (
+                  {registration.competition.Submission && registration.competition.Submission.length > 0 ? (
+                    registration.competition.Submission?.map((submission) => (
                       <div className={'flex items-center justify-between'} key={submission.id}>
                         <div className={'flex items-center gap-4'}>
                           <Button
@@ -229,7 +229,7 @@ const Submissions = () => {
               <div>
                 <h4 className="text-xl font-semibold text-gray-100">Feedbacks</h4>
                 <div className="space-y-3 mt-3">
-                  {registration.competition.Submission.length > 0 ? (
+                  {registration.competition.Submission && registration.competition.Submission.length > 0 ? (
                     registration.competition.Submission.map((submission) => (
                       <div key={submission.id}>
                         {submission.feedbacks ? (

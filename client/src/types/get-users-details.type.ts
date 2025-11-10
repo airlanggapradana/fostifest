@@ -42,7 +42,7 @@ export interface Competition {
   categoryId: string;
   createdAt: Date;
   updatedAt: Date;
-  Submission: Submission[];
+  Submission?: Submission[];
 }
 
 export interface Submission {
