@@ -54,6 +54,7 @@ const Sponsors = () => {
               </CardDescription>
               <Button
                 size="lg"
+                onClick={() => window.open('https://wa.me/6281901035799', '_blank')}
                 className="flex items-center justify-center mx-auto gap-2 px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-teal-500 to-teal-600 text-white rounded-xl font-semibold hover:from-teal-600 hover:to-teal-700 transition-all duration-300 transform hover:scale-105 text-base sm:text-lg"
               >
                 <FaWhatsapp className="w-5 h-5 sm:w-6 sm:h-6"/>

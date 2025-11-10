@@ -48,7 +48,7 @@ const Competitions = () => {
       status: data.find(c => c.category === 'Programming')?.status,
       description: 'Test your algorithmic skills in this intensive programming competition.',
       requirements: ['Laptop required', 'Any programming language', 'Up-to 3 members per team'],
-      guidebook: 'https://drive.google.com/file/d/1i-Q23dau_U8XykU-oGBZBdQ7km6xgcoW/view?usp=drive_link'
+      guidebook: 'https://drive.google.com/file/d/1dMXZg-2f5JtvK-7NfrXIlzRsVR8u_QTW/view?usp=sharing'
     },
     {
       id: data.find(c => c.category === 'Design')?.id,
@@ -86,7 +86,7 @@ const Competitions = () => {
       status: data.find(c => c.category === 'Design')?.status,
       description: 'Create innovative user experiences and visual designs.',
       requirements: ['Design software knowledge', 'Team of 3'],
-      guidebook: 'https://drive.google.com/file/d/1W44uBmJlGZbdlXLMemnrmoGDvfzA05Om/view?usp=drive_link'
+      guidebook: 'https://drive.google.com/file/d/1NoOr99_7yTb7V3Qbm0Zhwdj_zSRX-Gat/view?usp=sharing'
     },
     {
       ...(() => {
@@ -129,7 +129,7 @@ const Competitions = () => {
             'Tiap tim hanya boleh mengirim 1 robot.',
             'Robot boleh menggunakan KIT atau buatan sendiri',
           ],
-          guidebook: 'https://drive.google.com/file/d/1o-h7tmauo9vQa1NFZu7ZpSKduRBenKaH/view?usp=drive_link'
+          guidebook: 'https://drive.google.com/file/d/1BKPReSbIqskjSaZfiDef2vAKWSvQUwZi/view?usp=sharing'
         };
       })()
     },
@@ -174,7 +174,7 @@ const Competitions = () => {
             'Tiap tim hanya boleh mengirim 1 robot.',
             'Robot boleh menggunakan KIT atau buatan sendiri',
           ],
-          guidebook: 'https://drive.google.com/file/d/1w28NaOCOhBz5NpAcE6Eq0wt5to5rma1-/view?usp=drive_link'
+          guidebook: 'https://drive.google.com/file/d/1Ryj4uwHhxWxZaza8i-ddxdbyyqmWc1-y/view?usp=sharing'
         };
       })()
     },
