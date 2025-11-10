@@ -217,46 +217,84 @@ export const getAllSubmissions = async (req: Request, res: Response, next: NextF
 export const getUserDetails = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {id} = req.params;
+    if (!id) {
+      res.status(400).json({message: "User ID is required"})
+      return;
+    }
 
+
+    // 1️⃣ Ambil user + registrasi, team, transaksi
     const user = await prisma.user.findUnique({
       where: {id},
       include: {
         registrations: {
           include: {
-            competition: {
-              include: {
-                Submission: {
-                  include: {
-                    feedbacks: true
-                  }
-                }
-              }
-            },
-            team: {
-              include: {
-                participants: true,
-              },
-            },
+            competition: true,
+            team: {include: {participants: true}},
             transaction: true,
           },
         },
       },
     });
 
-    if (!user) {
-      res.status(200).json({message: "User not found", data: null});
-      return;
-    }
+    if (!user) return res.status(404).json({message: "User not found"});
+
+    // 2️⃣ Kumpulkan semua teamId milik user
+    const leaderTeams = await prisma.team.findMany({
+      where: {leaderId: id},
+      select: {id: true},
+    });
+
+    const teamIds = [
+      ...new Set([
+        ...user.registrations.map((r) => r.teamId).filter((v): v is string => !!v),
+        ...leaderTeams.map((t) => t.id),
+      ]),
+    ];
+
+    // 3️⃣ Ambil semua submission milik user ini (langsung atau via tim)
+    const submissions = await prisma.submission.findMany({
+      where: {
+        OR: [{userId: id}, {teamId: {in: teamIds}}],
+      },
+      include: {
+        feedbacks: true,
+        competition: true,
+      },
+    });
+
+    // 4️⃣ Sisipkan submission sesuai kompetisi di tiap registration
+    const registrationsWithSubmissions = user.registrations.map((reg) => {
+      const filteredSubs = submissions.filter(
+        (s) =>
+          s.competitionId === reg.competitionId &&
+          (s.userId === id || s.teamId === reg.teamId)
+      );
+
+      return {
+        ...reg,
+        competition: {
+          ...reg.competition,
+          submissions: filteredSubs.length ? filteredSubs : [],
+        },
+      };
+    });
+
+    // 5️⃣ Gabungkan ke dalam response akhir
+    const response = {
+      ...user,
+      registrations: registrationsWithSubmissions,
+    };
 
     res.status(200).json({
       message: "User details fetched successfully",
-      data: user,
+      data: response,
     });
     return;
   } catch (error) {
     next(error);
   }
-}
+};
 
 export const exportAsExcel = async (_req: Request, res: Response, next: NextFunction) => {
   try {
