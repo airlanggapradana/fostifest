@@ -141,6 +141,7 @@ const AdminSubmissions = () => {
                     <TableHead className={'text-gray-100'}>ID</TableHead>
                     <TableHead className={'text-gray-100'}>Competition Title</TableHead>
                     <TableHead className={'text-gray-100'}>User</TableHead>
+                    <TableHead className={'text-gray-100'}>Institusi</TableHead>
                     <TableHead className={'text-gray-100'}>Submission</TableHead>
                     <TableHead className={'text-gray-100'}>Feedback</TableHead>
                     <TableHead className={'text-gray-100'}>Submitted At</TableHead>
@@ -154,6 +155,7 @@ const AdminSubmissions = () => {
                         <TableCell>{sub.id}</TableCell>
                         <TableCell>{sub.competition.name}</TableCell>
                         <TableCell>{sub.user?.name || "Unknown"}</TableCell>
+                        <TableCell>{sub.user?.institusi || "Unknown"}</TableCell>
                         <TableCell>
                           <Button
                             variant={'outline'}

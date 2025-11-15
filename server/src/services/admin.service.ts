@@ -195,7 +195,7 @@ export const getAllSubmissions = async (req: Request, res: Response, next: NextF
         include: {
           competition: {select: {id: true, name: true}},
           team: {include: {participants: {select: {id: true, name: true, phoneNumber: true}}}},
-          user: {select: {id: true, name: true, email: true, phone: true}},
+          user: {select: {id: true, name: true, email: true, phone: true, institusi: true}},
           feedbacks: {include: {admin: {select: {id: true, name: true}}}},
         },
       }),
