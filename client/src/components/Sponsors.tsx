@@ -2,12 +2,17 @@ import {Card, CardContent, CardDescription, CardTitle} from './ui/card';
 import {Button} from './ui/button';
 import {FaWhatsapp} from "react-icons/fa";
 import sponsor1 from "@/assets/grosir_boyolali.webp"
+import sponsor2 from "@/assets/WhatsApp Image 2025-11-24 at 4.45.24 PM.webp"
 
 const Sponsors = () => {
   const imageSponsors: { src: string; type: 'bronze' | 'silver' | 'gold' | 'platinum' }[] = [
     {
       src: sponsor1,
-      type: 'bronze',
+      type: 'gold',
+    },
+    {
+      src: sponsor2,
+      type: 'gold',
     },
   ];
   return (
