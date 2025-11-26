@@ -3,6 +3,7 @@ import {Button} from './ui/button';
 import {FaWhatsapp} from "react-icons/fa";
 import sponsor1 from "@/assets/grosir_boyolali.webp"
 import sponsor2 from "@/assets/WhatsApp Image 2025-11-24 at 4.45.24 PM.webp"
+import sponsor3 from "@/assets/WhatsApp Image 2025-11-26 at 4.49.54 PM.webp"
 
 const Sponsors = () => {
   const imageSponsors: { src: string; type: 'bronze' | 'silver' | 'gold' | 'platinum' }[] = [
@@ -13,6 +14,10 @@ const Sponsors = () => {
     {
       src: sponsor2,
       type: 'gold',
+    },
+    {
+      src: sponsor3,
+      type: 'bronze',
     },
   ];
   return (
